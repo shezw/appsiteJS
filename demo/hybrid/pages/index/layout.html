@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html class="pseudo3d">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>APS DEMO</title>
+<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_1057608_xqg2dv96t3i.css">
+<link rel="stylesheet" type="text/css" href="../../../dist/style.css"/>
+
+<script type="text/javascript" src="../../../plugins/mui/mui.cut.js"></script>
+<script type="text/javascript" src="../../../dist/aps.rem.js"></script>
+<script type="text/javascript" src="../../../dist/aps.dict.js"></script>
+<script type="text/javascript" src="../../../dist/aps.js"></script>
+		
+<body class="hybridTouch">
+		
+	<div class="TOPBAR">
+		<span class="leftBtn" onclick="Aps.router.closeView('{{viewid}}');"><i class="ApsIcon I-close"></i>关闭</span>
+		<div class="title">LAYOUT</div>
+	</div>
+
+	<div class="CONTENT -TOPBAR -BOTTOMBAR">
+
+		<div class="list">
+			<div class="subject left" onclick="Aps.gui.stretch('#color');">
+				<b class="essential">TextSize 文字大小</b>
+				<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+
+			<div class="group" id="color">
+
+				<div class="textList">
+					<span class="title color-8 text-xxh">XXH 最巨大号 </span>
+					<span class="status">.text-xxh</span>
+				</div>
+
+				<div class="textList">
+					<span class="title color-8 text-xh">XH 超巨大号 </span>
+					<span class="status">.text-xh</span>
+				</div>
+
+				<div class="textList">
+					<span class="title color-8 text-h">H 巨大号 </span>
+					<span class="status">.text-h</span>
+				</div>
+
+				<div class="textList">
+					<span class="title color-8 text-xxl">XXL 最大号 </span>
+					<span class="status">.text-xxl</span>
+				</div>
+
+				<div class="textList">
+					<span class="title color-8 text-xl">XL 超大号 </span>
+					<span class="status">.text-xl</span>
+				</div>
+
+				<div class="textList">
+					<span class="title color-8 text-l">L 大号 </span>
+					<span class="status">.text-l</span>
+				</div>
+
+				<div class="textList">
+					<span class="title color-8 text-m">M 中号 </span>
+					<span class="status">.text-m</span>
+				</div>
+
+				<div class="textList">
+					<span class="title color-8 text-s">S 小号 </span>
+					<span class="status">.text-s</span>
+				</div>
+
+				<div class="textList">
+					<span class="title color-8 text-xs">XS 超小号 </span>
+					<span class="status">.text-xs</span>
+				</div>
+
+				<div class="textList">
+					<span class="title color-8 text-xxs">XXS 最小号 </span>
+					<span class="status">.text-xxs</span>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="list">
+			<div class="subject left" onclick="Aps.gui.stretch('#align');">
+				<b class="essential">Align 对齐</b>
+				<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+
+			<div class="group" id="align">
+
+				<div class="textList l-align">
+					<span class="title color-8 text-m">左对齐 .l-align</span>
+					<!-- <span class="status">.l-align</span> -->
+				</div>
+
+				<div class="textList c-align">
+					<span class="title color-8 text-m">居中 .c-align</span>
+					<!-- <span class="status">.c-align</span> -->
+				</div>
+
+				<div class="textList r-align">
+					<span class="title color-8 text-m">右对齐 .r-align</span>
+					<!-- <span class="status">.l-align</span> -->
+				</div>
+
+
+			</div>
+
+		</div>
+
+		<div class="list">
+			<div class="subject left" onclick="Aps.gui.stretch('#fonts');">
+				<b class="essential">Font Family 字体</b>
+				<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+
+			<div class="group" id="fonts">
+
+				<div class="textList">
+					<span class="title f-AmericanTW color-8 text-m">汉字 AmericanTW</span>
+					<span class="status">.f-AmericanTW</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-AmericanTW-B color-8 text-m">汉字 AmericanTW-Bold</span>
+					<span class="status">.f-AmericanTW-B</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-AppleGothic color-8 text-m">汉字 AppleGothic</span>
+					<span class="status">.f-AppleGothic</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Arial color-8 text-m">汉字 Arial</span>
+					<span class="status">.f-Arial</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-ArialMT color-8 text-m">汉字 ArialMT</span>
+					<span class="status">.f-ArialMT</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Arial-B color-8 text-m">汉字 Arial-BoldMT</span>
+					<span class="status">.f-Arial-B</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Arial-BI color-8 text-m">汉字 Arial-BoldItalicMT</span>
+					<span class="status">.f-Arial-BI</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Arial-I color-8 text-m">汉字 Arial-ItalicMT</span>
+					<span class="status">.f-Arial-I</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Arial-RB color-8 text-m">汉字 ArialRoundedMTBold</span>
+					<span class="status">.f-Arial-RB</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Arial-UNI color-8 text-m">汉字 ArialUnicodeMS</span>
+					<span class="status">.f-Arial-UNI</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Courier color-8 text-m">汉字 Courier</span>
+					<span class="status">.f-Courier</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Courier-BO color-8 text-m">汉字 Courier-BoldOblique</span>
+					<span class="status">.f-Courier-BO</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Courier-O color-8 text-m">汉字 Courier-Oblique</span>
+					<span class="status">.f-Courier-O</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Courier-B color-8 text-m">汉字 Courier-Bold</span>
+					<span class="status">.f-Courier-B</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Courier-N color-8 text-m">汉字 Courier New</span>
+					<span class="status">.f-Courier-N</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Courier-BM color-8 text-m">汉字 CourierNewPS-BMT</span>
+					<span class="status">.f-Courier-BM</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Courier-IM color-8 text-m">汉字 CourierNewPS-IMT</span>
+					<span class="status">.f-Courier-IM</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Courier-BIM color-8 text-m">汉字 CourierNewPS-BIMT</span>
+					<span class="status">.f-Courier-BIM</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Courier-NM color-8 text-m">汉字 CourierNewPSMT</span>
+					<span class="status">.f-Courier-NM</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-DBLCDTemp color-8 text-m">汉字 DB LCD Temp</span>
+					<span class="status">.f-DBLCDTemp</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-DBLCDTempBlack color-8 text-m">汉字 DBLCDTempBlack</span>
+					<span class="status">.f-DBLCDTempBlack</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Georgia color-8 text-m">汉字 Georgia</span>
+					<span class="status">.f-Georgia</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Georgia-B color-8 text-m">汉字 Georgia-Bold</span>
+					<span class="status">.f-Georgia-B</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Georgia-BI color-8 text-m">汉字 Georgia-BoldItalic</span>
+					<span class="status">.f-Georgia-BI</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Georgia-I color-8 text-m">汉字 Georgia-Italic</span>
+					<span class="status">.f-Georgia-I</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Helvetica color-8 text-m">汉字 Helvetica</span>
+					<span class="status">.f-Helvetica</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Helvetica-O color-8 text-m">汉字 Helvetica-Oblique</span>
+					<span class="status">.f-Helvetica-O</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Helvetica-BO color-8 text-m">汉字 Helvetica-BoldOblique</span>
+					<span class="status">.f-Helvetica-BO</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Helvetica-B color-8 text-m">汉字 Helvetica-Bold</span>
+					<span class="status">.f-Helvetica-B</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-HelveticaN color-8 text-m">汉字 HelveticaNeue</span>
+					<span class="status">.f-HelveticaN</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-HelveticaN-B color-8 text-m">汉字 HelveticaNeue-Bold</span>
+					<span class="status">.f-HelveticaN-B</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-HiraKakuProN-W3 color-8 text-s">汉字 HiraKakuProN-W3</span>
+					<span class="status">.f-HiraKakuProN-W3</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-HiraKakuProN-W6 color-8 text-s">汉字 HiraKakuProN-W6</span>
+					<span class="status">.f-HiraKakuProN-W6</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-MarkerFelt color-8 text-m">汉字 Marker Felt</span>
+					<span class="status">.f-MarkerFelt</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-MarkerFelt-T color-8 text-m">汉字 MarkerFelt-T</span>
+					<span class="status">.f-MarkerFelt-T</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-STHeitiJ-M color-8 text-m">汉字 STHeitiJ-M</span>
+					<span class="status">.f-STHeitiJ-M</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-STHeitiJ-L color-8 text-m">汉字 STHeitiJ-L</span>
+					<span class="status">.f-STHeitiJ-L</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-STHeitiK-M color-8 text-m">汉字 STHeitiK-M</span>
+					<span class="status">.f-STHeitiK-M</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-STHeitiK-L color-8 text-m">汉字 STHeitiK-L</span>
+					<span class="status">.f-STHeitiK-L</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-STHeitiSC-M color-8 text-m">汉字 STHeitiSC-M</span>
+					<span class="status">.f-STHeitiSC-M</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-STHeitiSC-L color-8 text-m">汉字 STHeitiSC-L</span>
+					<span class="status">.f-STHeitiSC-L</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-STHeitiTC-L color-8 text-m">汉字 STHeitiTC-L</span>
+					<span class="status">.f-STHeitiTC-L</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-STHeitiTC-M color-8 text-m">汉字 STHeitiTC-M</span>
+					<span class="status">.f-STHeitiTC-M</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Times color-8 text-m">汉字 TimesNR PSMT</span>
+					<span class="status">.f-Times</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Times-B color-8 text-m">汉字 TimesNR PS-BoldMT</span>
+					<span class="status">.f-Times-B</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Times-BI color-8 text-m">汉字 TimesNR PS-BoldItalicMT</span>
+					<span class="status">.f-Times-BI</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Times-I color-8 text-m">汉字 TimesNR PS-ItalicMT</span>
+					<span class="status">.f-Times-I</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-TrebuchetMS color-8 text-m">汉字 TrebuchetMS</span>
+					<span class="status">.f-TrebuchetMS</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-TrebuchetMS-Italic color-8 text-m">汉字 TrebuchetMS-Italic</span>
+					<span class="status">.f-TrebuchetMS-Italic</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Trebuchet-B color-8 text-m">汉字 Trebuchet-BoldItalic</span>
+					<span class="status">.f-Trebuchet-B</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-TrebuchetMS-B color-8 text-m">汉字 TrebuchetMS-Bold</span>
+					<span class="status">.f-TrebuchetMS-B</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Verdana color-8 text-m">汉字 Verdana</span>
+					<span class="status">.f-Verdana</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Verdana-B color-8 text-m">汉字 Verdana-Bold</span>
+					<span class="status">.f-Verdana-B</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Verdana-BI color-8 text-m">汉字 Verdana-BoldItalic</span>
+					<span class="status">.f-Verdana-BI</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Verdana-I color-8 text-m">汉字 Verdana-Italic</span>
+					<span class="status">.f-Verdana-I</span>
+				</div>
+
+				<div class="textList">
+					<span class="title f-Zapfino color-8 text-m">汉字 Zapfino</span>
+					<span class="status">.f-Zapfino</span>
+				</div>
+
+			</div>
+		</div>
+
+
+	</div>
+
+
+</body>
+<script type="text/javascript" src="../../../dist/aps.hybrid.js"></script>
+
+</html>

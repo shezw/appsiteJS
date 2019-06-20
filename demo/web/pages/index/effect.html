@@ -1,0 +1,96 @@
+		
+	<div class="TOPBAR ">
+		<span class="leftBtn" onclick="Aps.router.closeView('{{viewid}}');"><i class="ApsIcon I-close"></i>关闭</span>
+		<div class="title">效果 Effect</div>
+	</div>
+
+	<div class="CONTENT -TOPBAR -BOTTOMBAR">
+
+		<div class="list">
+
+			<div class="subject left" onclick="Aps.gui.stretch('#gradient',this);">
+				Gradient  渐变色
+				<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+
+			<div class="group" id="gradient">
+
+				<div class="textList">
+
+					<span class="title iBlock w-4 h-4 gradient-dark"></span>
+					<span class="status">gradient-dark</span>
+				</div>
+
+				<div class="textList">
+
+					<span class="title iBlock w-4 h-4 gradient-primary"></span>
+					<span class="status">gradient-primary</span>
+				</div>
+
+			</div>
+
+
+			<div class="subject left" onclick="Aps.gui.stretch('#blur',this);">
+				blur  模糊
+				<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+
+			<div class="group" id="blur">
+
+				<div class="textList">
+					<span class="title text-xxl ApsIcon I-wechat color-green"></span>
+					<span class="status">.noBlur</span>
+				</div>
+
+				<div class="textList">
+					<span class="title text-xxl ApsIcon I-wechat color-green onBlur xs"></span>
+					<span class="status">.onBlur.xs</span>
+				</div>
+
+				<div class="textList">
+					<span class="title text-xxl ApsIcon I-wechat color-green onBlur s"></span>
+					<span class="status">.onBlur.s</span>
+				</div>
+
+				<div class="textList">
+					<span class="title text-h ApsIcon I-wechat color-green onBlur m"></span>
+					<span class="status">.onBlur.m</span>
+				</div>
+
+				<div class="textList">
+					<span class="title text-xh ApsIcon I-wechat color-green onBlur l"></span>
+					<span class="status">.onBlur.l</span>
+				</div>
+
+				<div class="textList">
+					<span class="title text-xxh ApsIcon I-wechat color-green onBlur xl"></span>
+					<span class="status">.onBlur.xl</span>
+				</div>
+
+			</div>
+
+
+			<div class="subject left" onclick="Aps.gui.stretch('#shadow',this);">
+				Shadow  阴影
+				<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+
+			<div class="group" id="shadow">
+
+				<div class="c-align">
+					<i class="iBlock mg-3 w-5 h-5 bg-white shadow-xl radio-l"></i>
+					<i class="iBlock mg-3 w-4 h-4 bg-white shadow-l radio-l"></i>
+					<i class="iBlock mg-3 w-3 h-3 bg-white shadow radio"></i>
+					<i class="iBlock mg-3 w-2 h-2 bg-white shadow-s radio-s"></i>
+					<i class="iBlock mg-3 w-1 h-1 bg-white shadow-xs radio-xs"></i>
+					<!-- <span class="status">I-wechat</span> -->
+				</div>
+
+
+			</div>
+
+
+		</div>
+
+
+	</div>

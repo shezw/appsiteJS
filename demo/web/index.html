@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>APS DEMO</title>
+<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1057608_xqg2dv96t3i.css">
+<link rel="stylesheet" type="text/css" href="../../dist/style.css"/>
+
+<script type="text/javascript" src="../../dist/aps.rem.js"></script>
+<script type="text/javascript" src="../../dist/aps.dict.js"></script>
+<script type="text/javascript" src="../../dist/aps.js"></script>
+<script type="text/javascript" src="../../plugins/qrcode/qrcode.js"></script>
+</head>
+
+<body class="hybridTouch" id="VIEW">
+
+	<!-- <div class="VIEW" id="VIEW"> -->
+			
+		<div class="TOPBAR">
+			<!-- <span class="leftBtn"><i class="ApsIcon I-left"></i>返回</span> -->
+			<div class="title">AppSite</div>
+			<span class="rightBtn" onclick="Aps.gui.propup('QR CODE',Aps.qrcode.toImage('https://donsee.cn/Aps/demo/'));">QR<i class="ApsIcon I-qrcode"></i></span>
+		</div>
+
+		<div class="CONTENT -TOPBAR -BOTTOMBAR">
+			<div class="list">
+
+				<div class="subject left" onclick="Aps.gui.stretch('#style',this);">
+					样式 Style
+					<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+				</div>
+				<div class="group" id="style">
+					
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/index/colors.html'},{});">
+						<i class="listIcon ApsIcon I-themes color-primary"></i>
+						<span class="title">颜色 Colors</span>
+						<span class="status"><i class="ApsIcon I-right"></i></span>
+					</div>
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/index/icons.html'},{});">
+						<i class="listIcon ApsIcon I-as color-primary"></i>
+						<span class="title">图标 Icons</span>
+						<span class="status"><i class="ApsIcon I-right"></i></span>
+					</div>
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/index/layout.html'},{});">
+						<i class="listIcon ApsIcon I-pages color-primary"></i>
+						<span class="title">排版 Layout</span>
+						<span class="status"><i class="ApsIcon I-right"></i></span>
+					</div>
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/index/effect.html'},{});">
+						<i class="listIcon ApsIcon I-eye color-primary"></i>
+						<span class="title">效果 Effect</span>
+						<span class="status"><i class="ApsIcon I-right"></i></span>
+					</div>
+				</div>
+
+				<div class="subject left" onclick="Aps.gui.stretch('#dom',this);">
+					元素 Dom
+					<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+				</div>
+				<div class="group color-blue" id="dom">
+					
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/index/form.html'},{});">
+						<i class="listIcon ApsIcon I-editor"></i>
+						<span class="title">表单 Form</span>
+						<span class="status"><i class="ApsIcon I-right"></i></span>
+					</div>
+
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/index/container.html'},{},function(data){
+						Aps.switcher.init('#switch','.VIEW');
+					});">
+						<i class="listIcon ApsIcon I-article-line"></i>
+						<span class="title">容器 Container</span>
+						<span class="status"><i class="ApsIcon I-right"></i></span>
+					</div>
+
+				</div>
+
+			</div>
+
+
+		</div>
+
+		<div class="BOTTOMBAR">
+			<div class="tabs w-5 current" page="index">
+				<i class="ApsIcon I-home"></i>
+				<h5 class="title">首页</h5>
+			</div>
+			<div class="tabs w-5" page="message">
+				<i class="ApsIcon I-message"></i>
+				<h5 class="title">消息</h5>
+				<span class="noticePoint">3</span>
+			</div>
+			<div class="tabs w-5" page="document" onclick="Aps.router.switch('./document.html');">
+				<i class="ApsIcon I-javascript"></i>
+				<h5 class="title">文档</h5>
+			</div>
+			<div class="tabs w-5" page="user">
+				<i class="ApsIcon I-user"></i>
+				<h5 class="title">个人</h5>
+			</div>
+		</div>
+
+
+	<!-- </div> -->
+
+</body>
+
+<script type="text/javascript">
+	// alert(1);
+	// Aps.gui.smoothing(VL('.settingList'),{blur:0,lockY:1,backup:1,scale:0,ending:{x:"-100px",y:"0px"}});
+</script>
+
+</html>

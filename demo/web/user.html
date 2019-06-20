@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>APS DEMO</title>
+<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1057608_xqg2dv96t3i.css">
+<link rel="stylesheet" type="text/css" href="../../dist/style.css"/>
+</head>
+
+<body class="hybridTouch" id="VIEW">
+
+	<!-- <div class="VIEW" id="VIEW"> -->
+			
+		<div class="TOPBAR">
+			<div class="title">Personal</div>
+		</div>
+
+		<div class="CONTENT -TOPBAR -BOTTOMBAR">
+			<div class="list">
+				<div class="settingList" onclick="Aps.router.open('about.html');">
+					<i class="listIcon ApsIcon I-attachment"></i>
+					<span class="title">关于AppSite</span>
+					<span class="status">V1.1.0 <i class="ApsIcon I-right"></i></span>
+				</div>
+				<div class="settingList" onclick="Aps.router.open('about.html');">
+					<span class="title">关于AppSite</span>
+					<span class="status"><i class="ApsIcon I-right"></i></span>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="BOTTOMBAR">
+			<div class="tabs w-5" page="index">
+				<i class="ApsIcon I-home"></i>
+				<h5 class="title">首页</h5>
+			</div>
+			<div class="tabs w-5" page="article">
+				<i class="ApsIcon I-article"></i>
+				<h5 class="title">发现</h5>
+			</div>
+			<div class="tabs w-5" page="message">
+				<i class="ApsIcon I-message"></i>
+				<h5 class="title">消息</h5>
+				<span class="noticePoint">3</span>
+			</div>
+			<div class="tabs w-5 current" page="user">
+				<i class="ApsIcon I-user"></i>
+				<h5 class="title">个人</h5>
+			</div>
+		</div>
+
+
+	<!-- </div> -->
+
+</body>
+
+<script type="text/javascript" src="../../dist/aps.rem.js"></script>
+<script type="text/javascript" src="../../dist/aps.dict.js"></script>
+<script type="text/javascript" src="../../dist/aps.js"></script>
+<script type="text/javascript" src="../../plugins/qrcode/qrcode.js"></script>
+
+</html>

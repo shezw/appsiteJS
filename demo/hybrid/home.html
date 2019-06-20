@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html class="pseudo3d">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>APS DEMO</title>
+<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_1057608_xqg2dv96t3i.css">
+<link rel="stylesheet" type="text/css" href="../dist/style.css"/>
+
+<script type="text/javascript" src="../plugins/mui/mui.cut.js"></script>
+<script type="text/javascript" src="../dist/aps.rem.js"></script>
+<script type="text/javascript" src="../dist/aps.dict.js"></script>
+<script type="text/javascript" src="../dist/aps.js"></script>
+</head>
+
+<body class="hybridTouch wx" id="VIEW">
+		
+
+	<div class="CONTENT -TOPBAR">
+		<div class="list">
+
+			<div class="subject left" onclick="Aps.gui.stretch('#style');">
+				<b class="essential">样式 Style</b>
+				<span class="fl-r text-s"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+			<div class="group" id="style">
+				
+				<div class="settingList" onclick="Aps.router.open('./pages/index/colors.html');">
+					<i class="listIcon ApsIcon I-themes color-primary"></i>
+					<span class="title">颜色 Colors</span>
+					<span class="status"><i class="ApsIcon I-right"></i></span>
+				</div>
+				<div class="settingList" onclick="Aps.router.open('./pages/index/icons.html');">
+					<i class="listIcon ApsIcon I-as color-primary"></i>
+					<span class="title">图标 Icons</span>
+					<span class="status"><i class="ApsIcon I-right"></i></span>
+				</div>
+				<div class="settingList" onclick="Aps.router.open('./pages/index/layout.html');">
+					<i class="listIcon ApsIcon I-pages color-primary"></i>
+					<span class="title">排版 Layout</span>
+					<span class="status"><i class="ApsIcon I-right"></i></span>
+				</div>
+				<div class="settingList" onclick="Aps.router.open('./pages/index/effect.html');">
+					<i class="listIcon ApsIcon I-eye color-primary"></i>
+					<span class="title">效果 Effect</span>
+					<span class="status"><i class="ApsIcon I-right"></i></span>
+				</div>
+			</div>
+		</div>
+
+		<div class="list">
+
+			<div class="subject left" onclick="Aps.gui.stretch('#dom');">
+				<b class="essential">元素 Dom</b>
+				<span class="fl-r text-s"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+			<div class="group color-blue" id="dom">
+				
+				<div class="settingList" onclick="Aps.router.open('./pages/index/form.html');">
+					<i class="listIcon ApsIcon I-editor"></i>
+					<span class="title">表单 Form</span>
+					<span class="status"><i class="ApsIcon I-right"></i></span>
+				</div>
+
+				<div class="settingList" onclick="Aps.router.open('./pages/index/container.html');">
+					<i class="listIcon ApsIcon I-article-line"></i>
+					<span class="title">容器 Container</span>
+					<span class="status"><i class="ApsIcon I-right"></i></span>
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="list">
+			<div class="subject left" onclick="Aps.gui.stretch('#canvas');">
+				<b class="essential">画板 Canvas</b>
+				<span class="fl-r text-s"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+			<div class="group color-blue" id="canvas">
+				
+				<div class="settingList" onclick="Aps.router.open('./pages/index/form.html');">
+					<i class="listIcon ApsIcon I-editor"></i>
+					<span class="title">表单 Form</span>
+					<span class="status"><i class="ApsIcon I-right"></i></span>
+				</div>
+
+			</div>
+		</div>
+
+
+	</div>
+
+
+</body>
+<script type="text/javascript" src="../dist/aps.hybrid.js"></script>
+
+<script type="text/javascript">
+	
+	Aps.router.showNav();
+
+
+	var onRefresh = function(){
+		console.log('refreshed.');
+		Aps.router.endPullToRefresh('main');
+	}
+	plus.webview.currentWebview().setPullToRefresh({
+		// style:'circle',
+		support:true,
+		height:'50px',
+		// range:'50px',
+		offset:'50px',
+		contentdown:{
+			caption:'下拉可以刷新'
+		},
+		contentover:{
+			caption:'释放立即刷新'
+		},
+		contentrefresh:{
+			caption:'正在刷新...'
+		}
+	},onRefresh);
+
+</script>
+
+</html>

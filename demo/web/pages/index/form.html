@@ -1,0 +1,131 @@
+		
+	<div class="TOPBAR">
+		<span class="leftBtn" onclick="Aps.router.closeView('{{viewid}}');"><i class="ApsIcon I-close"></i>关闭</span>
+		<div class="title">表单 Form</div>
+	</div>
+
+	<div class="CONTENT -TOPBAR">
+
+		<div class="list">
+
+			<div class="subject left" onclick="Aps.gui.stretch('#input',this);">
+				输入 Input
+				<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+
+			<div class="form group bg-white" id="input">
+
+				<div class="field">
+
+					<label for="textinput">文本输入 Input Text:</label>
+					<input type="text" name="textinput" id="textinput">
+
+				</div>
+
+				<div class="field">
+
+					<label for="telinput">数字输入 Input Tel:</label>
+					<input type="tel" name="telinput" id="telinput">
+
+				</div>
+
+				<div class="field">
+
+					<label for="verifycode">验证码组件 Verify Code Group:</label>
+					<input type="tel" name="verifycode" class="ApsVerifyCode">
+					<button class="ApsRequestCode bg-primary">Request Code</button>
+
+				</div>
+
+				<div class="field">
+
+					<label for="">段落输入 Input Textarea:</label>
+					<label class="intro" for="">儿童芭蕾训练从而最平衡的完善儿童综合素质，并全面立体的提高儿童修养及审美。芭蕾舞本身就涵盖了舞蹈、影视、音乐、诗歌、美术等各门艺术种类。</label>
+					<textarea placeholder="Placeholder"></textarea>
+
+				</div>
+
+			</div>
+
+			<div class="subject left" onclick="Aps.gui.stretch('#select',this);">
+				选择 Select
+				<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+
+			<div class="form group bg-white" id="select">
+
+				<div class="field">
+
+					<label class="block" for="">单选 Input radio:</label>
+					<label for="radioinputa">
+						<input type="radio" name="radioinput" id="radioinputa"> 选项A
+					</label>
+					<label for="radioinputb">
+						<input type="radio" name="radioinput" id="radioinputb"> 选项B
+					</label>
+					<label for="radioinputc">
+						<input type="radio" name="radioinput" id="radioinputc"> 选项C
+					</label>
+
+				</div>
+
+				<div class="field">
+
+					<label class="block" for="">复选 Input checkbox:</label>
+					<label for="checkboxinputa">
+						<input type="checkbox" name="checkboxinput" id="checkboxinputa"> 选项A
+					</label>
+					<label for="checkboxinputb">
+						<input type="checkbox" name="checkboxinput" id="checkboxinputb"> 选项B
+					</label>
+					<label for="checkboxinputc">
+						<input type="checkbox" name="checkboxinput" id="checkboxinputc"> 选项C
+					</label>
+					<label for="checkboxinputd">
+						<input type="checkbox" name="checkboxinput" id="checkboxinputd"> 选项D
+					</label>
+
+				</div>
+
+				<div class="field">
+					
+					<label class="" for="">下拉 Selector</label>
+
+					<select>
+						<option value="" disabled="disabled" selected="selected">点击选择</option>
+						<option value="A">选项 A</option>
+						<option value="B">选项 B</option>
+						<option value="C">选项 C</option>
+						<option value="D">选项 D</option>
+					</select>
+
+				</div>
+
+			</div>
+
+
+			<div class="subject left" onclick="Aps.gui.stretch('#buttons',this);">
+				按钮 Button
+				<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+
+			<div class="form group bg-white" id="buttons">
+
+
+				<div class="field">
+					
+					<button class="fullButton">全屏按钮 FullButton  .fullButton</button>
+					<button class="fullButton line">全屏按钮 FullButton  .fullButton.line</button>
+
+					<button class="fullButton bg-green color-white">.fullButton.bg-green.color-white</button>
+					<button class="fullButton shadow-l bg-white color-primary"><i class="ApsIcon I-upload-radius"></i> .fullButton.shadow</button>
+
+				</div>
+
+			</div>
+
+
+		</div>
+
+
+	</div>

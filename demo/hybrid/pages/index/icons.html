@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html class="pseudo3d">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>APS DEMO</title>
+<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_1057608_xqg2dv96t3i.css">
+<link rel="stylesheet" type="text/css" href="../../../dist/style.css"/>
+
+<script type="text/javascript" src="../../../plugins/mui/mui.cut.js"></script>
+<script type="text/javascript" src="../../../dist/aps.rem.js"></script>
+<script type="text/javascript" src="../../../dist/aps.dict.js"></script>
+<script type="text/javascript" src="../../../dist/aps.js"></script>
+
+<body class="hybridTouch">
+	<div class="TOPBAR">
+		<span class="leftBtn" onclick="Aps.router.close();"><i class="ApsIcon I-close"></i>关闭</span>
+		<div class="title">Aps Icon</div>
+	</div>
+
+	<div class="CONTENT -TOPBAR">
+
+		<div class="list color-primary">
+
+			<div class="subject left" onclick="Aps.gui.stretch('#basicIcons');">
+				基础图标 Basic Icons
+				<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+
+			<div class="group" id="basicIcons">
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-as"></i>
+					<span class="title">框架LOGO</span>
+					<span class="status">I-as</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-home"></i>
+					<span class="title">首页</span>
+					<span class="status">I-home</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-user"></i>
+					<span class="title">用户</span>
+					<span class="status">I-user</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-call"></i>
+					<span class="title">拨号</span>
+					<span class="status">I-call</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-phone"></i>
+					<span class="title">电话</span>
+					<span class="status">I-phone</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-location"></i>
+					<span class="title">定位</span>
+					<span class="status">I-location</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-nav"></i>
+					<span class="title">导航</span>
+					<span class="status">I-nav</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-email"></i>
+					<span class="title">邮件</span>
+					<span class="status">I-email</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-email-open"></i>
+					<span class="title">邮件 打开</span>
+					<span class="status">I-email-open</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-notice"></i>
+					<span class="title">通知</span>
+					<span class="status">I-notice</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-message"></i>
+					<span class="title">消息</span>
+					<span class="status">I-message</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-imessage"></i>
+					<span class="title">短信</span>
+					<span class="status">I-imessage</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-notice"></i>
+					<span class="title">通知</span>
+					<span class="status">I-notice</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-search"></i>
+					<span class="title">搜索</span>
+					<span class="status">I-search</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-checkboxcheck"></i>
+					<span class="title">复选</span>
+					<span class="status">I-checkboxcheck</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-radiocheck"></i>
+					<span class="title">单选</span>
+					<span class="status">I-radiocheck</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-information"></i>
+					<span class="title">信息</span>
+					<span class="status">I-information</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-success"></i>
+					<span class="title">成功</span>
+					<span class="status">I-success</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-warning"></i>
+					<span class="title">警告</span>
+					<span class="status">I-warning</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-error"></i>
+					<span class="title">错误</span>
+					<span class="status">I-error</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-upload-radius"></i>
+					<span class="title">上传</span>
+					<span class="status">I-upload-radius</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-up"></i>
+					<span class="title">上</span>
+					<span class="status">I-up</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-down"></i>
+					<span class="title">下</span>
+					<span class="status">I-down</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-top"></i>
+					<span class="title">上</span>
+					<span class="status">I-top</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-bottom"></i>
+					<span class="title">下</span>
+					<span class="status">I-bottom</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-left"></i>
+					<span class="title">左</span>
+					<span class="status">I-left</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-right"></i>
+					<span class="title">右</span>
+					<span class="status">I-right</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-close"></i>
+					<span class="title">关闭</span>
+					<span class="status">I-close</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-plus"></i>
+					<span class="title">加</span>
+					<span class="status">I-plus</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-category"></i>
+					<span class="title">分类</span>
+					<span class="status">I-category</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-remove"></i>
+					<span class="title">删除</span>
+					<span class="status">I-remove</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-info"></i>
+					<span class="title">提示</span>
+					<span class="status">I-info</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-add"></i>
+					<span class="title">添加</span>
+					<span class="status">I-add</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-download"></i>
+					<span class="title">下载</span>
+					<span class="status">I-download</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-disabled"></i>
+					<span class="title">禁用</span>
+					<span class="status">I-disabled</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-audio-min"></i>
+					<span class="title">音量小</span>
+					<span class="status">I-audio-min</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-audio-mute"></i>
+					<span class="title">静音</span>
+					<span class="status">I-audio-mute</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-volume"></i>
+					<span class="title">调音</span>
+					<span class="status">I-volume</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-audio-max"></i>
+					<span class="title">音量中</span>
+					<span class="status">I-audio-max</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-audio-mid"></i>
+					<span class="title">音量大</span>
+					<span class="status">I-audio-mid</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-load"></i>
+					<span class="title">加载</span>
+					<span class="status">I-load</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-loading"></i>
+					<span class="title">加载中</span>
+					<span class="status">I-loading</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-setting"></i>
+					<span class="title">设置</span>
+					<span class="status">I-setting</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-setting-line"></i>
+					<span class="title">设置</span>
+					<span class="status">I-setting-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-collect"></i>
+					<span class="title">收藏</span>
+					<span class="status">I-collect</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-collect-line"></i>
+					<span class="title">收藏</span>
+					<span class="status">I-collect-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-love"></i>
+					<span class="title">喜欢</span>
+					<span class="status">I-love</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-love-line"></i>
+					<span class="title">喜欢</span>
+					<span class="status">I-love-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-share"></i>
+					<span class="title">分享</span>
+					<span class="status">I-share</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-share-line"></i>
+					<span class="title">分享</span>
+					<span class="status">I-share-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-thumb"></i>
+					<span class="title">点赞</span>
+					<span class="status">I-thumb</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-thumb-line"></i>
+					<span class="title">点赞</span>
+					<span class="status">I-thumb-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-comment"></i>
+					<span class="title">评论</span>
+					<span class="status">I-comment</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-comment-line"></i>
+					<span class="title">评论</span>
+					<span class="status">I-comment-line</span>
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="list color-blue">
+
+			<div class="subject left" onclick="Aps.gui.stretch('#systemIcons');">
+				功能图标 System Icons
+				<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+
+			<div class="group" id="systemIcons">
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-camera"></i>
+					<span class="title">相机</span>
+					<span class="status">I-camera</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-camera-line"></i>
+					<span class="title">相机</span>
+					<span class="status">I-camera-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-photo"></i>
+					<span class="title">相册</span>
+					<span class="status">I-photo</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-photo-line"></i>
+					<span class="title">相册</span>
+					<span class="status">I-photo-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-article"></i>
+					<span class="title">资讯</span>
+					<span class="status">I-article</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-article-line"></i>
+					<span class="title">资讯</span>
+					<span class="status">I-article-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-lock"></i>
+					<span class="title">锁定</span>
+					<span class="status">I-lock</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-lock-line"></i>
+					<span class="title">锁定</span>
+					<span class="status">I-lock-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-earth"></i>
+					<span class="title">地球</span>
+					<span class="status">I-earth</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-earth-line"></i>
+					<span class="title">地球</span>
+					<span class="status">I-earth-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-map"></i>
+					<span class="title">地图</span>
+					<span class="status">I-map</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-map-line"></i>
+					<span class="title">地图</span>
+					<span class="status">I-map-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-qrcode"></i>
+					<span class="title">二维码</span>
+					<span class="status">I-qrcode</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-chart-bar"></i>
+					<span class="title">图表-柱状</span>
+					<span class="status">I-chart-bar</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-chart-pie"></i>
+					<span class="title">图表-饼状</span>
+					<span class="status">I-chart-pie</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-recordfill"></i>
+					<span class="title">录制</span>
+					<span class="status">I-recordfill</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-record"></i>
+					<span class="title">录音</span>
+					<span class="status">I-record</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-musiccircle"></i>
+					<span class="title">音乐</span>
+					<span class="status">I-musiccircle</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-eye"></i>
+					<span class="title">眼睛</span>
+					<span class="status">I-eye</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-play"></i>
+					<span class="title">播放</span>
+					<span class="status">I-play</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-upload-photo"></i>
+					<span class="title">上传图片</span>
+					<span class="status">I-upload-photo</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-rss"></i>
+					<span class="title">RSS</span>
+					<span class="status">I-rss</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-themes"></i>
+					<span class="title">样式</span>
+					<span class="status">I-themes</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-usermenu"></i>
+					<span class="title">用户菜单</span>
+					<span class="status">I-usermenu</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-adduser"></i>
+					<span class="title">添加用户</span>
+					<span class="status">I-adduser</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-edituser"></i>
+					<span class="title">编辑用户</span>
+					<span class="status">I-edituser</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-group"></i>
+					<span class="title">用户组</span>
+					<span class="status">I-group</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-editgroup"></i>
+					<span class="title">用户组</span>
+					<span class="status">I-editgroup</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-bluetooth"></i>
+					<span class="title">蓝牙</span>
+					<span class="status">I-bluetooth</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-list"></i>
+					<span class="title">列表</span>
+					<span class="status">I-list</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-date"></i>
+					<span class="title">日期</span>
+					<span class="status">I-date</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-time"></i>
+					<span class="title">时间</span>
+					<span class="status">I-time</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-clock"></i>
+					<span class="title">计时</span>
+					<span class="status">I-clock</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-duration"></i>
+					<span class="title">间隔</span>
+					<span class="status">I-duration</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-book"></i>
+					<span class="title">预约</span>
+					<span class="status">I-book</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-agenda"></i>
+					<span class="title">日程</span>
+					<span class="status">I-agenda</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-cart"></i>
+					<span class="title">购物车</span>
+					<span class="status">I-cart</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-edit"></i>
+					<span class="title">编辑</span>
+					<span class="status">I-edit</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-editor"></i>
+					<span class="title">撰写</span>
+					<span class="status">I-editor</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-attachment"></i>
+					<span class="title">附件</span>
+					<span class="status">I-attachment</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-scale"></i>
+					<span class="title">缩放</span>
+					<span class="status">I-scale</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-scan"></i>
+					<span class="title">扫一扫</span>
+					<span class="status">I-scan</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-move"></i>
+					<span class="title">移动</span>
+					<span class="status">I-move</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-wifi"></i>
+					<span class="title">WIFI网络</span>
+					<span class="status">I-wifi</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-wifi-error"></i>
+					<span class="title">WIFI故障</span>
+					<span class="status">I-wifi-error</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-upload-line"></i>
+					<span class="title">上传</span>
+					<span class="status">I-upload-line</span>
+				</div>
+			</div>
+
+
+		</div>
+
+		<div class="list ">
+
+			<div class="subject left" onclick="Aps.gui.stretch('#documentIcons');">
+				文件类型 Document Type Icons
+				<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+
+			<div class="group" id="documentIcons">
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-folder color-blue"></i>
+					<span class="title">Folder</span>
+					<span class="status">I-folder</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-video color-blue"></i>
+					<span class="title">Video</span>
+					<span class="status">I-video</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-video-line color-blue"></i>
+					<span class="title">Video</span>
+					<span class="status">I-video-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-music color-blue"></i>
+					<span class="title">Music</span>
+					<span class="status">I-music</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-music-line color-blue"></i>
+					<span class="title">Music</span>
+					<span class="status">I-music-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-word color-blue"></i>
+					<span class="title">Word</span>
+					<span class="status">I-word</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-excel color-green"></i>
+					<span class="title">Excel</span>
+					<span class="status">I-excel</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-ppt color-orange"></i>
+					<span class="title">PPT</span>
+					<span class="status">I-ppt</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-pages color-orange"></i>
+					<span class="title">Pages</span>
+					<span class="status">I-pages</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-numbers color-primary"></i>
+					<span class="title">Numbers</span>
+					<span class="status">I-numbers</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-keynote color-blue"></i>
+					<span class="title">Keynote</span>
+					<span class="status">I-keynote</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-jpg color-blue"></i>
+					<span class="title">jpg</span>
+					<span class="status">I-jpg</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-png color-blue"></i>
+					<span class="title">png</span>
+					<span class="status">I-png</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-gif color-blue"></i>
+					<span class="title">gif</span>
+					<span class="status">I-gif</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-mp4 color-blue"></i>
+					<span class="title">mp4</span>
+					<span class="status">I-mp4</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-audio color-blue"></i>
+					<span class="title">audio</span>
+					<span class="status">I-audio</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-pdf color-blue"></i>
+					<span class="title">pdf</span>
+					<span class="status">I-pdf</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-ps color-blue"></i>
+					<span class="title">ps</span>
+					<span class="status">I-ps</span>
+				</div>
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-ai color-orange"></i>
+					<span class="title">ai</span>
+					<span class="status">I-ai</span>
+				</div>
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-sketch color-orange"></i>
+					<span class="title">sketch</span>
+					<span class="status">I-sketch</span>
+				</div>
+
+			</div>
+		</div>
+
+
+		<div class="list">
+
+			<div class="subject left" onclick="Aps.gui.stretch('#appIcons');">
+				互联网应用 Application Icons
+				<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+
+			<div class="group" id="appIcons">
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-wechat bg-green radio color-white"></i>
+					<span class="title">微信</span>
+					<span class="status">I-wechat</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-wechat-line radio color-green line"></i>
+					<span class="title">微信</span>
+					<span class="status">I-wechat-line line radio color-green</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-weibo radio color-red line"></i>
+					<span class="title">微博</span>
+					<span class="status">I-weibo</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-weibo-line radio bg-red color-white"></i>
+					<span class="title">微博</span>
+					<span class="status">I-weibo-line radio bg-red color-white</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-pengyouquan color-green"></i>
+					<span class="title">朋友圈</span>
+					<span class="status">I-pengyouquan</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-wxpayment color-green"></i>
+					<span class="title">微信支付</span>
+					<span class="status">I-wxpayment</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-qq color-blue"></i>
+					<span class="title">QQ</span>
+					<span class="status">I-qq</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-qq-line color-blue"></i>
+					<span class="title">QQ</span>
+					<span class="status">I-qq-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-alipay color-blue"></i>
+					<span class="title">支付宝</span>
+					<span class="status">I-alipay</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-zhimaxinyong color-primary"></i>
+					<span class="title">芝麻信用</span>
+					<span class="status">I-zhimaxinyong</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-aliyun color-orange"></i>
+					<span class="title">阿里云</span>
+					<span class="status">I-aliyun</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-taobao color-orange"></i>
+					<span class="title">淘宝</span>
+					<span class="status">I-taobao</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-baidu color-blue"></i>
+					<span class="title">百度</span>
+					<span class="status">I-baidu</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-jd color-red"></i>
+					<span class="title">京东</span>
+					<span class="status">I-jd</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-jddog color-red"></i>
+					<span class="title">京东狗</span>
+					<span class="status">I-jddog</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-mi color-orange"></i>
+					<span class="title">小米</span>
+					<span class="status">I-mi</span>
+				</div>
+				
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-meizu color-blue"></i>
+					<span class="title">魅族</span>
+					<span class="status">I-meizu</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-facebook color-blue"></i>
+					<span class="title">Facebook</span>
+					<span class="status">I-facebook</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-ins color-red"></i>
+					<span class="title">Instagram</span>
+					<span class="status">I-ins</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-snapchat bg-yellow color-white"></i>
+					<span class="title">Snapchat</span>
+					<span class="status">I-snapchat</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-Paypal color-blue"></i>
+					<span class="title">Paypal</span>
+					<span class="status">I-Paypal</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-googleplus color-blue"></i>
+					<span class="title">Google+</span>
+					<span class="status">I-googleplus</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-googleplay color-primary"></i>
+					<span class="title">Google Play</span>
+					<span class="status">I-googleplay</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-android color-green"></i>
+					<span class="title">Android</span>
+					<span class="status">I-android</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-apple color-gray"></i>
+					<span class="title">Apple</span>
+					<span class="status">I-apple</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-appstore color-blue"></i>
+					<span class="title">appstore</span>
+					<span class="status">I-appstore</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-appstore-line color-blue"></i>
+					<span class="title">appstore</span>
+					<span class="status">I-appstore-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-safari color-blue"></i>
+					<span class="title">safari</span>
+					<span class="status">I-safari</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-chrome color-blue"></i>
+					<span class="title">Chrome</span>
+					<span class="status">I-chrome</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-ie color-blue"></i>
+					<span class="title">ie</span>
+					<span class="status">I-ie</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-windows color-blue"></i>
+					<span class="title">windows</span>
+					<span class="status">I-windows</span>
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="list">
+
+			<div class="subject left" onclick="Aps.gui.stretch('#otherIcons');">
+				其他 Other Icons
+				<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+
+			<div class="group" id="otherIcons">
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-crown color-orange"></i>
+					<span class="title">王冠</span>
+					<span class="status">I-crown</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-crown-line color-orange"></i>
+					<span class="title">王冠</span>
+					<span class="status">I-crown-line</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-VIP color-orange"></i>
+					<span class="title">VIP</span>
+					<span class="status">I-VIP</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-crown-vip color-orange"></i>
+					<span class="title">VIP</span>
+					<span class="status">I-crown-vip</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-badge color-orange"></i>
+					<span class="title">徽章</span>
+					<span class="status">I-badge</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-checking color-orange"></i>
+					<span class="title">审核中</span>
+					<span class="status">I-checking</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-checkout color-green"></i>
+					<span class="title">审核通过</span>
+					<span class="status">I-checkout</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-rejected color-red"></i>
+					<span class="title">审核被拒绝</span>
+					<span class="status">I-rejected</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-verify color-green"></i>
+					<span class="title">实名认证</span>
+					<span class="status">I-verify</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-realverify color-green"></i>
+					<span class="title">实名认证</span>
+					<span class="status">I-realverify</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-idcard color-blue"></i>
+					<span class="title">身份证</span>
+					<span class="status">I-idcard</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-userinformation color-blue"></i>
+					<span class="title">用户信息</span>
+					<span class="status">I-userinformation</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-config color-blue"></i>
+					<span class="title">系统配置</span>
+					<span class="status">I-config</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-searchcontent color-blue"></i>
+					<span class="title">查找内容</span>
+					<span class="status">I-searchcontent</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-searchuser color-blue"></i>
+					<span class="title">查找用户</span>
+					<span class="status">I-searchuser</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-shake color-blue"></i>
+					<span class="title">震动 摇一摇</span>
+					<span class="status">I-shake</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-card color-orange"></i>
+					<span class="title">银行卡</span>
+					<span class="status">I-card</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-protected color-green"></i>
+					<span class="title">安全</span>
+					<span class="status">I-protected</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-upload-box color-blue"></i>
+					<span class="title">上传</span>
+					<span class="status">I-upload-box</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-produce color-blue"></i>
+					<span class="title">发布</span>
+					<span class="status">I-produce</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-dialog color-blue"></i>
+					<span class="title">对话</span>
+					<span class="status">I-dialog</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-screen color-gray"></i>
+					<span class="title">电脑</span>
+					<span class="status">I-screen</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-notebook color-gray"></i>
+					<span class="title">笔记本</span>
+					<span class="status">I-notebook</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-tablet color-gray"></i>
+					<span class="title">平板</span>
+					<span class="status">I-tablet</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-mobile color-gray"></i>
+					<span class="title">手机</span>
+					<span class="status">I-mobile</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-support color-gray"></i>
+					<span class="title">客服</span>
+					<span class="status">I-support</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-quote-start color-gray"></i>
+					<span class="title">引号前</span>
+					<span class="status">I-quote-start</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-quote-end color-gray"></i>
+					<span class="title">引号后</span>
+					<span class="status">I-quote-end</span>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="list">
+
+			<div class="subject left" onclick="Aps.gui.stretch('#developerIcons');">
+				开发者 Developer Icons
+				<span class="fl-r"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+			</div>
+
+			<div class="group" id="developerIcons">
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-h5 color-orange"></i>
+					<span class="title">HTML5</span>
+					<span class="status">I-h5</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-php color-blue"></i>
+					<span class="title">PHP</span>
+					<span class="status">I-php</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-javascript color-orange"></i>
+					<span class="title">Javascript</span>
+					<span class="status">I-javascript</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-swift color-lightgray"></i>
+					<span class="title">Swift</span>
+					<span class="status">I-swift</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-java color-orange"></i>
+					<span class="title">Java</span>
+					<span class="status">I-java</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-database color-blue"></i>
+					<span class="title">数据库</span>
+					<span class="status">I-database</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-newdatabase color-blue"></i>
+					<span class="title">新建数据</span>
+					<span class="status">I-newdatabase</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-freshdatabase color-blue"></i>
+					<span class="title">刷新数据</span>
+					<span class="status">I-freshdatabase</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-deletedatabase color-blue"></i>
+					<span class="title">删除数据</span>
+					<span class="status">I-deletedatabase</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-cleardatabase color-blue"></i>
+					<span class="title">清空数据</span>
+					<span class="status">I-cleardatabase</span>
+				</div>
+
+				<div class="settingList">
+					<i class="listIcon ApsIcon I-modules color-orange"></i>
+					<span class="title">模块</span>
+					<span class="status">I-modules</span>
+				</div>
+			</div>
+
+		</div>
+
+
+
+	</div>
+
+
+
+</body>
+<script type="text/javascript" src="../../../dist/aps.hybrid.js"></script>
+
+</html>

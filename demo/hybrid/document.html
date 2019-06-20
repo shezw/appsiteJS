@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>APS DEMO</title>
+<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_1057608_xqg2dv96t3i.css">
+<link rel="stylesheet" type="text/css" href="../dist/style.css"/>
+
+<script type="text/javascript" src="../plugins/mui/mui.cut.js"></script>
+<script type="text/javascript" src="../dist/aps.rem.js"></script>
+<script type="text/javascript" src="../dist/aps.dict.js"></script>
+<script type="text/javascript" src="../dist/aps.js"></script>
+</head>
+
+<body class="hybridTouch wx" id="VIEW">
+
+		<div class="CONTENT -TOPBAR -BOTTOMBAR">
+			<div class="list">
+
+				<div class="group" id="introduce">
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/document/introduce.html'},{});">
+						<i class="listIcon ApsIcon I-as color-primary"></i>
+						<span class="title">框架介绍 Framework Introduce</span>
+						<span class="status"><i class="ApsIcon I-right"></i></span>
+					</div>
+				</div>
+				<div class="subject left">
+					核心组件 Core Components
+					<span class="fl-r" onclick="Aps.gui.stretch('#core',this);"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+				</div>
+				<div class="group color-orange" id="core">
+					
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/document/aps.fn.html'},{});">
+						<i class="listIcon ApsIcon I-as"></i>
+						<span class="title">引擎 Engine</span>
+						<span class="status">Aps.fn ()<i class="ApsIcon I-right"></i></span>
+					</div>
+					
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/document/aps.listener.html'},{});">
+						<i class="listIcon ApsIcon I-eye"></i>
+						<span class="title">观察器 Listener</span>
+						<span class="status">Aps._listen ()<i class="ApsIcon I-right"></i></span>
+					</div>
+
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/document/aps.dom.html'},{});">
+						<i class="listIcon ApsIcon I-modules color-red"></i>
+						<span class="title color-red">虚拟元素 VDom</span>
+						<span class="status">Aps.dom {}<i class="ApsIcon I-right"></i></span>
+					</div>
+
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/document/aps.local.html'},{});">
+						<i class="listIcon ApsIcon I-as"></i>
+						<span class="title">本地存储 Localstorage Adv.</span>
+						<span class="status">Aps.local {}<i class="ApsIcon I-right"></i></span>
+					</div>
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/document/aps.cache.html'},{});">
+						<i class="listIcon ApsIcon I-as"></i>
+						<span class="title">数据缓存 Data Cache</span>
+						<span class="status">Aps.cache {}<i class="ApsIcon I-right"></i></span>
+					</div>
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/document/aps.cajax.html'},{});">
+						<i class="listIcon ApsIcon I-as"></i>
+						<span class="title">缓存异步请求 Cache AJAX</span>
+						<span class="status">Aps.cajax {}<i class="ApsIcon I-right"></i></span>
+					</div>
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/document/aps.query.html'},{});">
+						<i class="listIcon ApsIcon I-as"></i>
+						<span class="title">链接参数处理 Link Query</span>
+						<span class="status">Aps.query {}<i class="ApsIcon I-right"></i></span>
+					</div>
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/document/aps.setting.html'},{});">
+						<i class="listIcon ApsIcon I-as"></i>
+						<span class="title">设置和属性 Env Settings</span>
+						<span class="status">Aps.setting {}<i class="ApsIcon I-right"></i></span>
+					</div>
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/document/aps.mixer.html'},{});">
+						<i class="listIcon ApsIcon I-as"></i>
+						<span class="title">页面混合器 HTML Mixer</span>
+						<span class="status">Aps.mixer {}<i class="ApsIcon I-right"></i></span>
+					</div>
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/document/aps.gui.html'},{});">
+						<i class="listIcon ApsIcon I-as"></i>
+						<span class="title">界面交互 Gui</span>
+						<span class="status">Aps.gui {}<i class="ApsIcon I-right"></i></span>
+					</div>
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/document/aps.router.html'},{});">
+						<i class="listIcon ApsIcon I-as"></i>
+						<span class="title">路由控制 Router</span>
+						<span class="status">Aps.router {}<i class="ApsIcon I-right"></i></span>
+					</div>
+
+				</div>
+
+
+				<div class="subject left">
+					模板组件 Module Components
+					<span class="fl-r" onclick="Aps.gui.stretch('#module',this);"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+				</div>
+				<div class="group color-blue" id="module">
+
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/document/apsMd.core.html'},{});">
+						<i class="listIcon ApsIcon I-modules color-primary"></i>
+						<span class="title">核心模板 Core Module</span>
+						<span class="status">ApsMd.core {}<i class="ApsIcon I-right"></i></span>
+					</div>
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/document/apsMd.list.html'},{});">
+						<i class="listIcon ApsIcon I-list color-primary"></i>
+						<span class="title">列表模板 List Module</span>
+						<span class="status">ApsMd.list {}<i class="ApsIcon I-right"></i></span>
+					</div>
+					<div class="settingList" onclick="Aps.router.view({url:'./pages/document/apsMd.list.html'},{});">
+						<i class="listIcon ApsIcon I-article color-primary"></i>
+						<span class="title">页面模板 Page Module</span>
+						<span class="status">ApsMd.page {}<i class="ApsIcon I-right"></i></span>
+					</div>
+
+				</div>
+
+
+				<div class="subject left">
+					扩展组件 Dom
+					<span class="fl-r" onclick="Aps.gui.stretch('#dom',this);"><span>收起</span> <i class="ApsIcon I-top"></i></span>
+				</div>
+				<div class="group color-blue" id="dom">
+					
+					<div class="settingList" onclick="Aps.router.view({url:'./form.html'},{});">
+						<i class="listIcon ApsIcon I-editor"></i>
+						<span class="title">表单 Form</span>
+						<span class="status"><i class="ApsIcon I-right"></i></span>
+					</div>
+
+				</div>
+
+			</div>
+
+
+		</div>
+
+
+</body>
+
+<script type="text/javascript" src="../dist/aps.hybrid.js"></script>
+
+<script type="text/javascript">
+	Aps.router.setNav('文档 Documents');
+	Aps.router.showNav();
+</script>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>APS DEMO</title>
+<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_1057608_xqg2dv96t3i.css">
+<link rel="stylesheet" type="text/css" href="../dist/style.css"/>
+
+<script type="text/javascript" src="../dist/aps.rem.js"></script>
+<script type="text/javascript" src="../dist/aps.dict.js"></script>
+<script type="text/javascript" src="../dist/aps.js"></script>
+<script type="text/javascript" src="../plugins/qrcode/qrcode.js"></script>
+</head>
+
+<body class="hybridTouch" id="VIEW">
+
+</body>
+
+
+<script type="text/javascript">
+
+function plusReady(){
+		
+	var view = plus.webview.currentWebview();
+	console.log(view);
+	var main = plus.webview.create('home.html','main',{bottom:'0px',bounceBackground:'#f9f9f9',zindex:10});
+	var tab  = plus.webview.create('tab.html','tab',{bottom:'0px',height:3.5*rem+'px',zindex:100,background:'transparent'});
+	var nav  = plus.webview.create('nav.html','nav',{top:'0px',height:4*rem+'px',zindex:100,background:'transparent'});
+
+	main.setStyle({bounce:'vertical'})
+
+	view.append(main);
+	view.append(tab);
+	view.append(nav);
+
+	nav.hide();
+
+}
+
+
+// plus.nativeUI.toast('下拉可以刷新');
+
+</script>
+<script type="text/javascript" src="../dist/aps.hybrid.js"></script>
+
+</html>

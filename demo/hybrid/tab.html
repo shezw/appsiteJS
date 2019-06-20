@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html class="pseudo3d">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>APS DEMO</title>
+<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_1057608_xqg2dv96t3i.css">
+<link rel="stylesheet" type="text/css" href="../dist/style.css"/>
+<style>
+	html{ background: transparent;}
+	body{ background: transparent;}
+	/*.BOTTOMBAR{ background: transparent;}*/
+</style>
+
+<script type="text/javascript" src="../dist/aps.rem.js"></script>
+<script type="text/javascript" src="../dist/aps.dict.js"></script>
+<script type="text/javascript" src="../dist/aps.js"></script>
+
+</head>
+
+<body class="hybridTouch" id="VIEW">
+	<div class="BOTTOMBAR">
+		<div class="tabs current w-4" page="./home.html">
+			<i class="ApsIcon I-home"></i>
+			<h5 class="title">首页</h5>
+		</div>
+		<div class="tabs w-4" page="./document.html">
+			<i class="ApsIcon I-article"></i>
+			<h5 class="title">文档</h5>
+		</div>
+		<div class="tabs w-4" page="./discover.html">
+			<i class="ApsIcon I-collect"></i>
+			<h5 class="title">发现</h5>
+		</div>
+		<div class="tabs w-4" page="./category.html">
+			<i class="ApsIcon I-chart-pie"></i>
+			<h5 class="title">分类</h5>
+		</div>
+		<div class="tabs w-4" page="./user.html">
+			<i class="ApsIcon I-user"></i>
+			<h5 class="title">个人</h5>
+			<span class="noticePoint">3</span>
+		</div>
+	</div>
+
+</body>
+
+<script type="text/javascript">
+
+function plusReady(){
+
+	VL('.tabs').on('click',function(vd) {
+		VL('.tabs').removeClass('current');
+		vd.addClass('current');
+		Aps.router.switch(vd.attr('page'));
+	})
+
+}
+
+</script>
+<script type="text/javascript" src="../dist/aps.hybrid.js"></script>
+
+</html>
