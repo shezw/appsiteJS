@@ -216,8 +216,8 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 
 			if ( needLogin ) {
 				if( !Aps.user.forcedLogin() ) return;
-				this.addParams('userid', Aps.user.userid );
-				this.addParams('token', Aps.user.token );
+				this.addHeaders('userid', Aps.user.userid );
+				this.addHeaders('token', Aps.user.token );
 			}
 			if ( update ) {
 				this.setUpdate();
