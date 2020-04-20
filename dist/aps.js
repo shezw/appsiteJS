@@ -32,7 +32,6 @@ if(!CONFIGS){var CONFIGS = {}};
 /* 核心组件(必要) */
 window.vdom = window.VD = function( selector,hash ){ return selector ? Aps.dom.get(selector,hash) : this; };
 window.vlist= window.VL = function( selector,hash ){ return selector ? Aps.dom.list(selector,hash) : this; };
-// window.vnew = window.VN = function( type,id,classes,attrs ){ return type ? Aps.dom.create(type,id,classes,attrs) : this; }; 
 window.i18n  = function( code , params ){ return params ? (ApsMd.locale[Aps.setting.language][code](params)||code) : (ApsMd.locale[Aps.setting.language][code]||code); }
 
 Aps.fn = function(obj) { // ! 内核组件  # core factory 
@@ -108,6 +107,10 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 		setErrorCall: function(errorCall) {
 			this.options.errorCall = errorCall;
 		},
+		/* 设置回调参数 */
+		setTransfer: function(transfers) {
+			this.options.transfer = transfers;
+		},
 		/* 设置配置 */
 		setOptions: function(key, value) {
 			this.options[key] = value;
@@ -147,7 +150,7 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 			}
 		},
 
-		post:function( api, call, params, option ){
+		post:function( api, call, params, option, transfer ){
 
 			var expire    = option ? (option.expire    || 3600 ) : 3600 ;
 			var needLogin = option ? (option.needLogin || 0    ) : 0    ;
@@ -172,21 +175,12 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 				this.addHeaders('userid', Aps.user.userid );
 				this.addHeaders('token', Aps.user.token );
 			}
-			if ( update ) {
-				this.setUpdate();
-			}
-			if (gajax) {
-				this.setOptions('gajax',1);
-			}
-			if ( collect ) {
-				this.setOptions('collect',collect);
-			}
-			if ( url ) {
-				this.setOptions('url',url);
-			}
-			if ( errorCall ) {
-				this.setErrorCall(errorCall);
-			}
+			if ( url ){ this.setOptions('url',url); }
+			if ( gajax ){ this.setOptions('gajax',1); }
+			if ( update ){ this.setUpdate(); }
+			if ( collect ){ this.setOptions('collect',collect); }
+			if ( transfer ){ this.setTransfer(transfer); }
+			if ( errorCall ){ this.setErrorCall(errorCall); }
 
 			this.setOptions('requesttype','POST');
 			this.setExpire(expire);
@@ -376,7 +370,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			}
 		},
 		value:function(v){
-			var staticDom = " SELECT OPTION INPUT RADIO CHECKBOX".indexOf(this.el.tagName)<=0;
+			var staticDom = " SELECT OPTION INPUT RADIO CHECKBOX TEXTAREA".indexOf(this.el.tagName)<=0;
 			if (v){ this.el[staticDom?'innerHTML':'value']=v; }
 			return v? this : this.el[staticDom?'innerHTML':'value'];
 		},
@@ -465,6 +459,14 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 					}
 				}
 			},
+			/**
+			 * [_start 触控事件开始]
+			 * @Author   Sprite                   hello@shezw.com http://donsee.cn
+			 * @DateTime 2019-10-04T14:39:44+0800
+			 * @version  1.0
+			 * @param    {vdom}                 vd              [虚拟dom]
+			 * @param    {event}                 e               [事件]
+			 */
 			_start:function(vd,e){
 				vd.tData.X_ = e.touches[0].clientX; 
 				vd.tData.Y_ = e.touches[0].clientY; 
@@ -474,6 +476,14 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 				// if(vd.tCalls.start){  }
 				// console.log('Touch start.',vd.tData.X_,vd.tData.Y_,vd.tData.T_);
 			},
+			/**
+			 * [_move 移动中]
+			 * @Author   Sprite                   hello@shezw.com http://donsee.cn
+			 * @DateTime 2019-10-04T14:41:23+0800
+			 * @version  1.0
+			 * @param    {vdom}                 vd              [虚拟dom]
+			 * @param    {event}                 e               [事件]
+			 */
 			_move:function(vd,e){
 				vd.tData._x  = vd.tData.x; 
 				vd.tData._y  = vd.tData.y;
@@ -1235,7 +1245,7 @@ Aps.setting    = Aps.fn({ // ! 设置和属性
 	visited:     Aps.local.get('visited')  || 0 ,
 	version:     Aps.local.get('version')  || 0 ,
 	device:      Aps.local.get('device')   || 'html5',
-	language:    Aps.local.get('language') || (typeof(plus)!='undefined'?(({'zh-Hans-CN':'ZHCN','zh-Hant-CN':'ZHCN'})[plus.os.language]||'EN'):'EN'),
+	language:    Aps.local.get('language') || (typeof(plus)!='undefined'?(({'zh-Hans-CN':'ZHCN','zh-Hant-CN':'ZHCN'})[plus.os.language]||'EN'):'ZHCN'),
 	broswer:     '',
 	frontEnv:    /mobile/i.test(location.href) ? 'mobile' : 'web',
 	isMobile     :/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent),
@@ -1689,7 +1699,14 @@ Aps.gui        = { // ! 界面交互  # basic gui
 	},
 	animateOn:CONFIGS.animatecss||1,
 	toucheEvt:0,
-
+	/**
+	 * [smoothing 为元素添加滑动触控]
+	 * @Author   Sprite                   hello@shezw.com http://donsee.cn
+	 * @DateTime 2019-10-04T14:54:24+0800
+	 * @version  [version]
+	 * @param    {vdom}                 vd              [元素]
+	 * @param    {string:mixed}         options         [配置]
+	 */
 	smoothing:function(vd,options,calls){
 
 		if(vd._vlist){ // vdom list
@@ -1844,7 +1861,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		if (!vdom('.ApsToast')) {
 			var msg = VD(ApsMd.core.toast);
 			vdom('html','HTML').append(msg);
-			vdom('.ApsToast').find( '.ApsToast-message' ).html( Aps.gui.icon[status||'loading'] + (title ||'提交中...') );
+			vdom('.ApsToast').find( '.ApsToast-message' ).html( Aps.gui.icon[status||'loading'] + (title ||i18n('SUBMITING')) );
 		}
 		if (!vdom('.progress')) {
 			vdom('.ApsToast').append("<div class='progress'><div class='progressBar bg-primary'></div></div>");
@@ -2744,7 +2761,7 @@ Aps.scrollView = Aps.fn({ // 滚动视图  # scrollView
 
 		var update   = update   || 0;
 		var silence  = silence  || 0;
-		var list     = VD(selector+'.current');
+		var list     = VD(selector+'.current') || VD(selector);
 
 		list.removeAttr('inited');
 
@@ -2770,29 +2787,30 @@ Aps.scrollView = Aps.fn({ // 滚动视图  # scrollView
 
 	},
 
-	init:function(selector){
+	init:function(selector,container){
+
+		var windowMode = container ? 0 :1;
 
 		Aps.scrollView.refresh(selector);
 
+		var container= VD(container || window);
 		var selector = selector || '.ApsScrollView';
 		if(!VD(selector)) return;
 
 		var list = VD(selector+'.current') || VD(selector);
-		var doc  = document.documentElement;
+		var containerH = windowMode ? container.el.innerHeight : container.el.offsetHeight;
 
-		var windowHeight = window.innerHeight;
+		container.el.onscroll = null;
+		container.el.onscroll = function(){
 
-		window.onscroll = null;
-		window.onscroll = function(){
+			var scrollTop = windowMode ? container.el.scrollY : container.el.scrollTop;
 
-			var scrollTop = window.scrollY;
-
-			if( Aps.scrollView.isLoading() || scrollTop<Aps.scrollView.last || list.hasClass('loaded')){ 
+			if( Aps.scrollView.isLoading(selector) || scrollTop<Aps.scrollView.last || list.hasClass('loaded')){ 
 				Aps.scrollView.last = scrollTop;
 				return;
 			};
 
-			if(scrollTop+windowHeight+10 >= document.documentElement.scrollHeight && scrollTop > 50){
+			if(scrollTop+containerH+10 >= document.documentElement.scrollHeight && scrollTop > 25){
 				Aps.scrollView.startLoading(selector);
 				Aps.scrollView.next(selector);
 			}
@@ -2842,11 +2860,12 @@ Aps.checker    = { // 检查器   # core
 
 			Aps.user.setProperty('userid'      , Aps.query.get('userid') );
 			Aps.user.setProperty('token'       , Aps.query.get('token')  );
+			Aps.user.setProperty('scope'       , Aps.query.get('scope')  );
 			Aps.user.setProperty('tokenexpire' , Aps.query.get('expire') );
 
 			Aps.user.init();
 
-			Aps.query.remove(['userid','token','expire']);
+			Aps.query.remove(['userid','token','expire','scope']);
 
 			Aps.router.open(location.origin+location.pathname+Aps.query.toString(),'new');
 
@@ -3026,16 +3045,24 @@ Aps.counter    = { // 计数器   # counter
 		
 	},
 
+	calculate:function(){
+
+		if(!vdom('#price')||!vdom('#total')) return;
+
+		vdom('#total').value(this.current*parseInt(vdom('#price').value()));
+
+	},
+
 	countdown:function(id,count){ // 进行倒计时
 
 		var txt = VD('#'+id).value();
 
-		VD('#'+id).addClass('waited').attr('disabled','disabled');
+		VD('#'+id).addClass('waited').disable();
 		var i = count;
 		var timer = setInterval(function(){
 			if(i== 0){
 				clearInterval(timer);
-				vd('#'+id).removeClass('waited').removeAttr('disabled').value(txt);
+				vd('#'+id).removeClass('waited').enable().value(txt);
 
 			}else{
 				vd('#'+id).value(i);
@@ -3043,7 +3070,61 @@ Aps.counter    = { // 计数器   # counter
 			}
 		},1000);
 
-	}, 
+	},
+
+	countRemaining:function(counterSelector,timeMarker,doneCall){
+
+		var counterSelector = counterSelector || '.remaining';
+		var timeMarker = timeMarker || 'endtime';
+
+		if(Aps.counter.isCountRemaining){
+			clearInterval(Aps.counter.remainingTimer);
+		}
+
+		Aps.counter.isCountRemaining = 1;
+		Aps.counter.remainingTimer = setInterval(function(){
+
+			vlist(counterSelector).list.forEach(function(vd){
+				
+				var duration = parseInt(vd.attr(timeMarker))-parseInt((new Date()).getTime()/1000);
+
+				if (duration>0) {
+					vd.text(Aps.counter.durationToString(duration,1));
+				}else{
+					vd.text('已结束');
+					if (typeof doneCall=='function'){
+						doneCall();
+					}
+				}
+
+			});
+		},1000);
+	},
+
+
+	durationToString:function(duration,fullTime){
+		// 1544842150
+		if (duration<=0) {
+			return '0秒';
+		}else if(duration>31536000){
+			return '超过1年';
+		}
+
+		var y = Math.floor(duration / 31536000);
+		duration -= y * 3600*24*365;
+		var d = Math.floor(duration / 86400);
+		duration -= d * 3600*24;
+		var h = Math.floor(duration / 3600);
+		if(d>0 && !fullTime) return (d?d+"天":'')+(h?h+"小时":'');
+		duration -= h * 3600;
+		var m = Math.floor(duration / 60);
+		duration -= m * 60;
+		var s = Math.floor(duration);
+		// duration -= s ;
+
+		return (y?y+"年":'')+(d?d+"天":'')+(h?h+"小时":'')+(m?m+"分":'')+(s?s+"秒":'');
+
+	}
 };
 Aps.converter  = { // 转换器   # conver status code to description 
 
@@ -3225,6 +3306,29 @@ Aps.former     = Aps.fn({ // ? 表单
 
 		return vdom[fieldid];
 	},
+
+	watch:function(vlist){
+
+		var list = typeof vlist == 'object' ? vlist : VL(vlist);
+		Aps.former.tmp = {};
+
+		list.list.forEach(function(vd){
+
+			Aps.former.tmp[vd.attr('fieldname')] = Aps.former.getFieldValue(vd);
+			vd.removeClass('valid');
+
+			vd.on('change',function(vd,e){
+				console.log(vd);
+				if( Aps.former.tmp[vd.attr('fieldname')] == Aps.former.getFieldValue(vd) ){
+					vd.removeClass('valid');
+				}else{
+					vd.addClass('valid');
+				}
+			});
+
+		});
+	},
+
 	generateNotice :function(notice){         // 生成提示 
 
 		var type = notice.type;
@@ -3252,47 +3356,40 @@ Aps.former     = Aps.fn({ // ? 表单
 		return ok==len ? this.form : 0;
 
 	},
-	checkField     :function(field,passRequire){          // 检查字段 
-		
-		// console.log(field);
-		var passRequire  = passRequire || 0;
-		var require      = field.hasClass('require') && field.hasClass('valid');
+
+	getFieldValue:function(field){
+
 		var type         = field.attr('fieldtype');
 		var	name         = field.attr('fieldname');
-		var	formname     = field.attr('form');
-		var checktype    = field.attr('checktype') || 0;
-		var label        = field.find('label');
-		var length       = parseInt(field.attr('length'));
-		var placeholder  = field.find('.mainfield').attr('placeholder') ;
-
-		var valid        = field.hasClass('valid') ? true : false;
 
 		switch (type){
 			case 'input':
 			case 'select':
+			case 'textarea':
 			var value = field.find('.mainfield').value();
 			break;
+
 			case 'radio':
 			var value = field.find('input:checked')?field.find('input:checked').value():'';
 			break;
+
 			case 'checkbox':
 				if(field.finds('input:checked')){
-					var v = [];
+					let v = [];
 					field.finds('input:checked').each(function(target){
 						v.push(target.value());
 					});
-					value = v;
 					// value = JSON.stringify(v);
+					value = v;
 				}else{
 					value = '';
 				}
 			break;
+
 			case 'text':
-			var value = field.find('span').text();
+			var value = field.find('span.mainfield').text();
 			break;
-			case 'textarea':
-			var value = field.find('textarea').el.value;
-			break;
+
 			case 'summernote':
 			var value = field.find('.note-editable.panel-body').html();
 			break;
@@ -3301,12 +3398,26 @@ Aps.former     = Aps.fn({ // ? 表单
 			var value = parseFloat(field.find('.mainfield').value());
 			break;
 		}
+		return value;
+	},
 
-		// if (typeof(value)!=='string') {
-		// 	var value = '';
-		// }
+	checkField     :function(field,passRequire){          // 检查字段 
+		
+		var passRequire  = passRequire || 0;
+		var required     = field.hasClass('require') && field.hasClass('valid');
+		var type         = field.attr('fieldtype');
+		var	name         = field.attr('fieldname');
+		var	formname     = field.attr('form');
+		var checktype    = field.attr('checktype') || 0;
+		var label        = field.find('label');
+		var length       = parseInt(field.attr('length'));
+		var placeholder  = field.find('.mainfield').attr('placeholder') || '' ;
 
-		if (!passRequire && require && (!value || value == '' || value== ' ')) {
+		var valid        = field.hasClass('valid') ? true : false;
+
+		var value = Aps.former.getFieldValue(field);
+
+		if (!passRequire && required && (( value!==0 && !value ) || value == '' || value== ' ')) {
 
 			Aps.gui.alert(
 				i18n('WRONG_INPUT'),
@@ -3469,6 +3580,7 @@ Aps.user       = Aps.fn({ // ! 用户对象
 	userid:       Aps.local.get('userid') ,
 	openid:       Aps.local.get('openid') ,
 	token:        Aps.local.get('token')  ,
+	scope:        Aps.local.get('scope')  ,
 	avatar:       Aps.local.get('avatar')  ,
 	nickname:     Aps.local.get('nickname')  ,
 	tokenexpire:  parseInt(Aps.local.get('tokenexpire')) ,
@@ -3485,6 +3597,7 @@ Aps.user       = Aps.fn({ // ! 用户对象
 		this.userid       = Aps.local.get('userid') ;
 		this.openid       = Aps.local.get('openid') ;
 		this.token        = Aps.local.get('token')  ;
+		this.scope        = Aps.local.get('scope')  ;
 		this.tokenexpire  = parseInt(Aps.local.get('tokenexpire'));
 
 	},
@@ -3638,11 +3751,13 @@ Aps.user       = Aps.fn({ // ! 用户对象
 			var params = {
 				'userid':data.content.userid,
 				'token' :data.content.token,
+				'scope' :data.content.scope,
 				'expire':data.content.expire,
 			};
 
 			Aps.user.setProperty('userid',params.userid);
 			Aps.user.setProperty('token',params.token);
+			Aps.user.setProperty('scope',params.scope);
 			Aps.user.setProperty('tokenexpire',params.expire);
 
 			Aps.user.refresh();
@@ -3762,11 +3877,11 @@ Aps.user       = Aps.fn({ // ! 用户对象
 	updateInfoCall:function(data){
 
 		if (!Aps.cajax.successful(data)){
-			if (data.status==9999) { Aps.user.quickLogin(); }else{ Aps.gui.toast(data.message||'Network Error!',data.status?'success':'warning'); }
+			Aps.gui.toast(data.message||'Network Error!',data.status?'success':'warning'); 
 			return;
 		}else{
 			Aps.gui.toast(data.message||'Saved!','success');
-			Aps.metting.request('my',"Aps.user.personalCenter(1);");
+			// Aps.metting.request('my',"Aps.user.personalCenter(1);");
 		}
 
 		// Aps.queue.in(Aps.user.personalInfo(1));
@@ -3933,6 +4048,7 @@ Aps.user       = Aps.fn({ // ! 用户对象
 			var params = {
 				'userid':data.userid || data.id,
 				'token':data.token   || data.token,
+				'scope':data.scope   || data.scope,
 				'expire':data.expire || data.expire,
 			};
 
@@ -3940,6 +4056,7 @@ Aps.user       = Aps.fn({ // ! 用户对象
 
 			Aps.user.setProperty('userid',params.userid);
 			Aps.user.setProperty('token',params.token);
+			Aps.user.setProperty('scope',params.scope);
 			Aps.user.setProperty('tokenexpire',params.expire);
 
 			if(VD('.ApsLogin')){ // Not Quick Login process
@@ -4076,41 +4193,21 @@ Aps.promotion  = Aps.fn({ // ? 推广中心
 
 Aps.order      = Aps.fn({ // ? 订单  
 
-	newOrder:function(itemId,itemType,callback){
+	newOrder:function(orderInfo,callback){
 
-		var preorder  = Aps.local.once('preorder');
+		this.resetOptions();
 
-		var orderInfo = preorder || {itemId:itemId,itemType:itemType}||0;
-		Aps.local.set('orderInfo',orderInfo);
+		var orderInfo =  orderInfo || {itemid:itemid,itemtype:itemtype};
 
-		this.setParams({
-			'itemId':itemId,
-			'itemType':itemType,
-		});
-
-		Aps.local.set('orderInfo',{
-			'itemId':itemId,
-			'itemType':itemType,
-		});
-
-		if ( typeof registid == 'string') {
-
-			this.options.parameters.parameters.registid = registid;
-
-		}
+		this.setParams(orderInfo);
 
 		if (Aps.promotion.check()) {
 
-			this.options.parameters.parameters.promoterid = Aps.promotion.promoterid;
+			this.addParams('promoterid',Aps.promotion.promoterid);
 		
 		}
 
-		this.setAction('');
-		this.setUpdate();
-		this.setCallback();
-		this.setExpire(1);
-		Aps.cajax.request(this.options);
-		this.post('newOrder',(callback ||Aps.pay.wxJsApiPay),{id:id,type:type},{expire:1});
+		this.post('newOrder',(callback ||Aps.pay.wxJsApiPay),this.options.parameters.parameters,{expire:1,needLogin:1});
 
 	},
 });
@@ -4160,39 +4257,27 @@ Aps.pay        = Aps.fn({ // ? 支付
 
 		if (Aps.cajax.successful(data)) {
 
-			this.resetOptions();
-			this.setParams({
+			Aps.pay.resetOptions();
+			Aps.pay.setParams({
 				'orderid':data.content,
 				'openid':Aps.user.openid,
 			});
-			this.setAction('wxJsapiPay');
-			this.setCallback( this.wxJsApiPayCall );
-			this.setExpire(3);
+			Aps.pay.setAction('wxJsapiPay');
+			Aps.pay.setCallback( Aps.pay.wxJsApiPayCall );
+			Aps.pay.setExpire(3);
 
-			Aps.cajax.request(this.options);
-
-		}else if(data.status==520){
-
-			Aps.gui.toast(Aps.cajax.getMessage(data));
-
-			setTimeout(function(){	
-
-				if ( Aps.pay.orderInfo.itemType = 'event' ) { // 如果是公开课报名页面
-
-					Aps.router.back(-1);
-				
-				}else{
-
-					Aps.router.reload(); 
-
-				}
-
-			},2500);
+			Aps.cajax.request(Aps.pay.options);
 
 		}else{
 
-			Aps.user.quickLogin('.app');
+			// Aps.user.quickLogin('.app');
 			Aps.gui.toast(Aps.cajax.getMessage(data));
+
+			if(data.status==9999){
+				Aps.gui.confirm('登录失效','是否重新登录',{onOk:function(){
+					Aps.user.wechatLogin();
+				}});
+			}
 
 		}
 	},
@@ -4216,64 +4301,31 @@ Aps.pay        = Aps.fn({ // ? 支付
 				},
 				function(res){
 
-				Aps.debugger.add('微信返回消息');
+					if(res.err_msg == "get_brand_wcpay_request:ok" ){ // 支付成功
 
-					 if(res.err_msg == "get_brand_wcpay_request:ok" ){ // 支付成功
-
-						Aps.gui.toast('支付成功');
-
-						Aps.debugger.add('支付成功');
-
-						setTimeout(function(){
-
-							if (  Aps.pay.orderInfo.itemType = 'event') { // 如果是公开课报名页面
-
-								Aps.router.back(-1);
-							
-							}else if(  Aps.pay.orderInfo.itemType = 'vippackage' ){ // 购买会员
-
-								Aps.router.open('myVip.html','new');
-
-							}else{
-
-								Aps.router.reload(); 
-
+						Aps.gui.confirm('支付成功','是否跳转到订单页',{
+							onOk:function(){
+								Aps.router.open(CONFIGS.paySuccessPage || '../../../myOrder/');
+							},
+							onCancel:function(){
+								Aps.router.reload();
 							}
+						});
 
-						},2500);
+					}else{
 
-					 }else{
-
-						Aps.debugger.add('支付取消');
+						// console.log('支付取消');
 
 						// 支付失败 或 取消支付
 						// 关闭支付窗口
-						Aps.gui.alert('支付失败','请重新支付或查看其他课程.');
+						Aps.gui.alert('支付失败','请重新支付.');
 
 						VD('button').removeAttr("disabled");;
 					 
-					 }
+					}
 
 				}
 			);
-
-		}else if(data.status==520){
-
-			Aps.gui.toast(Aps.cajax.getMessage(data));
-
-			setTimeout(function(){	
-
-				if ( Aps.query.currentPage()=='eventRegist.html' ) { // 如果是公开课报名页面
-
-					Aps.router.back(-1);
-				
-				}else{
-
-					Aps.router.reload(); 
-
-				}
-			  
-			},2500);
 
 		}else{
 
@@ -4301,10 +4353,30 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 		<div onclick=\"Aps.uploader.removeFile({{idx}},'videos');\" class='uploaderControl remove'><i class='ApsIcon Aps-close'></i> 删除</div>\
 		</div>\
 		",		
+	optionsMd:"\
+		<div class='banners swipe-slide uploaderOptions uploaderOptions_{{idx}}'>\
+		<p>{{title}}</p>\
+		<div onclick=\"Aps.uploader.upFile({{idx}},'options');\" class='uploaderControl up'><i class='ApsIcon Aps-up'></i> 上移</div>\
+		<div onclick=\"Aps.uploader.downFile({{idx}},'options');\" class='uploaderControl down'><i class='ApsIcon Aps-down'></i> 下移</div>\
+		<div onclick=\"Aps.uploader.removeFile({{idx}},'options');\" class='uploaderControl remove'><i class='ApsIcon Aps-close'></i> 删除</div>\
+		</div>\
+	",		
+	textsMd:"\
+		<div class='banners swipe-slide uploaderOptions uploaderOptions_{{idx}}'>\
+		<p>{{v}}</p>\
+		<div onclick=\"Aps.uploader.upFile({{idx}},'options');\" class='uploaderControl up'><i class='ApsIcon Aps-up'></i> 上移</div>\
+		<div onclick=\"Aps.uploader.downFile({{idx}},'options');\" class='uploaderControl down'><i class='ApsIcon Aps-down'></i> 下移</div>\
+		<div onclick=\"Aps.uploader.removeFile({{idx}},'options');\" class='uploaderControl remove'><i class='ApsIcon Aps-close'></i> 删除</div>\
+		</div>\
+	",	
 	gallery:[],
 	galleryList:[],
 	videos:[],
 	videosList:[],
+	options:[],
+	optionsList:[],
+	texts:[],
+	textsList:[],
 
 	types:{
 
@@ -4363,6 +4435,21 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 	},
 
+	optionsUploaded:function(data){
+
+		Aps.uploader.options = Aps.uploader.options || [];
+		Aps.uploader.options.push({
+			title:data.title,
+		});
+
+		var optionsList = vdom('#options').value();
+		optionsList = optionsList ? JSON.parse(optionsList) : [];
+		Aps.uploader.optionsList.push({title:data.title,score:0,selected:0});
+
+		Aps.uploader.refreshOptionsPreview();
+
+	},
+
 	videosUploaded:function(data,params){
 
 		Aps.uploader.videos = Aps.uploader.videos || [];
@@ -4394,6 +4481,25 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 	},
 
+	optionsInit:function(selector){
+
+		var selector = selector || '#options';
+		var options = vdom(selector).value() ? JSON.parse(vdom(selector).value()) : 0;
+		if(!options){return;}
+		Aps.uploader.optionsList = options;
+		Aps.uploader.options = [];
+
+		if (options){
+			console.log(options);
+			for (var i = 0; i < options.length; i++) {
+				Aps.uploader.options.push({title:options[i].title,score:options[i].score,selected:options[i].selected});
+			}
+		}
+
+		Aps.uploader.refreshOptionsPreview();
+
+	},
+
 	videosInit:function(){
 
 		var videos = vdom('#videos') ? JSON.parse(vdom('#videos').value()) : 0;
@@ -4419,6 +4525,15 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 		vdom('#gallery').value(JSON.stringify(Aps.uploader.galleryList));
 	},
 
+	refreshOptionsPreview:function(clear){
+		vdom('#optionsList').empty();
+		vdom('#options').el.value= '';
+		if (clear) { return; }
+		var list = Aps.mixer.loop(Aps.uploader.optionsMd,Aps.uploader.options);
+		vdom('#optionsList').html(list);
+		vdom('#options').value(JSON.stringify(Aps.uploader.optionsList));
+	},
+
 	refreshVideosPreview:function(clear){
 		vdom('#videosList').empty();
 		vdom('#videos').el.value= '';
@@ -4442,9 +4557,16 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 		Aps.uploader[type+'List'][idx-1] = Aps.uploader[type+'List'][idx];
 		Aps.uploader[type+'List'][idx] = beforeL;
 
-		type=='gallery' 
-			? Aps.uploader.refreshGalleryPreview()
-			: Aps.uploader.refreshVideosPreview();
+		switch(type){
+			case 'gallery':
+			Aps.uploader.refreshGalleryPreview();
+			break;
+			case 'videos':
+			Aps.uploader.refreshVideosPreview();
+			break;
+			case 'options':
+			Aps.uploader.refreshOptionsPreview();
+		};
 	},
 
 	downFile:function(idx,type){
@@ -4461,10 +4583,16 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 		Aps.uploader[type+'List'][idx+1] = Aps.uploader[type+'List'][idx];
 		Aps.uploader[type+'List'][idx] = afterL;
 
-
-		type=='gallery' 
-			? Aps.uploader.refreshGalleryPreview()
-			: Aps.uploader.refreshVideosPreview();
+		switch(type){
+			case 'gallery':
+			Aps.uploader.refreshGalleryPreview();
+			break;
+			case 'videos':
+			Aps.uploader.refreshVideosPreview();
+			break;
+			case 'options':
+			Aps.uploader.refreshOptionsPreview();
+		};
 	},
 
 	removeFile:function(idx,type){
@@ -4490,10 +4618,16 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 		Aps.uploader[type]     = g;
 		Aps.uploader[type+'List'] = gl;
 
-		type=='gallery' 
-			? Aps.uploader.refreshGalleryPreview()
-			: Aps.uploader.refreshVideosPreview();
-
+		switch(type){
+			case 'gallery':
+			Aps.uploader.refreshGalleryPreview();
+			break;
+			case 'videos':
+			Aps.uploader.refreshVideosPreview();
+			break;
+			case 'options':
+			Aps.uploader.refreshOptionsPreview();
+		};
 	},
 
 	/**
@@ -4717,59 +4851,64 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 	}, 
 
 	initSummernoteUploader:function(selector){
-		 
-		var summerNoteImageBtn = function(){
+		
+		var uploadConfigs = {
+			uploadImage:{
+				id:'summerNoteImageBtn',
+				type:'image',
+				mime: { title : "image",    extensions : "jpg,gif,png,bmp,jpeg" },
+				limit: '10mb',
+			},
+			uploadAudio:{
+				id:'summerNoteAudioBtn',
+				type:'audio',
+				mime: { title : "audio",    extensions : "mp3,ogg,wav" },
+				limit: '100mb',
+			},
+			uploadVideo:{
+				id:'summerNoteVideoBtn',
+				type:'video',
+				mime: { title : "video",    extensions : "mp4,mov,mpg" },
+				limit: '500mb',
+			}
+		};
+
+		var init = function(){
 
 			jQuery('.note-toolbar.panel-heading .note-insert button').each(function(){
 
-				if (jQuery(this).attr('data-event') == 'uploadImage') {
+				var target = jQuery(this).attr('data-event');
 
-					jQuery(this).attr('id','summerNoteImageBtn');
+				if (target == 'uploadImage' || target == 'uploadAudio' || target == 'uploadVideo' ) {
+				
+					jQuery(this).attr('id',uploadConfigs[target].id);
+
+					generateSummerNoteUploader(uploadConfigs[target]);
+
 				}
 			});
-		};
+		}
 
-		var summerNoteUploader = Aps.uploader.init('summerNote',{
-			selector:'summerNoteImageBtn',
-			container:'summerNote',
-			type:'image',
-			multi:true,
-			fileList:'.note-toolbar',
-			PostInit:function(uploader){
-				document.getElementById('summerNoteImageBtn').onclick = function() {
-					OSS.set_upload_param(uploader, '', false);
-					return false;
-				};
-			},
-
-
-		});
-
-		var summerNoteUploader = function(){
+		function generateSummerNoteUploader(config){
 			
 			var uploader = new plupload.Uploader({
 				runtimes :            'html5,flash,silverlight,html4',          // 上传环境
-				browse_button :       'summerNoteImageBtn',                     // 上传按钮id
+				browse_button :        config.id,                     // 上传按钮id
 				container :            document.getElementById('summerNote'),   // 上传容器
 				multi_selection :      true,                                    // 是否支持批量上传
 				unique_names :         true,                                    // 是否自动生成唯一文件名
 				url :  Aps.uploader.mode =='oss' ? CONFIGS.apihost : APILIST.getApiUrl('uploadServer'), // 上传地址
 
 				filters: {
-				  mime_types : [ // 支持的文件类型
-				  { title : "image",    extensions : "jpg,gif,png,bmp,jpeg" }, 
-				  // { title : "video",    extensions : "mp4,mov,mpg" },
-				  // { title : "audio",    extensions : "mp3,ogg,wav" },
-				  // { title : "document", extensions : "pdf,pptx,xlsx,numbers,key,pages,docx,doc,xls" },
-				  ],
-				  max_file_size : '10mb', //最大只能上传10mb的文件
+				  mime_types : [ config.mime ],
+				  max_file_size : config.limit, //最大只能上传10mb的文件
 				  prevent_duplicates : false, //不允许选取重复文件
 				},
 
 				init: {
 				  PostInit: function() {   // 
 					  // document.getElementById('ossfile_1').innerHTML = '';
-					  document.getElementById('summerNoteImageBtn').onclick = function() {
+					  document.getElementById(config.id).onclick = function() {
 						  OSS.set_upload_param(uploader, '', false);
 						  return false;
 					  };
@@ -4777,7 +4916,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 				  FilesAdded: function(up, files) {  // 添加文件
 					  plupload.each(files, function(file) {
-							jQuery('#summerNoteImageBtn').parent().parent().append('<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ')<b></b>'
+							jQuery('#'+config.id).parent().parent().append('<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ')<b></b>'
 						  +'<div class="progress"><div class="progress-bar" style="width: 0%"></div></div>'
 						  +'</div>');
 					  });
@@ -4808,7 +4947,21 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 							var Editor = jQuery.summernote.eventHandler.modules.editor;
 							var editable = jQuery('.note-editable.panel-body');
 
-							Editor.insertImage(editable, res.content.url+'!middle', res.content.name);
+							if(config.type=='image'){
+
+								Editor.insertImage(editable, res.content.url+((res.content.name.indexOf('.gif')>-1)?'':'!middle'), res.content.name);
+
+							}else if( config.type=='audio'){
+
+								var htmlString = '<div class=uploadMedia><audio data-filename="'+res.content.url+'"  src="'+res.content.url+'" controls="controls">您的浏览器不支持 audio 标签。</audio></div>';
+								Editor.pasteHTML(editable, htmlString, res.content.name );
+
+							}else if( config.type=='video'){
+
+								var htmlString = '<div class=uploadMedia><video data-filename="'+res.content.url+'"  src="'+res.content.url+'" controls="controls">您的浏览器不支持 video 标签。</video></div>';
+								Editor.pasteHTML(editable, htmlString, res.content.name);
+
+							}
 
 							jQuery('#'+file.id).remove();
 							// var d = document.getElementById(file.id);
@@ -4847,12 +5000,16 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 				clearInterval( checkSummernote );
 
-				summerNoteImageBtn();
-				summerNoteUploader();
+				init();
+				// summerNoteImageBtn();
+				// summerNoteUploader();
 
-			} }, 100);
+			} 
+		}, 100);
+
 
 	},
+
 });
 Aps.jssdk      = Aps.fn({ // ? 微信jssdk  
 
@@ -4860,7 +5017,7 @@ Aps.jssdk      = Aps.fn({ // ? 微信jssdk
 		'onWXDeviceBluetoothStateChange', 'onWXDeviceStateChange',
 		'openProductSpecificView', 'addCard', 'chooseCard', 'openCard',
 		'translateVoice', 'getNetworkType', 'openLocation', 'getLocation',
-		'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone',
+		'updateTimelineShareData', 'updateAppMessageShareData', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone',
 		'chooseImage', 'previewImage', 'uploadImage', 'downloadImage', 'closeWindow', 'scanQRCode', 'chooseWXPay',
 		'hideOptionMenu', 'showOptionMenu', 'hideMenuItems', 'showMenuItems', 'hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem',
 		'startScanWXDevice', 'stopScanWXDevice', 'onWXDeviceBindStateChange', 'onScanWXDeviceResult', 'onReceiveDataFromWXDevice',
@@ -4898,7 +5055,7 @@ Aps.jssdk      = Aps.fn({ // ? 微信jssdk
 
 	share:function(data,status){
 
-		var conf = Aps.jssdk.getConf(data,['onMenuShareAppMessage','onMenuShareTimeline']);
+		var conf = Aps.jssdk.getConf(data,['updateAppMessageShareData','updateTimelineShareData']);
 
 		wx.config(conf);
 
@@ -4934,10 +5091,6 @@ Aps.share      = Aps.fn({ // ? 分享( 二维码分享需要jQ Qrcode )  #share
 			desc:description||CONFIGS.slogan,
 			link:link,
 			imgUrl:image,
-			appName:CONFIGS.appname, 
-			wxAppid:CONFIGS.wxappid, 
-			imageWidth:250,
-			imageHeight:250,
 		});
 
 		return this.options.parameters.parameters;
@@ -4956,7 +5109,12 @@ Aps.share      = Aps.fn({ // ? 分享( 二维码分享需要jQ Qrcode )  #share
 			Aps.query.set('promoterid',Aps.user.userid);
 			Aps.query.set('promoteduration',7*24*3600);
 
-			return (location.origin+location.pathname+Aps.query.toString()).replace('/web/','/mobile/');
+			var url = (location.origin+location.pathname+Aps.query.toString()).replace('/web/','/mobile/');
+
+			Aps.query.remove('promoterid');
+			Aps.query.remove('promoteduration');
+
+			return url;
 
 		}else{
 			return location.href;
@@ -4971,23 +5129,43 @@ Aps.share      = Aps.fn({ // ? 分享( 二维码分享需要jQ Qrcode )  #share
 
 	},
 
-	propShare:function(url){
+	qrShare:function(title,url){
 
 		var url = url || Aps.share.generateLink(); 
 
-		VD('body').append(VD('<div></div>').attr('id','postContainer').css({'width':0,'height':0,'overflow':'hidden'}));
-		VD('#postContainer').append(
-			VD('<div></div>').attr('id','post').addClass('content post')
-			.append(VD('.swiperContainer').HTML())
-			.append(VD('.pageInfo').HTML())
-			.append(Aps.share.generateQrcode(url))
-		);
+		Aps.gui.propup(title||'长按保存二维码分享',Aps.share.generateQrcode(url));
 
-		html2canvas(document.getElementById('post'),{scale:1,useCORS:true,}).then(function(canvas){
-			VD('#postContainer').remove();
+	},
+
+	propShare:function(url,post){
+
+		var url = url || Aps.share.generateLink(); 
+
+		if( typeof post == 'undefined' ){
+			var post = VD('#postContainer') || VD('<div></div>').attr('id','postContainer').hide();		
+			VD('.app').append(post);
+			post.append(
+				VD('<div></div>').attr('id','post').addClass('content post')
+				.append(VD('.swiperContainer').HTML())
+				.append(VD('.pageInfo').HTML())
+				.append(Aps.share.generateQrcode(url))
+			);
+		}else{
+			var qrcodeImage =  post.find('.qrcode') || post.find('.qrcodeImage');
+			qrcodeImage.html(Aps.share.generateQrcode(url));
+		}
+
+		VD('.ApsPropupContent p').html('<div class="c-align"><i class="ApsIcon color-blue I-loading rotation"></i>正在生成海报</div>');
+		post.show();
+
+		html2canvas(post.el,{scale:2,useCORS:true,}).then(function(canvas){
 			var data = canvas.toDataURL("image/jpg"); var img = new Image();
 			img.src = data;
+			// img.className = 'post';
+			VD('.ApsPropupContent').addClass('postShare');
 			VD('.ApsPropupContent p').html(img);
+			post.hide();
+// 			VD('#postContainer').remove();
 		});
 	} 
 });
@@ -5038,18 +5216,20 @@ Aps.player     = Aps.fn({ // ? 播放器 基于mediaelement
 	}, });
 Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk  
 
-	center:[110.3411189,20.03997361],
-	resizeEnable:true,
-	zoom:14,
-	list:[],
-	current:{},
-	marks:[],
-	map:0,
+	options:{
+		center:[110.3411189,20.03997361],
+		resizeEnable:true,
+		zoom:[5-20],
+		pitch: 60, // 角度
+		viewMode: '3D', // 3d模式
+		mapStyle: 'amap://styles/dark', //主题
+		expandZoomRange: true, // 开启放大缩小
+	},
 
 	init:function(containerId,options){
 
 		var containerId = containerId || 'MAP';
-		var options = options || { resizeEnable:this.resizeEnable,center:this.center,zoom:this.zoom };
+		var options = options || this.options;
 		this.map = new AMap.Map(containerId,options);    
 		this.clear();  // 清除地图覆盖物
 
@@ -5104,7 +5284,7 @@ Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk
 
 		Aps.gui.globalLoad.start();
 		// console.log(data);
-		var list = data.data ? data.data.list : data;
+		var list = data.list ? data.content.list : data;
 
 		Aps.map.clear();  // 清除地图覆盖物
 
@@ -5193,7 +5373,7 @@ Aps.swip       = Aps.fn({ // ! 滑动列表
 
 		selector:'#swiperContainer',
 		pagination:'.swiper-pagination',
-		autoplay:3500,
+		// autoplay:3500,
 		speed:500,
 
 	},
@@ -5306,7 +5486,7 @@ Aps.searchbar  = Aps.fn({ // ! 搜索条
 		this.setAction(Aps.filters.action);
 		this.setParams({keyword:vdom('.ApsSearchBar .ApsSearchInput').value(),page:1,size:25});
 		if (this.needLogin){
-			this.addHeaders({'userid':Aps.user.userid,'token':Aps.user.token});
+			this.addHeaders({'userid':Aps.user.userid,'token':Aps.user.token,'scope':Aps.user.scope});
 		}
 		this.setCallback(this.searchCall);
 		this.setExpire(30);
@@ -5438,31 +5618,12 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 		if(list && list.length>0){
 
 			for (var i in list ) {
-				
-				if (type=='account') {
-					list[i].color       = Aps.converter.exchange('categoryColor',list[i].category.title);
-					list[i].icon        = Aps.converter.exchange('categoryIcon',list[i].category.title);
-					list[i].description = list[i].description;
-					list[i].name        = list[i].name ? ENCRYPT.middle(list[i].name) : '';
-					list[i].remark1     = list[i].attachments[0]?list[i].attachments[0].value:0;
-					list[i].remark2     = list[i].attachments[1]?list[i].attachments[1].value:0;
-				}
-				if (type=='category') {
-					list[i].color       = Aps.converter.exchange('categoryColor',list[i].title);
-					list[i].icon        = Aps.converter.exchange('categoryIcon',list[i].title);
-					list[i].name        = Aps.converter.exchange('categoryName',list[i].title);
-				}
-
-				// if (ACCOUNT.safeMode) {
-				// 	list[i].description = list[i].description?ENCRYPT.middle(list[i].description):'';
-				// }
-
-				list[i]['_'+list[i]['title']] = 1;
-				VD(Aps.mixer.mix( ApsMd.list[type][mode] ,list[i]),'list'+type+list[i].id);
+				var idx = (page-1)*(size) + i ;
+				VD(Aps.mixer.mix( ApsMd.list[type][mode] ,list[i]),'list'+idx);
 
 				animate 
-				? setTimeout(animateIn,(animate.delay||50)*i,type+list[i].id,animate.animate)
-				: CONTAINER.append(vdom['list'+type+list[i].id]);
+				? setTimeout(animateIn,(animate.delay||50)*i,idx,animate.animate)
+				: CONTAINER.append(vdom['list'+idx]);
 				
 			}
 
@@ -5475,16 +5636,15 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 
 		}
 
-		Aps.switcher.clear();
 		if (typeof callback=='string') {
 			callback();
 		}
-
-
 	},
+
 	searchCall:function( data ){
 		Aps.contents.listCall( data,'search','general',0,'No result',0 ); 
 	},
+	
 	detailCall:function( data, type, callback ){
 
 		if (!Aps.cajax.successful(data)){ 
@@ -5521,6 +5681,7 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 				if( !Aps.user.forcedLogin() ) return;
 				this.addHeaders('userid', Aps.user.userid );
 				this.addHeaders('token', Aps.user.token );
+				this.addHeaders('scope', Aps.user.scope );
 			}
 
 			this.setCallback(call);
@@ -5556,20 +5717,27 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 
 		var txt      = txt || '收藏';
 		var btn      = VD('#'+type+'Btn');
-		var typecode = parseInt(btn.attr('typecode'));
-		var object_id= parseInt(btn.attr('object_id'));
-		var status   = data.code ? 1 : 0;
-		var icon     = btn.children('i');
-		var text     = btn.children('span');
+		var itemtype = btn.attr('itemtype');
+		var itemid   = btn.attr('itemid');
+		var status   = data.content ? 1 : 0;
+		var icon     = btn.find('i');
+		var text     = btn.find('span');
+		var isCollected = icon.hasClass('enabled');
 
-		btn.attr('onclick',"Aps.contents."+type+"(this,"+typecode+","+object_id+");");
+		btn.attr('onclick',"Aps.contents."+type+"(this,'"+itemtype+"','"+itemid+"');");
 
-		!status
-		? icon.removeClass('icon-collect-line').addClass('icon-collect') 
+		status && !isCollected
+		? icon.removeClass('I-collect-line').addClass('I-collect color-primary enabled') 
 			&& text.text('已'+txt) 
-		: icon.removeClass('icon-collect').addClass('icon-collect-line') 
+		: icon.removeClass('I-collect color-primary enabled').addClass('I-collect-line') 
 			&& text.text(''+txt+'') 
 		;
+	},
+
+	collectCheck:function( data ){
+
+		Aps.contents.checkCall( data,'collect','收藏' );
+
 	},
 
 	apiTest:function(api,params,login,update,serverUrl){
@@ -5604,11 +5772,11 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 		if(!Aps.user.forcedLogin()) return;
 		var mode = mode || 'collect';
 		var type = type || 'venue';
-		var typecode = type=='active'?1:2;
+		// var itemtype = type=='active'?1:2;
 		var id   = id   || 1;
 
-		VD('#'+mode+'Btn').attr('typecode',typecode).attr('object_id',id);
-		this.post(mode+'Check',Aps.contents[mode+'Check'],{object_id:id,type:typecode,member_id:Aps.user.userid},{update:1});
+		VD('#'+mode+'Btn').attr('itemtype',type).attr('itemid',id);
+		this.post(mode+'Check',Aps.contents[mode+'Check'],{itemid:id,itemtype:type,userid:Aps.user.userid},{update:1,needLogin:1});
 
 	},
 
@@ -5625,6 +5793,15 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 		}
 
 	},
+
+	share:function(itemtype,itemid){
+
+		if(!Aps.user.forcedLogin()) return;
+
+		this.resetOptions();
+
+		this.post('itemShare',0,{itemtype:itemtype,itemid:itemid},{update:1,needLogin:1});
+	}
 
 });
 

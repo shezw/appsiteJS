@@ -119,17 +119,15 @@ var OSS = {
         }
     },
 
-    set_upload_param:function(up, filename, ret ,type )
+    set_upload_param:function(up, filename, ret )
     {
         if (ret == false)
         {
-            ret = OSS.get_signature(type)
+            ret = OSS.get_signature(up.settings.filters.mime_types[0].title);
         }
         OSS.g_object_name = OSS.key;
         if (filename != '') { 
             var suffix = OSS.get_suffix(filename);
-            console.log(suffix);
-            console.log(filename);
             OSS.calculate_object_name(filename);
         }
         var new_multipart_params = {
@@ -146,7 +144,7 @@ var OSS = {
             'url': OSS.host,
             'multipart_params': new_multipart_params,
         });
-        console.log(up);
+        // console.log(up);
 
         up.start();
     },
