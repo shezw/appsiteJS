@@ -32,7 +32,6 @@ if(!CONFIGS){var CONFIGS = {}};
 /* 核心组件(必要) */
 window.vdom = window.VD = function( selector,hash ){ return selector ? Aps.dom.get(selector,hash) : this; };
 window.vlist= window.VL = function( selector,hash ){ return selector ? Aps.dom.list(selector,hash) : this; };
-window.i18n  = function( code , params ){ return params ? (ApsMd.locale[Aps.setting.language][code](params)||code) : (ApsMd.locale[Aps.setting.language][code]||code); }
 
 Aps.fn = function(obj) { // ! 内核组件  # core factory 
 	var fn = {
@@ -89,7 +88,7 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 		},
 		/* 设置参数 */
 		setParams: function(params) {
-			this.options.parameters.parameters = params;
+			this.options.parameters = params;
 		},
 		/* 设置头信息 */
 		setHeaders: function(headers){
@@ -118,15 +117,15 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 		/* 添加参数 */
 		addParams: function(key, value) {
 			if (typeof key == 'object') {
-				for( let k in key){ this.options.parameters.parameters[k] = key[k]; }
+				for( var k in key){ this.options.parameters[k] = key[k]; }
 			}else{
-				this.options.parameters.parameters[key] = value;
+				this.options.parameters[key] = value;
 			}
 		},
 		/* 添加头部 */
 		addHeaders: function(key, value) {
 			if (typeof key == 'object') {
-				for( let k in key){ this.options.headers[k] = key[k]; }
+				for( var k in key){ this.options.headers[k] = key[k]; }
 			}else{
 				this.options.headers[key] = value;
 			}
@@ -143,9 +142,11 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 		},
 		/* 设置事件 */
 		setAction: function(action) {
-			if (CONFIGS.apimode == 'RESTFUL') {
+			if (CONFIGS.apimode === 'RESTFUL') {
 				this.setUrl(APILIST.getApiUrl(action));
-			} else {
+			}else if( CONFIGS.apimode === 'ASAPI'){
+				this.setUrl( CONFIGS.apihost + action );
+			}else {
 				this.options.parameters.action = action;
 			}
 		},
@@ -170,11 +171,12 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 				var callback  = call || null;
 			}
 
-			if ( needLogin ) {
-				if( !Aps.user.forcedLogin() ) return;
-				this.addHeaders('userid', Aps.user.userid );
-				this.addHeaders('token', Aps.user.token );
-			}
+			if( needLogin && !Aps.user.forcedLogin() ){ return;}
+			this.addHeaders('userid', Aps.user.userid );
+			this.addHeaders('token', Aps.user.token );
+			this.addHeaders('scope', Aps.user.scope );
+			this.addHeaders('i18n', Aps.setting.language );
+
 			if ( url ){ this.setOptions('url',url); }
 			if ( gajax ){ this.setOptions('gajax',1); }
 			if ( update ){ this.setUpdate(); }
@@ -186,7 +188,6 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 			this.setExpire(expire);
 			this.setCallback(callback);
 
-			this.addHeaders('language', Aps.setting.language );
 			Aps.cajax.request(this.options);
 
 		},
@@ -208,11 +209,12 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 				var callback  = call || null;
 			}
 
-			if ( needLogin ) {
-				if( !Aps.user.forcedLogin() ) return;
-				this.addHeaders('userid', Aps.user.userid );
-				this.addHeaders('token', Aps.user.token );
-			}
+			if( needLogin && !Aps.user.forcedLogin() ){ return;}
+			this.addHeaders('userid', Aps.user.userid );
+			this.addHeaders('token', Aps.user.token );
+			this.addHeaders('scope', Aps.user.scope );
+			this.addHeaders('i18n', Aps.setting.language );
+
 			if ( update ) {
 				this.setUpdate();
 			}
@@ -224,7 +226,6 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 			this.setExpire(expire);
 			this.setCallback(callback);
 			this.setErrorCall(errorCall||0);
-			this.addHeaders('language', Aps.setting.language );
 			Aps.cajax.request(this.options);
 
 		},
@@ -392,7 +393,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			return this;
 		},
 		fadeOut:function(call){
-			let self = this;
+			var self = this;
 			this.animate(ApsMd.animate.fadeOut,300,function(){ self.remove();if(typeof call=='function'){call();} });
 			return this;
 		},
@@ -584,7 +585,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			};
 			vd.tCalls = vd.tCalls || {};
 			vd.tCalls[eventname] = vd.tCalls[eventname] || [];
-			if(listeningIndex(vd.tCalls[eventname],call)==-1){ vd.tCalls[eventname].push(call); }
+			if(listeningIndex(vd.tCalls[eventname],call)===-1){ vd.tCalls[eventname].push(call); }
 
 			this.on('touchstart',vd.tData._start);
 			this.on('touchmove',vd.tData._move);
@@ -593,7 +594,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			return this;
 		},
 		offTouch:function(eventname,call){
-			var listeningIndex = function(list,cal){ if(list==false){ return -1;} for(var k in list){if(cal==list[k]){return k;}} return -1; };
+			var listeningIndex = function(list,cal){ if(list===false){ return -1;} for(var k in list){if(cal===list[k]){return k;}} return -1; };
 			var vd   = this;
 			if(!eventname && !call){ 
 				this.off('touchstart',vd.tData._start);
@@ -740,8 +741,8 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			if(typeof keys=='string'){ keys = [keys];}
 
 			for( var k in keys){
-				let key = keys[k];
-				let v = self[key];
+				var key = keys[k];
+				var v = self[key];
 				Object.defineProperty(self,key,{
 					enumerable: true,
 					configurable: false,
@@ -855,7 +856,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 		var name = hash.indexOf('.')<0 && hash.indexOf('#')<0 ? '.'+hash : hash;
 		var toCss = function(list){
 			var css = "";
-			for( let k in list){
+			for( var k in list){
 				// css += k+'{' + list[k] + "} \n";
 				css += k+' ' + list[k] + " \n";
 			}
@@ -1091,7 +1092,7 @@ Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & for
 		_.open(opts.requesttype,opts.url,!opts.useSync);
 
 		if(opts.headers){ for(var k in opts.headers){ _.setRequestHeader(k,opts.headers[k]); } }
-		if(opts.requesttype=='POST'){ _.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); } /* Set Content-Type by POST */
+		if(opts.requesttype==='POST'){ _.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); } /* Set Content-Type by POST */
 
 		_.withCredentials = true;
 		_.timeout = opts.timeout || 2000;
@@ -1104,9 +1105,9 @@ Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & for
 		/* XMLHttpRequestResponseType */ // "", "arraybuffer", "blob", "document", "json", "text"
 		_.onreadystatechange = function(){
 			if( _.readyState === 4 ){
-				if(_.status==200){
+				if(_.status===200){
 					var CTYPE = _.responseType || _.getResponseHeader('Content-Type') ;
-					if(typeof opts.callback == 'function') opts.callback(CTYPE=='json'||CTYPE.indexOf('json')>-1?JSON.parse(_.responseText):_.responseText);
+					if(typeof opts.callback == 'function') opts.callback(CTYPE==='json'||CTYPE.indexOf('json')>-1?JSON.parse(_.responseText):_.responseText);
 					// console.log('Network Success. Server Code:',_.status);
 				}else{
 					// if(typeof opts.errorCall== 'function'){ opts.errorCall(_.status); }
@@ -1132,7 +1133,7 @@ Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & for
 	},
 	/* 是否成功 */
 	successful: function(d) {
-		return d.status == 0 || d.code == 200;
+		return d.status === 0 || d.code === 200;
 	},
 	/* 请求数据 */
 	request: function(options) {
@@ -1165,7 +1166,7 @@ Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & for
 		if ( Aps.cache.has(cacheid) && !update && !gajax ) {
 			if (typeof callback == 'function') {
 				var data = Aps.cache.get(cacheid);
-				if (typeof(data.status) !== 'undefined' || data.code == '200') { callback(Aps.cache.get(cacheid), '200'); }
+				if (typeof(data.status) !== 'undefined' || data.code === '200') { callback(Aps.cache.get(cacheid), '200'); }
 				else { options.update = 1; Aps.cajax.request(options); }
 			}
 		} else {
@@ -1236,6 +1237,25 @@ Aps.query = { // ! 对于浏览器头的携带信息进行管理  # simply
 	isPage: function(page) {
 		return location.pathname == CONFIGS.frontPath + page;
 	},
+	redirect:function( link ){
+		Aps.router.switch(link||location.href);
+	},
+	toFilters:function(data){
+		this.set(data);
+		this.redirect();
+	},
+	addFilter:function(key,value){
+		this.set(key,value);
+		this.redirect();
+	},
+	clearFilter:function(){
+		this.clear();
+		this.redirect();
+	},
+	removeFilter:function(keyOrKeylist){
+		this.remove(keyOrKeylist);
+		this.redirect();
+	}
 };
 
 /* 交互组件 */
@@ -1245,7 +1265,7 @@ Aps.setting    = Aps.fn({ // ! 设置和属性
 	visited:     Aps.local.get('visited')  || 0 ,
 	version:     Aps.local.get('version')  || 0 ,
 	device:      Aps.local.get('device')   || 'html5',
-	language:    Aps.local.get('language') || (typeof(plus)!='undefined'?(({'zh-Hans-CN':'ZHCN','zh-Hant-CN':'ZHCN'})[plus.os.language]||'EN'):'ZHCN'),
+	language:    Aps.local.get('language') || 'en-WW',
 	broswer:     '',
 	frontEnv:    /mobile/i.test(location.href) ? 'mobile' : 'web',
 	isMobile     :/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent),
@@ -1259,7 +1279,10 @@ Aps.setting    = Aps.fn({ // ! 设置和属性
 			Aps.cache.clear();
 			Aps.local.set('update',CONFIGS.version);
 		}
-	}, 
+	},
+	currentLanguage:function(){
+		return this.language || 'zh-CN';
+	},
 	setLanguage: function(lang){
 		this.setProperty('language',lang);
 	},
@@ -1282,6 +1305,9 @@ Aps.setting    = Aps.fn({ // ! 设置和属性
 		}
 	},
 });
+
+window.i18n  = function( code , params ){ return params ? (ApsMd.locale[Aps.setting.language][code](params)||code) : (ApsMd.locale[Aps.setting.language][code]||code); }
+
 Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core 
 
 	// 混合
@@ -1872,7 +1898,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		vlist( '.ApsToast' ).remove();
 		var msg = VD(ApsMd.core.toast);
 		vdom('html','HTML').append(msg);
-		msg.find( '.ApsToast-message' ).html( Aps.gui.icon[status||'success'] + (title || i18n(status=='success'?'SUBMIT_SUC':'SUBMIT_FAL')) );
+		msg.find( '.ApsToast-message' ).html( Aps.gui.icon[status||'success'] + (title || i18n(status==='success'?'SUBMIT_SUC':'SUBMIT_FAL')) );
 		setTimeout(function(){
 			// Aps.gui.animateOn
 			// ? msg.animateCss('fadeOutUp faster',function(){ msg.remove(); })
@@ -2156,7 +2182,7 @@ Aps.router     = Aps.fn({ // ! 路由控制  # router
 
 		var _response = function(message){
 
-			if(message.data=='ok'){
+			if(message.data==='ok'){
 				clearInterval(_link);
 				_linkDone();
 			}
@@ -2221,7 +2247,7 @@ Aps.queue      = { // ? 队列(同步阻塞/异步非阻塞) # queue(B/NB)  默�
 		this.list.splice(1);
 	},
 	run:function(){
-		if(this.list.length==0) return;
+		if(this.list.length===0) return;
 		this.params = this.list[0](this.params) || 0;
 	},
 	next:function(){
@@ -2363,7 +2389,56 @@ Aps.filters    = { // 请求过滤器
 
 		this.options = {};
 
-	}, 
+	},
+
+	initQueryFilter:function(selector){
+		var selector = selector || '.filterController';
+		VL(selector).each(function(singleController){
+			var filterKey = singleController.attr('filterkey');
+			var filterValue = singleController.attr('filtervalue');
+
+			var selectionMode = singleController.find('select') ? true : false;
+
+			if (selectionMode){
+
+				var selection = singleController.find('select');
+
+				if( filterValue ){
+					selection.value(filterValue);
+				}
+				selection.on('change',function(){
+
+					var currentValue = singleController.find('select').value();
+					if( !currentValue ){
+						Aps.query.removeFilter(filterKey);
+					}else{
+						Aps.query.addFilter(filterKey,currentValue);
+					}
+
+				});
+
+			}else{
+
+				singleController.finds('.filterButton').each(function(filterButton){
+
+					var currentValue = filterButton.attr('filtervalue');
+					if( currentValue == filterValue ){
+						filterButton.addClass('active');
+					}
+
+					filterButton.on('click',function(){
+						if(!currentValue){
+							Aps.query.removeFilter(filterKey);
+						}else{
+							Aps.query.addFilter(filterKey,currentValue);
+						}
+					});
+				});
+			}
+
+		});
+	}
+
 };
 
 Aps.p3d = { // 伪3d dom元素
@@ -2456,7 +2531,7 @@ Aps.p3d = { // 伪3d dom元素
 			if(!_t) return;
 			var _trans = {};
 			for(var i in _t){
-				let tmp = _t[i].split('(');
+				var tmp = _t[i].split('(');
 				_trans[tmp[0]] = tmp[1].replace(')','');
 			}
 			// this.p3d || (this.p3d={});
@@ -2912,89 +2987,7 @@ Aps.checker    = { // 检查器   # core
 		VD('body').addClass(broswer);
 
 	},
-
-	checkDevice:function(){
-
-		if (Aps.setting.isMobile ) {
-			if(Aps.setting.frontEnv == 'web' && window.outerWidth<720 ) location.href = location.href.replace('/web/','/mobile/') ;
-		}else{
-			if (Aps.setting.frontEnv== 'web' && window.outerWidth<640) {
-				location.href = location.href.replace('/web/','/mobile/') ;
-			}
-			// if(Aps.setting.frontEnv == 'mobile') location.href = location.href.replace('/mobile/','/web/');
-		}
-		
-	},
-
-	checkHeaderUserCenter:function(){
-
-		if (!Aps.user.islogin()) return;
-		var userArea = document.querySelector('.userCenter');
-		if(!userArea) return;
-
-		userArea.innerHTML= "<div onclick=\"Aps.router.switch('personal.html');\" class=\"white smallButtons bg-primary\">个人中心</div><div onclick=\"Aps.user.logout();\" class=\"white smallButtons bg-lightgray\">退出登录</div>";
-
-	},
-
-	checkHeaderNav:function(){
-		
-		if (document.querySelector('.headerNav')!==null) {
-
-			var currentPage = Aps.query.currentPageName('web');
-
-			document.querySelectorAll('.headerNav .content li').forEach(function(li){
-
-				if (li.getAttribute('page')==currentPage) {li.classList.add('focus');}
-
-			});
-		}
-	},
-
-	checkBarTab:function(){
-		
-		if (VD('.bar')) {
-
-			var currentPage = Aps.query.currentPageName('web');
-
-			VL('.bar ul li').each(function(vd){
-
-				if (vd.attr('page')==currentPage) {
-					vd.addClass('current');
-				}
-			});
-		}
-	},
-
-	checkPcUser:function(){
-
-		if (!Aps.local.get('personalInfo')) return;
-
-		var user = Aps.local.get('personalInfo');
-
-		VD('.bar .avatar img').attr('src',user.head);
-		VD('.bar h5').text(user.nickname);
-
-
-	},
-
-	checkTabbar:function() {
-		
-		if (VD('.tabBar')) {
-
-			var currentPage = Aps.query.currentPageName('mobile');
-
-			VL('.tabBar a li').each(function(vd){
-
-				if (vd.attr('page')==currentPage) {
-
-					var icon = vd.find('img');
-					vd.addClass('current');
-					icon.attr('src',icon.attr('src').replace('.png','Focus.png'));
-
-				}
-			});
-		}
-	} };
+};
 Aps.counter    = { // 计数器   # counter 
 
 	plusBtn:0,
@@ -3060,7 +3053,7 @@ Aps.counter    = { // 计数器   # counter
 		VD('#'+id).addClass('waited').disable();
 		var i = count;
 		var timer = setInterval(function(){
-			if(i== 0){
+			if(i=== 0){
 				clearInterval(timer);
 				vd('#'+id).removeClass('waited').enable().value(txt);
 
@@ -3251,7 +3244,7 @@ Aps.former     = Aps.fn({ // ? 表单
 			break;
 
 			case 'radio':
-			var checked     = Object.keys(options).length ==1 ? 'checked' : '';
+			var checked     = Object.keys(options).length ===1 ? 'checked' : '';
 			case 'checkbox':
 			for (var key in options){
 
@@ -3286,7 +3279,7 @@ Aps.former     = Aps.fn({ // ? 表单
 				})
 			);
 			for (var key in options){
-				var selected = value && value==key ? 'selected' : '';
+				var selected = value && value===key ? 'selected' : '';
 				vdom['m_'+formname+fieldname].append(
 					Aps.dom.create('option','o_'+formname+fieldname+key,fieldtype+'option',{
 							name:fieldname,
@@ -3375,7 +3368,7 @@ Aps.former     = Aps.fn({ // ? 表单
 
 			case 'checkbox':
 				if(field.finds('input:checked')){
-					let v = [];
+					var v = [];
 					field.finds('input:checked').each(function(target){
 						v.push(target.value());
 					});
@@ -3586,8 +3579,8 @@ Aps.user       = Aps.fn({ // ! 用户对象
 	tokenexpire:  parseInt(Aps.local.get('tokenexpire')) ,
 	quickLoginOn: 1,
 	quickLoginMode:{
-		emailLogin:    Aps.setting.language=='EN' || CONFIGS.emailLogin || 0,
-		mobileLogin:   Aps.setting.language=='ZHCN' || CONFIGS.mobileLogin || 0,
+		emailLogin:    Aps.setting.language=='en-WW' || CONFIGS.emailLogin || 0,
+		mobileLogin:   Aps.setting.language=='zh-CN' || CONFIGS.mobileLogin || 0,
 		wechatLogin:   CONFIGS.wechatLogin || 0,
 		facebookLogin: CONFIGS.facebookLogin || 0,
 	},
@@ -3878,14 +3871,9 @@ Aps.user       = Aps.fn({ // ! 用户对象
 
 		if (!Aps.cajax.successful(data)){
 			Aps.gui.toast(data.message||'Network Error!',data.status?'success':'warning'); 
-			return;
 		}else{
 			Aps.gui.toast(data.message||'Saved!','success');
-			// Aps.metting.request('my',"Aps.user.personalCenter(1);");
 		}
-
-		// Aps.queue.in(Aps.user.personalInfo(1));
-		
 	},
 
 	personalInfo:function(update){
@@ -3897,7 +3885,7 @@ Aps.user       = Aps.fn({ // ! 用户对象
 	personalInfoCall:function(data){
 
 		if (!Aps.cajax.successful(data)){
-			if (data.status==9999) { Aps.user.quickLogin(); }else{ Aps.gui.toast(data.message||'Network Error!',data.status?'success':'warning'); }
+			if (data.status===9999) { Aps.user.quickLogin(); }else{ Aps.gui.toast(data.message||'Network Error!',data.status?'success':'warning'); }
 			return;
 		}
 
@@ -4093,7 +4081,7 @@ Aps.user       = Aps.fn({ // ! 用户对象
 					return back && Aps.router.back() || 1;
 				},
 			});
-			return ;
+			return 0;
 		}else{
 			return 1;
 		}
@@ -4181,7 +4169,7 @@ Aps.promotion  = Aps.fn({ // ? 推广中心
 
 	initCommission:function(data,status){
 
-		if (data.status==0) {
+		if (data.status===0) {
 
 			VD('.commission').text(data.content);
 			VD('.promotePatch').show();	
@@ -4229,8 +4217,8 @@ Aps.pay        = Aps.fn({ // ? 支付
 		if(!plus) return;
 		plus.payment.getChannels(function(channels){
 			for( var k in channels){
-				if (channel[i].id == 'appleiap') {
-					iapChannel = channel[i];
+				if (channel[i].id === 'appleiap') {
+					var iapChannel = channel[i];
 					iapChannel.requestOrder(IAPOrders, function(event) {
 						for (var index in event) {
 							var OrderItem = event[index];
@@ -4352,7 +4340,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 		<div onclick=\"Aps.uploader.downFile({{idx}},'videos');\" class='uploaderControl down'><i class='ApsIcon Aps-down'></i> 下移</div>\
 		<div onclick=\"Aps.uploader.removeFile({{idx}},'videos');\" class='uploaderControl remove'><i class='ApsIcon Aps-close'></i> 删除</div>\
 		</div>\
-		",		
+		",
 	optionsMd:"\
 		<div class='banners swipe-slide uploaderOptions uploaderOptions_{{idx}}'>\
 		<p>{{title}}</p>\

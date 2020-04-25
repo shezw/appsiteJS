@@ -28,8 +28,8 @@
 if (!ApsMd){ var ApsMd={};};
 
 ApsMd.locale = {
-	'ZHCN':{
-		'CURRENT_LANGUAGE':'ZHCN',
+	'zh-CN':{
+		'CURRENT_LANGUAGE':'zh-CN',
 		'ACCOUNTS':'账号',
 		'ATTACHMENTS':'附注',
 
@@ -132,8 +132,8 @@ ApsMd.locale = {
 		'FIELD_REQUIRE':function(p){ return p.txt+'是必填项, 请完善后再试.';},
 	},
 
-	'EN':{
-		'CURRENT_LANGUAGE':'EN',
+	'en-WW':{
+		'CURRENT_LANGUAGE':'en-WW',
 		'ACCOUNTS':'Accounts',
 		'ATTACHMENTS':'Attachments',
 
