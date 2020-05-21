@@ -32,6 +32,7 @@ if(!CONFIGS){var CONFIGS = {}};
 /* 核心组件(必要) */
 window.vdom = window.VD = function( selector,hash ){ return selector ? Aps.dom.get(selector,hash) : this; };
 window.vlist= window.VL = function( selector,hash ){ return selector ? Aps.dom.list(selector,hash) : this; };
+window.defined = function( object ){ return !(typeof object === 'undefined' || object === null); }
 
 Aps.fn = function(obj) { // ! 内核组件  # core factory 
 	var fn = {
@@ -45,10 +46,7 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 			'bindList': [],
 			'requesttype': 'POST',
 			'loadingtype': 'Window',
-			'parameters': {
-				'parameters': [],
-				'action': '',
-			},
+			'parameters': {},
 			'headers':{},
 		},
 		/* 重置配置 */
@@ -63,10 +61,7 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 				'bindList': [],
 				'requesttype': 'POST',
 				'loadingtype': 'Window',
-				'parameters': {
-					'parameters': [],
-					'action': '',
-				},
+				'parameters': {},
 				'headers':{},
 			}
 		},
@@ -281,6 +276,13 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			}
 			return this;
 		},
+		toggleAttr:function(attributeName,attributeValue){
+			if(this.attr(attributeName)){
+				return this.removeAttr(attributeName);
+			}else{
+				return this.attr(attributeName, defined(attributeValue) ? attributeValue : attributeName);
+			}
+		},
 		css:function(name,value){
 			if(!value){return this.el.style[name];}
 			this.el.style[name] = value;
@@ -304,11 +306,11 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			return id?this:this.el.id;
 		},
 		has:function(name){
-			return this[name]!==null && this[name]!==undefined;
+			return defined(this[name]);
 		},
 		attr:function(name,value){
 			if (value) { this.el.setAttribute(name,value); }
-			return typeof value!=='undefined' ? this : this.el.getAttribute(name);
+			return defined(value) ? this : this.el.getAttribute(name);
 		},
 		disable:function(){
 			return this.attr('disabled','disabled');
@@ -321,18 +323,18 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			return this;
 		},
 		text:function(text){
-			if (text) { this.el.textContent = text; }
-			return text ? this : this.el.textContent; 
+			if (defined(text)) { this.el.textContent = text; }
+			return defined(text) ? this : this.el.textContent; 
 		},
 		html:function(html){
 			if (typeof html =='object' && html._vdom){ html = html.HTML();}else if(typeof html=='object'){ html=VD(html).HTML();}
-			if (html) { this.el.innerHTML = html; }
-			return html ? this : this.el.innerHTML; 
+			if (defined(html)) { this.el.innerHTML = html; }
+			return defined(html) ? this : this.el.innerHTML; 
 		},
 		HTML:function(html){
 			if (typeof html =='object' && html._vdom){ html = html.HTML();}else if(typeof html=='object'){ html=VD(html).HTML();}
-			if (html) { this.el.outerHTML = html; }
-			return html ? this : this.el.outerHTML; 
+			if (defined(html)) { this.el.outerHTML = html; }
+			return defined(html) ? this : this.el.outerHTML; 
 		},
 		append:function(html){
 			if (typeof html == 'object' && html._vdom) {
@@ -372,18 +374,25 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 		},
 		value:function(v){
 			var staticDom = " SELECT OPTION INPUT RADIO CHECKBOX TEXTAREA".indexOf(this.el.tagName)<=0;
-			if (v){ this.el[staticDom?'innerHTML':'value']=v; }
-			return v? this : this.el[staticDom?'innerHTML':'value'];
+			if ( defined(v) ){ this.el[staticDom?'innerHTML':'value']=v; }
+			return defined(v) ? this : this.el[staticDom?'innerHTML':'value'];
+		},
+		clearValue:function(){
+			this.el.value = null;
+			return this;
 		},
 		property:function(k,v){
-			if(v!==undefined && v!==null){ this.el[k]=v;}
-			return (v!==undefined && v!==null) ? this : this.el[k];
+			if(defined(v)){ this.el[k]=v;}
+			return defined(v) ? this : this.el[k];
 		},
 		show:function(){
-			this.el.style.display = '';
+			this.el.style.display = this._display || 'block';
+			this.addClass('show');
 			return this;
 		},
 		hide:function(){
+			this._display = this.el.style.display;
+			this.removeClass('show');
 			this.el.style.display = 'none';
 			return this;
 		},
@@ -406,12 +415,11 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			return this;
 		},
 		toggle:function(show){
-			this.el.style.display = this.el.style.display=='none'?'':'none';
+			this.el.style.display = this.el.style.display==='none'?'':'none';
 			return this;
 		},
-		index:function(){
-			return 
-			selector ? 
+		index:function(selector){
+			return selector ?
 			Array.from(this.parent().finds(selector)).indexOf(this.el) : 
 			Array.from(this.parent().el.children).indexOf(this.el);
 		},
@@ -433,6 +441,12 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 		brothers:function(selector){
 
 		},
+
+		/* EventListener */
+		/*
+			事件注册多数情况下通用
+			可以为同一事件注册多个响应函数、一个函数可以复用多个元素和非元素
+		 */
 		on:function(event,call,options){
 			var vd = this;
 			this.el.addEventListener(event,function(e){call(vd,e);},options);
@@ -443,15 +457,40 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			this.el.removeEventListener(event,function(e){call(vd,e);});
 			return this;
 		},
-		one:function(event,call,options){
+		once:function(event,call,options){
 			if (options){ options.once=true; }else{ options={once:true}};
 			var vd = this;
 			this.el.addEventListener(event,function(e){call(vd,e);},options);
 			return this;
 		},
+
 		click:function(call,options){
-			return this.on(Aps.setting.plus?'tap':'click',call,options);
+			return this.on(Aps.setting.isMobile?'tap':'click',call,options);
 		},
+		tap:function(call,options){
+			return this.on(Aps.setting.isMobile?'tap':'click',call,options);
+		},
+
+		/* document Event Listener */
+		// onabort,onanimationend,onanimationiteration,onanimationstart,onauxclick,onbeforecopy,onbeforecut,onbeforepaste,onblur,oncancel,oncanplay,oncanplaythrough,onchange,onclick,onclose,oncontextmenu,oncopy,oncuechange,oncut,ondblclick,ondrag,ondragend,ondragenter,ondragleave,ondragover,ondragstart,ondrop,ondurationchange,onemptied,onended,onerror,onfocus,onformdata,onfullscreenchange,onfullscreenerror,ongotpointercapture,oninput,oninvalid,onkeydown,onkeypress,onkeyup,onload,onloadeddata,onloadedmetadata,onloadstart,onlostpointercapture,onmousedown,onmouseenter,onmouseleave,onmousemove,onmouseout,onmouseover,onmouseup,onmousewheel,onpaste,onpause,onplay,onplaying,onpointercancel,onpointerdown,onpointerenter,onpointerleave,onpointermove,onpointerout,onpointerover,onpointerrawupdate,onpointerup,onprogress,onratechange,onreset,onresize,onscroll,onsearch,onseeked,onseeking,onselect,onselectionchange,onselectstart,onstalled,onsubmit,onsuspend,ontimeupdate,ontoggle,ontransitionend,onvolumechange,onwaiting,onwebkitanimationend,onwebkitanimationiteration,onwebkitanimationstart,onwebkitfullscreenchange,onwebkitfullscreenerror,onwebkittransitionend,onwheel
+		/*
+			HTML Dom提供事件绑定,在某些情况下EventListener无法获取事件时(如插件修改字段值)，使用bind可以获取到
+			只能绑定Dom支持的事件
+		 */
+		bind:function( event, call ) {
+			
+			this.el[event] = call;
+			return this;
+		},
+		unBind:function( event ) {
+			this.el[event] = null;
+			return this;
+		},
+
+		trigger:function( event ){
+			this.el.dispatchEvent( new Event(event) );
+		},
+
 		fingerTouchFns:{
 			run:function(vd,eventname){
 				if (vd.tCalls[eventname]){
@@ -469,8 +508,8 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			 * @param    {event}                 e               [事件]
 			 */
 			_start:function(vd,e){
-				vd.tData.X_ = e.touches[0].clientX; 
-				vd.tData.Y_ = e.touches[0].clientY; 
+				vd.tData.X_ = e.clientX || e.touches[0].clientX; 
+				vd.tData.Y_ = e.clientY || e.touches[0].clientY; 
 				vd.tData.T_ = e.timeStamp;
 				vd.tData.tap = vd.tData.longpress = 1;
 				this.run(vd,'start');
@@ -489,8 +528,8 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 				vd.tData._x  = vd.tData.x; 
 				vd.tData._y  = vd.tData.y;
 				vd.tData._t  = vd.tData.t;
-				vd.tData.x   = e.touches[0].clientX; 
-				vd.tData.y   = e.touches[0].clientY; 
+				vd.tData.x   = e.clientX || e.touches[0].clientX; 
+				vd.tData.y   = e.clientY || e.touches[0].clientY; 
 				vd.tData.t   = e.timeStamp;
 				var interval = (vd.tData.t - vd.tData._t) / 1000;
 				var vx       = (vd.tData.x - vd.tData._x) / interval;
@@ -587,9 +626,9 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			vd.tCalls[eventname] = vd.tCalls[eventname] || [];
 			if(listeningIndex(vd.tCalls[eventname],call)===-1){ vd.tCalls[eventname].push(call); }
 
-			this.on('touchstart',vd.tData._start);
-			this.on('touchmove',vd.tData._move);
-			this.on('touchend',vd.tData._end);
+			this.on( Aps.setting.isMobile ? 'touchstart' : 'mousedown' ,vd.tData._start);
+			this.on( Aps.setting.isMobile ? 'touchmove' : 'mousemove' ,vd.tData._move);
+			this.on( Aps.setting.isMobile ? 'touchend' : 'mouseup' ,vd.tData._end);
 			this.on('touchcancel',vd.tData._cancel);
 			return this;
 		},
@@ -597,9 +636,9 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			var listeningIndex = function(list,cal){ if(list===false){ return -1;} for(var k in list){if(cal===list[k]){return k;}} return -1; };
 			var vd   = this;
 			if(!eventname && !call){ 
-				this.off('touchstart',vd.tData._start);
-				this.off('touchmove',vd.tData._move);
-				this.off('touchend',vd.tData._end);
+				this.off( Aps.setting.isMobile ? 'touchstart' : 'mousedown' ,vd.tData._start);
+				this.off( Aps.setting.isMobile ? 'touchmove' : 'mousemove' ,vd.tData._move);
+				this.off( Aps.setting.isMobile ? 'touchend' : 'mouseup' ,vd.tData._end);
 				this.off('touchcancel',vd.tData._cancel);
 				return this;
 			}
@@ -617,7 +656,6 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 		// animate /* 动画脚本 {name:name,frames:{...}} */
 		// 
 		// optionsOrDuration /*  */ 
-		// 
 			if(typeof animate!='object'){ console.error('animate needs to be object struct! {name:name,frames:{}}, Current type is', typeof animate ); return animate;}
 			var createAnimateCss = function(frames,name){
 				var wkcss = " transform backface-visibility transform-origin box-sizing";
@@ -693,7 +731,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			}
 			})(document.createElement('div'));
 
-			this.addClass((customMode?'':'animated ' )+ animationName).one(animationEnd, function(vd) {
+			this.addClass((customMode?'':'animated ' )+ animationName).once(animationEnd, function(vd) {
 				vd.removeClass((customMode?'':'animated ' )+ animationName);
 				if (typeof callback === 'function') callback();
 			});
@@ -712,6 +750,20 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			data.skew  && ( transform += "skew("      +data.skew.x+"," +data.skew.y+")" );  // 0-180deg
 			data.rotate&& ( transform += "rotate("+data.rotate+")" ); // -?-?deg
 			this.styles({"transform":transform});
+			return this;
+		},
+		move:function(x,y){
+			this.styles({
+				left: ( x || 0 ) + this.property('offsetLeft') + 'px',
+				top: ( y || 0 ) + this.property('offsetTop') + 'px'
+			});
+			return this;
+		},
+		moveTo:function(x,y){
+			this.styles({
+				left: ( typeof x === 'string' ) ? x : (x||0 + 'px'),
+				top: ( typeof y === 'string' ) ? y : (y||0 + 'px')
+			});
 			return this;
 		},
 		transformDefault:function(){
@@ -951,27 +1003,6 @@ Aps.local = { // ! 浏览器本地存储 扩展数据类型  # localstorage Adv 
 		return CONFIGS.appid ? CONFIGS.appid+'_'+key : key;
 	}
 };
-Aps.io = { // 混合开发 本地存储
-	private_path:typeof plus!=='undefined'?plus.io.PRIVATE_DOC:null,
-	public_path: typeof plus!=='undefined'?plus.io.PUBLIC_DOCUMENTS:null,
-	public_downloads: typeof plus!=='undefined'?plus.io.PUBLIC_DOWNLOADS:null,
-
-	public:function(sCall,fCall){
-
-	},
-	private:function(sCall,fCall){
-
-	},
-	downloads:function(sCall,fCall){
-
-	},
-	toURL:function(file){
-		return plus.io.convertLocalFileSystemURL(file);
-	},
-	toFileURL:function(url){
-		return plus.io.convertAbsoluteFileSystem(url);
-	}
-};
 
 Aps.cache = { // ! 数据缓存 主要自动处理数据请求的缓存以及相关过期  # data cache with auto expire 
 	init: function() {
@@ -984,7 +1015,7 @@ Aps.cache = { // ! 数据缓存 主要自动处理数据请求的缓存以及相
 	},
 	has: function(cacheid) {
 		this.refresh();
-		return (typeof(this.list[cacheid]) !== 'undefined') ? (parseInt(this.list[cacheid]) > this.time || this.remove(cacheid)) : this.remove(cacheid);
+		return defined(this.list[cacheid]) ? (parseInt(this.list[cacheid]) > this.time || this.remove(cacheid)) : this.remove(cacheid);
 	},
 	add: function(cacheid, data, expire, update, collect) {
 		if (!update) {
@@ -1002,7 +1033,7 @@ Aps.cache = { // ! 数据缓存 主要自动处理数据请求的缓存以及相
 	get: function(cacheid) {
 		var data = Aps.local.get('CACHE_' + cacheid);
 		if (!data){ return 0; };
-		return typeof(data.status) !== 'undefined' || typeof(data.code) !== 'undefined' ? data : 0;
+		return defined(data.status) || defined(data.code) ? data : 0;
 	},
 	update: function(cacheid, data, expire) {
 		this.add(cacheid, data, expire, 1);
@@ -1069,15 +1100,12 @@ Aps.cache = { // ! 数据缓存 主要自动处理数据请求的缓存以及相
 			this.removeAll(olderList);
 		}
 	},
-
 };
-Aps.worker = { // ! 异步功能处理
 
-};
 Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & forced update 
 	parseParam: function(param,key) {
 		var paramStr = "",type = typeof param;
-		if (type == 'string' || type == 'number' || type == 'boolean') { paramStr += "&" + encodeURIComponent(key) + "=" + encodeURIComponent(param); }
+		if (type === 'string' || type === 'number' || type === 'boolean') { paramStr += "&" + encodeURIComponent(key) + "=" + encodeURIComponent(param); }
 		else { for(var i in param){ var k = key == null ? i : key + "[" + i + "]"; paramStr += '&' + this.parseParam(param[i], k); }; }
 		return paramStr.substr(1);
 	},
@@ -1086,9 +1114,6 @@ Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & for
 	},
 	ajax  : function(url,opts){
 		var _ = new XMLHttpRequest();
-		// console.log(opts.callback);
-		// console.log(opts.errorCall);
-		// INIT
 		_.open(opts.requesttype,opts.url,!opts.useSync);
 
 		if(opts.headers){ for(var k in opts.headers){ _.setRequestHeader(k,opts.headers[k]); } }
@@ -1107,7 +1132,9 @@ Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & for
 			if( _.readyState === 4 ){
 				if(_.status===200){
 					var CTYPE = _.responseType || _.getResponseHeader('Content-Type') ;
-					if(typeof opts.callback == 'function') opts.callback(CTYPE==='json'||CTYPE.indexOf('json')>-1?JSON.parse(_.responseText):_.responseText);
+					if(typeof opts.callback == 'function'){
+						opts.callback(CTYPE==='json'||CTYPE.indexOf('json')>-1?JSON.parse(_.responseText):_.responseText);
+					}
 					// console.log('Network Success. Server Code:',_.status);
 				}else{
 					// if(typeof opts.errorCall== 'function'){ opts.errorCall(_.status); }
@@ -1162,24 +1189,32 @@ Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & for
 		var gajax      = options.gajax        || 0;  /* 常规模式 */
 		var cacheid = Aps.dom.storagehash.hash(JSON.stringify(request)); /* 缓存ID  */
 
-		Aps.cache = (typeof(Aps.cache.list) == 'undefined') ? Aps.cache.init() : Aps.cache.refresh();
+		Aps.cache = !defined(Aps.cache.list) ? Aps.cache.init() : Aps.cache.refresh();
 		if ( Aps.cache.has(cacheid) && !update && !gajax ) {
 			if (typeof callback == 'function') {
 				var data = Aps.cache.get(cacheid);
-				if (typeof(data.status) !== 'undefined' || data.code === '200') { callback(Aps.cache.get(cacheid), '200'); }
+				if (defined(data.status)) { callback(Aps.cache.get(cacheid), '200'); }
 				else { options.update = 1; Aps.cajax.request(options); }
 			}
 		} else {
 			
 			if (typeof before == 'function'){ before(); }/* Aps.debugger.add('before not set.')*/
 
-			options.callback = function(data,status){
+			if(typeof callback =='function'){
+				options.callback  = function(data,status){
+					Aps.cache.remove(cacheid);
+					!gajax && Aps.cache.add(cacheid, data, expire, update, collect); 
+					callback(data, status); 
+				} 
+			}else{  
 				Aps.cache.remove(cacheid);
 				!gajax && Aps.cache.add(cacheid, data, expire, update, collect);
-				if (typeof callback == 'function') { callback(data, status);}
-			};
-			if(typeof callback =='function'){ options.callback  = function(data,status){ Aps.cache.remove(cacheid);!gajax && Aps.cache.add(cacheid, data, expire, update, collect); callback(data, status); } }else{  Aps.cache.remove(cacheid);!gajax && Aps.cache.add(cacheid, data, expire, update, collect);  }
-			if(typeof errorCall=='function'){ options.errorCall = function(status){ errorCall(status); } }
+			}
+			if(typeof errorCall=='function'){ 
+				options.errorCall = function(status){
+					errorCall(status); 
+				}
+			}
 			Aps.cajax.ajax(url,options);
 		}
 	}
@@ -1235,7 +1270,7 @@ Aps.query = { // ! 对于浏览器头的携带信息进行管理  # simply
 	},
 	/* 页面检测 */
 	isPage: function(page) {
-		return location.pathname == CONFIGS.frontPath + page;
+		return location.pathname === CONFIGS.frontPath + page;
 	},
 	redirect:function( link ){
 		Aps.router.switch(link||location.href);
@@ -1288,7 +1323,7 @@ Aps.setting    = Aps.fn({ // ! 设置和属性
 	},
 	checkLocale: function(){
 
-		if(typeof plus != 'undefined'){
+		if(defined(plus)){
 			this.setProperty('language',locale[plus.os.language]||'EN');
 		}
 		return this.language;
@@ -1313,7 +1348,7 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 	// 混合
 	mix:function(module,data){
 
-		data.LANG = Aps.setting.language;
+		data.LANG = Aps.setting.currentLanguage();
 
 		var pregCondition = /\:\:([^\:\:]+)?\:\:/ig;
 		var pregInner     = /\[\[([^\]\]]+)?\]\]/ig;
@@ -1329,7 +1364,7 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 				var key = ifCondition[0];
 				var val = ifCondition[1];
 
-				if (typeof data[key] == 'undefined' || data[key]!==val) {
+				if ( !defined(data[key]) || data[key]!==val) {
 					res = res.replace('[if['+ifStruct[i]+']if]','');
 				}else{
 					res = res.replace('[if[::'+condition+'::','').replace(']if]','');
@@ -1337,7 +1372,7 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 
 			}else{
 
-				if (typeof data[condition] == 'undefined' || data[condition]==='' || data[condition]===null || !data[condition] ){
+				if ( !defined(data[condition]) || data[condition]==='' || !data[condition] ){
 					res = res.replace('[if['+ifStruct[i]+']if]','');
 				}else{
 					res = res.replace('[if[::'+condition+'::','').replace(']if]','');
@@ -1349,7 +1384,7 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 
 			var condition = notStruct[i].match(pregCondition)[0].replace('::','').replace('::','');
 
-			if (typeof data[condition] !== 'undefined' && data[condition]>0 ) {
+			if ( defined(data[condition]) && data[condition]>0 ) {
 				res = res.replace('[not['+notStruct[i]+']not]','');
 			}else{
 				res = res.replace('[not[::'+condition+'::','').replace(']not]','');
@@ -1374,7 +1409,7 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 			var keys      = loopStruct[i].match(pregInner);
 			var loop      = '';
 
-			if ( typeof data[condition] !== 'undefined' ) {
+			if ( defined(data[condition]) ) {
 
 				for (var j = 0; j < data[condition].length; j++) {
 
@@ -1531,8 +1566,10 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 
 	replaceAll:function(res,FindText, RepText){
 
-		var preg = "/"+FindText+"/g";
-		return res.replace(eval(preg),RepText);
+		var preg = new RegExp(FindText,'g');
+
+		return res.replace(preg,RepText);
+		// return res.replace(eval(preg),RepText);
 
 	},
 
@@ -1568,127 +1605,67 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 
 }
 ApsMd.core = { // ! 组件dom模版(核心功能)
+	mask:'<div class="modal-backdrop show a-mask"></div>',
+	toast:'\
+	<div class="a-toast {{position}}-toast">\
+		<div class="alert alert-{{style}} a-toast-content" role="alert">\
+			<div class="a-toast-message">{{message}}</div>\
+			[if[::closeButton::<button type="button" class="close">\
+              	<span>×</span>\
+            </button>]if]\
+		</div>\
+	</div>\
+	',
+	modal:'\
+	<div class="modal fade show">\
+	  <div class="modal-dialog modal-dialog-centered {{size}}" >\
+	    <div class="modal-content">\
+	      <div class="modal-header">\
+	        <h5 class="modal-title" >{{title}}</h5>\
+	      </div>\
+	      <div class="modal-body">\
+	      <div class="[if[::type=form::a-modal-form]if] contents">\
+	        {{type}}{{content}}\
+          </div>\
+	    </div>\
+	      <div class="modal-footer">\
+	        [if[::type=confirm::\
+	        <button type="button" class="btn btn-secondary button cancel" data-dismiss="modal">{{cancelText}}</button>\
+	        ]if]\
+	        <button type="button" class="btn btn-primary button ok">{{okText}}</button>\
+	      </div>\
+	    </div>\
+	  </div>\
+	</div>\
+	',
+	popup:'\
+	<div class="a-popup modal fade show">\
+	  <div class="modal-backdrop show a-mask"></div>\
+	  <div class="modal-dialog a-main">\
+	    <div class="modal-content">\
+	      <div class="modal-header">\
+	        <h5 class="modal-title">{{title}}</h5>\
+	        <button type="button" class="close">\
+	          <span>&times;</span>\
+	        </button>\
+	      </div>\
+	      <div class="modal-body">\
+		      [if[::coverUrl::<div class="a-popup-cover"><img src="{{coverUrl}}" alt="cover" class="img-fluid"></div>]if]\
+		      <div class="a-popup-content">{{content}}</div>\
+	      </div>\
+	    </div>\
+	   </div>\
+      </div>\
+	',
+	menu:"<div class='ApsMenu'><div class='space'></div><div class='main'><h4 class='title'></h4><div class='menus'></div><div class='close'></div></div></div>",
+	page:"[if[:cover:::<div class='pageCover'><img src='{{cover}}!cover'></div>]if]<div class='contents'>{{introduce}}</div>",
+	view:"<div class='a-view' id='{{viewid}}'></div>",
 
-	loading:{
-		local:"<div class='ApsLocalLoading'><i class='ApsIcon I-load color-primary rotation'></i>"+i18n('LOADING')+"</div>",
-		transptant:"<div class='loading transptant'><div class='logo rotation'><i class='ApsIcon I-load color-primary'></i></div></div>",
-		global:"<div class='ApsGlobalLoading mask'><div class='logo rotation'><i class='ApsIcon I-load color-primary'></i></div>"+i18n('LOADING')+"</div>",
-	},
+	loadingInner:"<div class='a-loading-inner'><i class='a-icon I-load a-color-primary a-rotation'></i>"+i18n('LOADING')+"</div>",
+	transptant:"<div class='loading transptant'><div class='logo a-rotation'><i class='a-icon I-load a-color-primary'></i></div></div>",
 	notice:{
 		point:"<i class='ApsNotice'></i>",
 	},
-	toast:"<div class='ApsToast'><div class='ApsToast-message shadow'></div></div>",
-	propup:"<div class='ApsPropup'><div class='ApsPropupSpace'></div><div class='ApsPropupMain shadow'><i class='ApsPropupClose ApsIcon I-error color-red normalshadow'></i><h4 class='page-media-title'></h4><div class='ApsPropupContent'><div class='row'><p></p></div><div class='pageMain'></div></div></div></div>",
-	popup:"<div class='ApsPopup'><div class='view'><div class='title'>{{title}}</div><div class='contents'><p [if[::type=form::class='ApsPopupForm']if]>{{content}}</p></div><div class='buttons'>[if[::type=confirm::<a class='button cancel'>{{cancelText}}</a>]if]<a class='button ok'>{{okText}}</a></div></div></div>",
-	menu:"<div class='ApsMenu'><div class='space'></div><div class='main'><h4 class='title'></h4><div class='menus'></div><div class='close'></div></div></div>",
-	quickLogin:{
-	full:"\
-	<div class='ApsLogin'>\
-		<div class='prop normalshadow'>\
-		<div onclick='Aps.user.quickLoginClose();' class='closeBtn normalshadow'><i class='ApsIcon I-error color-red'></i></div>\
-		<div class='ApsSwitch centerLayout'>\
-		<div onclick='Aps.switcher.change(this);' class='ApsSwitchs current' tag='instant'>"+i18n('INSTANT')+"</div>\
-		<div onclick='Aps.switcher.change(this);' class='ApsSwitchs' tag='regist'>"+i18n('REGIST')+"</div>\
-		<div onclick='Aps.switcher.change(this);' class='ApsSwitchs' tag='login'>"+i18n('LOGIN')+"</div>\
-		</div>\
-		<div class='ApsSwitchMain current fadeInRight animated fast' tag='instant'>\
-		<div class='form'>\
-		[if[::mobileLogin::\
-		<input class='input-text' type='tel' name='mobile' id='ApsMobile' placeholder='"+i18n('MOBILE')+"'>\
-		<input class='input-text code' type='tel' name='verifyCode' id='ApsVerifyCode' placeholder='"+i18n('VERIFY_CODE')+"'>\
-		<input type='button' onclick='Aps.user.requestMobileCode();' class='button bg-primary requestCode' name='requestCode' id='ApsRequestCode' value='"+i18n('SEND_CODE')+"'>\
-		<button class='fullButton bg-primary color-white' onclick='Aps.user.mobileLogin();' >"+i18n('CONTINUE')+"</button>\
-		]if]\
-		[if[::emailLogin::\
-		<input type='tel' class='input-text' name='email' id='ApsEmail' placeholder='Email Address' value=''>\
-		<input type='tel' class='input-text code' placeholder='"+i18n('VERIFY_CODE')+"' name='verifycode' id='ApsEmailCode'>\
-		<input type='button' onclick='Aps.user.requestEmailCode();' class='button bg-primary requestCode' name='requestCode' id='ApsRequestCode' value='"+i18n('SEND_CODE')+"'>\
-		<button class='fullButton bg-primary color-white' onclick='Aps.user.emailLogin();' >"+i18n('CONTINUE')+"</button>\
-		]if]\
-		[if[::wechatLogin::<button class='fullLineButton color-green line-green' onclick='Aps.user.wechatLogin();' type='button'><i class='ApsIcon I-wechat'></i>"+i18n('LOGIN_WECHAT')+"</button>]if]\
-		[if[::facebookLogin::<button class='fullLineButton color-blue line-blue' onclick='Aps.user.facebookLogin();' type='button'><i class='ApsIcon I-facebook'></i>"+i18n('LOGIN_FACEBOOK')+"</button>]if]\
-		</div>\
-		</div>\
-		<div class='ApsSwitchMain fadeInRight animated fast' tag='regist'>\
-		<div class='form regist'>\
-		<div class='field require valid' fieldtype='input' length=64 fieldname='nickname' checktype='nickname'>\
-		<input class='mainfield' type='text' name='nickname' placeholder='"+i18n('NICKNAME')+"'>\
-		</div>\
-		[if[::CURRENT_LANGUAGE=ZHCN::<div class='field require valid' fieldtype='input' length=32 fieldname='mobile' checktype='mobile'><input class='mainfield' type='text' name='mobile'  placeholder='"+i18n('MOBILE')+"'></div>]if]\
-		[if[::CURRENT_LANGUAGE=EN::<div class='field require valid' fieldtype='input' length=64 fieldname='email' checktype='email'><input class='mainfield' type='text' name='email' placeholder='"+i18n('EMAIL_ADDRESS')+"'></div>]if]\
-		<div class='field require valid' fieldtype='input' length=32 fieldname='password' checktype='password'>\
-		<input class='mainfield' type='password' name='password' placeholder='"+i18n('PASSWORD')+"'>\
-		</div>\
-		<div class='field require valid' fieldtype='input' length=32 fieldname='confirmPassword' checktype='password'>\
-		<input class='mainfield' type='password' name='confirmPassword' placeholder='"+i18n('REPASSWORD')+"'>\
-		</div>\
-		<button class='fullButton bg-primary color-white' onclick='Aps.user.regist();' type='button'>"+i18n('CONTINUE')+"</button>\
-		</div>\
-		</div>\
-		<div class='ApsSwitchMain fadeInRight animated fast' tag='login'>\
-		<div class='form login'>\
-		<div class='field require valid' fieldtype='input' length='32' fieldname='account'>\
-		<input class='mainfield' type='text' name='account' placeholder='"+i18n('LOGIN_ACCOUNT')+"'>\
-		</div>\
-		<div class='field require valid' fieldtype='input' length='32' fieldname='password' checktype='password'>\
-		<input class='mainfield' type='password' name='password' placeholder='"+i18n('PASSWORD')+"'>\
-		</div>\
-		<button class='fullButton bg-primary color-white' onclick='Aps.user.passwordLogin();' type='button'>"+i18n('CONTINUE')+"</button>\
-		</div>\
-		</div>\
-		</div>\
-	</div>\
-	",
-	email:"\
-	<div class='ApsLogin'>\
-		<div class='prop normalshadow'>\
-		<div onclick='Aps.user.quickLoginClose();' class='closeBtn normalshadow'><i class='ApsIcon I-error color-red'></i></div>\
-		<div class='row'><input type='tel' class='input-text' name='email' id='ApsEmail' placeholder='Email Address' value='></div>\
-		<div class='row'>\
-		<input type='tel' class='input-text code' placeholder='Verify Code' name='verifycode' id='ApsEmailCode'>\
-		<input type='button' onclick='Aps.user.requestEmailCode();' class='button bg-primary requestCode' name='requestCode' id='ApsRequestCode' value='Send Code'>\
-		</div>\
-		<div class='row'><input type='button' onclick='Aps.user.emailLogin();' class='button bg-primary disabled' name='login' id='ApsLogin' value='Sign In'></div>\
-		[if[::wechatLogin::<button class='fullLineButton color-green line-green' onclick='Aps.user.wechatLogin();' type='button'><i class='ApsIcon I-wechat'></i> Sign In with Wechat</button>]if]\
-		[if[::facebookLogin::<button class='fullLineButton color-blue line-blue' onclick='Aps.user.facebookLogin();' type='button'><i class='ApsIcon I-facebook'></i> Sign In with Facebook</button>]if]\
-		</div>\
-	</div>\
-	",
-	mobile:"\
-	<div class='ApsLogin'>\
-		<div class='prop normalshadow'>\
-			<div onclick='Aps.user.quickLoginClose();' class='closeBtn normalshadow'><i class='ApsIcon I-error color-red'></i></div>\
-			<div class='form'>\
-				<input class='input-text' type='tel' name='mobile' id='ApsMobile' placeholder='Mobile'>\
-				<input class='input-text code' type='tel' name='verifyCode' id='ApsVerifyCode' placeholder='Verify Code'>\
-				<input type='button' onclick='Aps.user.requestMobileCode();' class='button bg-primary requestCode' name='requestCode' id='ApsRequestCode' value='Send Code'>\
-				<button class='fullButton bg-primary color-white' onclick='Aps.user.mobileLogin();' type='button'>Contuinue</button>\
-				[if[::wechatLogin::<button class='fullLineButton color-green line-green' onclick='Aps.user.wechatLogin();' type='button'><i class='ApsIcon I-wechat'></i> Sign In with Wechat</button>]if]\
-				[if[::facebookLogin::<button class='fullLineButton color-blue line-blue' onclick='Aps.user.facebookLogin();' type='button'><i class='ApsIcon I-facebook'></i> Sign In with Facebook</button>]if]\
-			</div>\
-		</div>\
-	</div>\
-	",
-	password:"\
-	<div class='login'>\
-		<div class='form login'>\
-			<div class='field require valid' fieldtype='input' length='32' fieldname='account'>\
-				<input class='mainfield' type='text' name='account' placeholder='Account'>\
-			</div>\
-			<div class='field require valid' fieldtype='input' length='32' fieldname='password' checktype='password'>\
-				<input class='mainfield' type='password' name='password' placeholder='Password'>\
-			</div>\
-			<button class='fullButton bg-primary color-white' onclick='Aps.user.passwordLogin();' type='button'>Contuinue</button>\
-			[if[::wechatLogin::<button class='fullLineButton color-green line-green' onclick='Aps.user.wechatLogin();' type='button'><i class='ApsIcon I-wechat'></i> Sign In with Wechat</button>]if]\
-			[if[::facebookLogin::<button class='fullLineButton color-blue line-blue' onclick='Aps.user.facebookLogin();' type='button'><i class='ApsIcon I-facebook'></i> Sign In with Facebook</button>]if]\
-			</div>\
-		</div>\
-	</div>\
-	",
-	},
-	page:"[if[:cover:::<div class='pageCover'><img src='{{cover}}!cover'></div>]if]<div class='contents'>{{introduce}}</div>",
-	view:"<div class='VIEW' id='{{viewid}}'></div>",
-
 	cityPicker:"\
 	<section id='areaLayer' class='express-area-box'>\
 	<header><h3>选择地区</h3><a id='backUp' class='back' href='javascript:void(0)' title='返回'></a><a id='closeArea' class='close' href='javascript:void(0)' title='关闭'></a></header>\
@@ -1696,35 +1673,257 @@ ApsMd.core = { // ! 组件dom模版(核心功能)
 	</section>\
 	<div id='areaMask' class='mask'></div>\
 	",
-	security:"\
-	<div class=\"ApsPopup\">\
-	<div class=\"view security\">\
-		<div class=\"securityKey\" onclick=\"SECURITY.press(this);\" key=\"4\"></div>\
-		<div class=\"securityKey\" onclick=\"SECURITY.press(this);\" key=\"1\"></div>\
-		<div class=\"securityKey\" onclick=\"SECURITY.press(this);\" key=\"9\"></div>\
-		<div class=\"securityKey\" onclick=\"SECURITY.press(this);\" key=\"3\"></div>\
-		<div class=\"securityKey\" onclick=\"SECURITY.press(this);\" key=\"7\"></div>\
-		<div class=\"securityKey\" onclick=\"SECURITY.press(this);\" key=\"6\"></div>\
-		<div class=\"securityKey\" onclick=\"SECURITY.press(this);\" key=\"5\"></div>\
-		<div class=\"securityKey\" onclick=\"SECURITY.press(this);\" key=\"2\"></div>\
-		<div class=\"securityKey\" onclick=\"SECURITY.press(this);\" key=\"8\"></div>\
-		\
-		<div class=\"progress\"><div class=\"bar bg-primary\"></div></div>\
-	</div>\
-	</div>\
-	",
 };
 
 Aps.gui        = { // ! 界面交互  # basic gui 
 	icon:{
-		info:"<i class='ApsIcon color-blue I-messege'></i> ",
-		loading:"<i class='ApsIcon color-blue I-loading rotation'></i> ",
-		warning:"<i class='ApsIcon color-orange I-warning'></i> ",
-		success:"<i class='ApsIcon color-green I-success'></i> ",
-		failed:"<i class='ApsIcon color-red I-error'></i> ",
+		info:"<i class='a-icon a-color-blue I-message'></i> ",
+		loading:"<i class='a-icon a-color-blue I-loading a-rotation'></i> ",
+		warning:"<i class='a-icon a-color-orange I-warning'></i> ",
+		success:"<i class='a-icon a-color-green I-success'></i> ",
+		failed:"<i class='a-icon a-color-red I-error'></i> ",
 	},
 	animateOn:CONFIGS.animatecss||1,
 	toucheEvt:0,
+
+	only:function() {
+		VD('html','HTML').addClass('a-only');
+	},
+
+	toast:function(message,autoCloseOrOptions,icon){
+
+		var options = typeof autoCloseOrOptions === 'object' ? autoCloseOrOptions : {};
+		if( typeof autoCloseOrOptions === 'number' ){ options = {autoClose:autoCloseOrOptions}; }
+
+		options.position = options.position || 'topcenter';   // topleft, topcenter, topright, bottomleft, bottomcenter, bottomright, center
+		options.style    = options.style || 'white';          // wihte, primary, secondary, success, danger, warning, info, light, dark
+		options.icon     = options.icon  || icon || '';       // info, loading, warning, success, failed
+		options.message  = (options.icon ? Aps.gui.icon[icon] : '') + message ;
+		options.closeButton = options.autoClose ? false : true;
+
+		var msg = VD(Aps.mixer.mix(ApsMd.core.toast,options));
+		VD('html','HTML').append(msg);
+		msg.fadeIn();
+
+		if( options.autoClose ){
+			setTimeout(function(){
+				msg.fadeOut();
+			},options.autoClose);
+		}else{
+			var closeBtn = msg.find('button.close');
+			msg.find('.alert').addClass('alert-dismissible');
+			closeBtn.click( function(){
+				msg.fadeOut();
+			});
+		}
+	},
+
+	modal:function(title,content,type,optionsOrOkCall){
+
+		var options = ( typeof optionsOrOkCall == 'function' ) ? {} : (optionsOrOkCall || {} );
+
+		var _modal  = {};
+			_modal.title      = title   || 0;
+			_modal.type       = type    || 'alert';
+			_modal.okText     = options.okTxt || options.okText || i18n('OK');
+			_modal.cancelText = options.cancelTxt || options.cancelText || i18n('CANCEL');
+			_modal.size = {small:'modal-sm',large:'modal-lg','normal':''}[options.size] || '';
+
+		var _okCall     = options.onOk || ( typeof optionsOrOkCall == 'function' ? optionsOrOkCall : 0 );
+		var _cancelCall = options.onCancel || 0;
+
+		var mask   = VD(ApsMd.core.mask).hide();
+		var modal  = VD(Aps.mixer.mix(ApsMd.core.modal,_modal)).hide();
+
+		VD('html','HTML').append(mask);
+		VD('html','HTML').append(modal);
+
+		modal.find('.contents').html(content||'');
+
+		var _view        = modal.find('.view');
+		var _okButton    = modal.find('.button.ok');
+		var _cancelButton= modal.find('.button.cancel');
+
+		mask.fadeIn();
+		modal.show().animate(ApsMd.animate.fadeInUp);
+
+		var _close = function(){
+			mask.fadeOut();
+			modal.animate(ApsMd.animate.fadeOutUp,0,function(){ modal.remove(); });
+		}
+
+		var _ok = function(){
+			if( typeof _okCall !== 'function' ){
+				_close();
+			}else{
+				if( type == 'form' ){
+					_okCall() && _close();
+				}else{
+					_close();
+					_okCall();
+				}
+			}
+			return ;
+		}
+
+		var _cancel = function(){
+			( !_cancelCall || _cancelCall() ) && _close(); 
+			return ;
+		}
+
+		_okButton     && _okButton.click(_ok);		
+		_cancelButton && _cancelButton.click(_cancel);
+
+	},
+
+	alert:  function( title,content,options){ this.modal(title,content,'alert',options); },
+	confirm:function( title,content,options){ this.modal(title,content,'confirm',options); },
+	form:   function( title,content,options){ this.modal(title,content,'form',options);	},
+
+	submitting:function(message,iconOrOptions){
+		var options = typeof iconOrOptions === 'object' ? iconOrOptions : {};
+
+		options.position = options.position || 'topcenter';
+		options.style    = options.style || 'white';
+		options.icon     = options.icon  || 'loading';
+		options.message  = Aps.gui.icon.loading + (message ||i18n('SUBMITING'));
+
+		var msg = VD(Aps.mixer.mix(ApsMd.core.toast,options));
+		msg.id('a-submit-toast');
+		VD('html','HTML').append(msg);
+		msg.fadeIn();
+	},
+
+	submitProgress:function(message,progress){
+		if (!VD('#a-submit-toast')) {
+			Aps.gui.submitting(message);
+			VD('#a-submit-toast').find( '.a-toast-message' ).html( Aps.gui.icon['loading'] + (message ||i18n('SUBMITING')) );
+		}
+		if (!VD('#a-submit-toast .progress')) {
+			VD('#a-submit-toast .a-toast-content').append("<div class='progress progress-sm mt-2'><div class='progress-bar bg-primary'></div></div>");
+		}
+		VD('.progress .progress-bar').attr('style','width:'+progress+'%;');
+	},
+
+	submitted:function(message,delayOrOptions,icon){
+		if( VD('#a-submit-toast') ){
+			VL( '#a-submit-toast' ).remove();
+		}
+		var options = typeof iconOrOptions === 'object' ? iconOrOptions : {};
+
+		options.position = options.position || 'topcenter';
+		options.style    = options.style || 'white';
+		options.icon     = options.icon || icon || 'success';
+		options.message  = Aps.gui.icon[ options.icon ] + (message ||i18n('SUBMITtED'));
+		options.delay    = options.delay || delayOrOptions || 2500;
+
+		var msg = VD(Aps.mixer.mix(ApsMd.core.toast,options));
+		msg.id('a-submit-toast');
+		VD('html','HTML').append(msg);
+		msg.fadeIn();
+
+		setTimeout(function(){
+			msg.fadeOut();
+		},options.delay);
+	},
+
+	popup:function(title,content,coverUrl){
+
+		var options = {
+			title:title,
+			content: typeof content === 'object' ? content.HTML() : content,
+			coverUrl:coverUrl
+		};
+
+		// var mask  = VD(ApsMd.core.mask).hide();
+		var popup = VD(Aps.mixer.mix(ApsMd.core.popup,options)).hide();
+
+		VD('html','HTML').append(popup);
+
+		var mask     = popup.find('.a-mask');
+		var main     = popup.find('.a-main');
+		var closeBtn = popup.find('button.close');
+
+		popup.show();
+		mask.fadeIn();
+		main.animate(ApsMd.animate.fadeInUp);
+
+		var closePopup = function(){
+			mask.fadeOut();
+			main.animate(ApsMd.animate.fadeOutUp,0,function(){ popup.remove(); });
+		};
+		mask.click(closePopup);		
+		closeBtn.click(closePopup);
+	},
+
+
+	loading:{
+
+		start:function(message,options,forced) {
+
+			if (VD('html','HTML').isLoad()){ return; }
+
+			var options = options || {};
+
+			options.position = options.position || 'center';   // topleft, topcenter, topright, bottomleft, bottomcenter, bottomright, center
+			options.style    = options.style || 'white';          // wihte, primary, secondary, success, danger, warning, info, light, dark
+			options.icon     = options.icon  || 'loading';       // info, loading, warning, success, failed
+			options.message  = (options.icon ? Aps.gui.icon[options.icon] : '') + message ;
+
+			var loading = VD(Aps.mixer.mix(ApsMd.core.toast,options)).addClass('a-loading').id('G_LOADING');
+			if( forced ){ VD('html','HTML').append(VD(ApsMd.core.mask).id('G_LOADING_MASK')); }
+			VD('html','HTML').loading().append(loading);
+			loading.fadeIn();
+
+		},
+		success:function(message,delay) {
+			Aps.gui.loading.end( message || i18n('SUCCESS'), 'success', delay || 2000 );
+		},
+		failed:function(message,delay) {
+			Aps.gui.loading.end( message || i18n('ERROR'), 'failed', delay || 3000 );
+		},
+		cancel:function() {
+			if( !VD('#G_LOADING') ){ return; }
+			VD('html','HTML').loaded();
+			VD('#G_LOADING').fadeOut(); 
+			if( VD('#G_LOADING_MASK') ){ VD('#G_LOADING_MASK').fadeOut(); }
+		},
+		end:function( message, icon, delay ){
+			if( !VD('#G_LOADING') ){ return; }
+			VD('html','HTML').loaded();
+			VD('#G_LOADING').find('.a-toast-message').html( Aps.gui.icon[icon] + message);
+			setTimeout(function(){
+				if( VD('#G_LOADING_MASK') ){ VD('#G_LOADING_MASK').fadeOut(); }
+				VD('#G_LOADING').fadeOut(); 
+			},delay||2000);
+		}
+	},
+
+
+	loadingInner:{
+		start   :function(containerOrSelector,message,append){
+			var loading = VD(ApsMd.core.loadingInner);
+			loading.animate(ApsMd.animate.fadeInDown);
+			return append ? vdom( containerOrSelector ).loading().append(loading) : vdom( containerOrSelector ).loading().prepend(loading); 
+		},
+		success :function(containerOrSelector,message,delay){
+			var loading = vdom( containerOrSelector ).loaded().find('.a-loading-inner:not(.removing)').html(Aps.gui.icon.success+ (message||i18n('LOADING_SUC'))).addClass('removing');
+			setTimeout(function(){
+				loading.animate(ApsMd.animate.fadeOutDown,200,function(){ loading.remove();}); 
+			},delay||1500);
+		},
+		failed   :function(containerOrSelector,message,delay){
+			var loading = vdom( containerOrSelector ).loaded().find('.a-loading-inner:not(.removing)').html(Aps.gui.icon.failed+ (message ||i18n('LOADING_FAL'))).addClass('removing');
+			setTimeout(function(){
+				loading.animate(ApsMd.animate.fadeOutDown,200,function(){ loading.remove();}); 
+			},delay||2500);
+		},
+		cancel  :function(containerOrSelector){
+			var loading = vdom( containerOrSelector ).loaded().find('.a-loading-inner:not(.removing)').addClass('removing');
+			loading.animate(ApsMd.animate.fadeOut,200,function(){ loading.remove();}); 
+		}
+	},
+
 	/**
 	 * [smoothing 为元素添加滑动触控]
 	 * @Author   Sprite                   hello@shezw.com http://donsee.cn
@@ -1815,162 +2014,15 @@ Aps.gui        = { // ! 界面交互  # basic gui
 
 	},
 
-	localLoad:{
-		start   :function(containerOrSelector,append){
-			var loading = VD(ApsMd.core.loading.local);
-			loading.animate(ApsMd.animate.fadeInDown);
-			return append ? vdom( containerOrSelector ||'.app').loading().append(loading) : vdom( containerOrSelector ||'.app').loading().prepend(loading); 
-		},
-		success :function(containerOrSelector,txt,delay){
-			var loading = vdom( containerOrSelector ||'.app').loaded().find('.ApsLocalLoading:not(.removing)').html(Aps.gui.icon.success+ (txt||i18n('LOADING_SUC'))).addClass('removing');
-			setTimeout(function(){
-				loading.animateCss('pullOutUp fastest',function(){ loading.remove();}); 
-			},delay||1000);
-		},
-		failed   :function(containerOrSelector,txt,delay){
-			var loading = vdom( containerOrSelector ||'.app').loaded().find('.ApsLocalLoading:not(.removing)').html(Aps.gui.icon.failed+ (txt ||i18n('LOADING_FAL'))).addClass('removing');
-			setTimeout(function(){
-				loading.animateCss('fadeOut faster',function(){ loading.remove();}); 
-			},delay||2500);
-		},
-		cancel  :function(containerOrSelector){
-			var loading = vdom( containerOrSelector ||'.app').loaded().find('.ApsLocalLoading:not(.removing)').addClass('removing');
-			loading.animateCss('pullOutUp fastest',function(){ loading.remove();}); 
-		}
-	},
-	globalLoad:{
-		start:function(txt){
-			if (VD('html','HTML').isLoad()){ Aps.gui.toast(i18n('LOADING')); return; };
-			VD(ApsMd.core.loading.global,'G_LOADING').html(Aps.gui.icon.loading+txt||i18n('LOADING'));
-			VD('html','HTML').loading().append(VD.G_LOADING);
-		},
-		success:function(txt,delay){
-			VD('html','HTML').loaded();
-			VD.G_LOADING.html(Aps.gui.icon.success+(txt||i18n('SUCCESS')));
-			setTimeout(function(){ VD.G_LOADING.fadeOut(); },delay||1500);
-		},
-		failed:function(txt,delay){
-			VD('html','HTML').loaded();
-			VD.G_LOADING.html(Aps.gui.icon.failed+(txt||i18n('FAILED')));
-			setTimeout(function(){ VD.G_LOADING.fadeOut(); },delay||2500);
-		},
-		cancel:function(){
-			VD('html','HTML').loaded();
-			VD.G_LOADING.fadeOut();
-		}
-	},
-
 	errorFocus:function(el){
 		this.animateOn ? vdom(el).animateCss('errorFocus slow') : vdom(el).addClass('errorFocus');
 		vdom(el).focus();	
-	},
-	toast:function(title,status,delay){
-		var msg = VD(ApsMd.core.toast);
-		vdom('html','HTML').append(msg);
-		msg.find( '.ApsToast-message' ).html( Aps.gui.icon[status||'info'] + (title || i18n('ERROR')) );
-		// Aps.gui.animateOn ? msg.animateCss('fadeInDown faster') : msg.fadeIn();
-		msg.fadeIn();
-		setTimeout(function(){
-			// Aps.gui.animateOn
-			// ? msg.animate('fadeOutUp faster',function(){ msg.remove(); })
-			// : msg.fadeOut();
-			msg.fadeOut();
-		},delay||3000);
-	},
-	submiting:function(title,status){
-		var msg = VD(ApsMd.core.toast);
-		vdom('html','HTML').append(msg);
-		msg.find( '.ApsToast-message' ).html( Aps.gui.icon[status||'loading'] + (title ||i18n('SUBMITING')) );
-		Aps.gui.animateOn ? msg.animateCss('fadeInDown faster') : msg.fadeIn();
-	},
-	submitProgress:function(title,progress){
-		if (!vdom('.ApsToast')) {
-			var msg = VD(ApsMd.core.toast);
-			vdom('html','HTML').append(msg);
-			vdom('.ApsToast').find( '.ApsToast-message' ).html( Aps.gui.icon[status||'loading'] + (title ||i18n('SUBMITING')) );
-		}
-		if (!vdom('.progress')) {
-			vdom('.ApsToast').append("<div class='progress'><div class='progressBar bg-primary'></div></div>");
-		}
-		vdom('.progress .progressBar').attr('style','width:'+progress+'%;');
-	},
-	submited:function(title,status,delay){
-		vlist( '.ApsToast' ).remove();
-		var msg = VD(ApsMd.core.toast);
-		vdom('html','HTML').append(msg);
-		msg.find( '.ApsToast-message' ).html( Aps.gui.icon[status||'success'] + (title || i18n(status==='success'?'SUBMIT_SUC':'SUBMIT_FAL')) );
-		setTimeout(function(){
-			// Aps.gui.animateOn
-			// ? msg.animateCss('fadeOutUp faster',function(){ msg.remove(); })
-			// : msg.remove();
-			msg.fadeOut();
-		},delay?2500:1500);
 	},
 
 	cityPicker:function(){
 		var cityPicker = ApsMd.core.cityPicker;
 		vdom('body').append(cityPicker);
 	},
-
-	popup:function(title,content,type,optionsOrOkCall){
-
-		var options = ( typeof optionsOrOkCall == 'function' ) ? {} : (optionsOrOkCall || {} );
-
-		var _popup  = {};
-			_popup.title      = title   || 0;
-			_popup.type       = type    || 'alert';
-			_popup.okText     = options.okTxt || i18n('OK');
-			_popup.cancelText = options.cancelTxt || i18n('CANCEL');
-
-		var _okCall     = options.onOk || ( typeof optionsOrOkCall == 'function' ? optionsOrOkCall : 0 );
-		var _cancelCall = options.onCancel || 0;
-
-		var popup  = VD(Aps.mixer.mix(ApsMd.core.popup,_popup));
-		vdom('html','HTML').append(popup);
-
-		popup.find('.contents').html(content||'');
-
-		var _view        = popup.find('.view');
-		var _okButton    = popup.find('.button.ok');
-		var _cancelButton= popup.find('.button.cancel');
-
-		if( Aps.gui.animateOn ){
-			_view.animateCss('pulseIn faster');
-		}else{
-			popup.fadeIn();
-		}
-
-		var _close = function(){
-			if( Aps.gui.animateOn ){
-				_view.animateCss('pulseOut fast');
-				popup.fadeOut();
-			}else{
-				popup.fadeOut();
-			}
-		}
-
-		var _ok = function(){
-			if( !_okCall ){
-				_close();
-			}else if(_okCall){
-				_okCall();_close();
-			}
-			return ;
-		}
-
-		var _cancel = function(){
-			( !_cancelCall || _cancelCall() ) && _close(); 
-			return ;
-		}
-
-		_okButton     && _okButton.click(_ok);		
-		_cancelButton && _cancelButton.click(_cancel);
-
-	},
-
-	alert:  function( title,content,options){ this.popup(title,content,'alert',options); },
-	confirm:function( title,content,options){ this.popup(title,content,'confirm',options); },
-	form:   function( title,content,options){ this.popup(title,content,'form',options);	},
 
 	onBlur:function( selector ){
 		var _vd = VD(selector);
@@ -1979,44 +2031,6 @@ Aps.gui        = { // ! 界面交互  # basic gui
 	noBlur:function( selector ){
 		var _vd = VD(selector);
 		_vd = _vd.removeClass('onBlur').removeClass('noBlur');
-	},
-
-	propup:function(title,content){
-
-		var _prop = VD(ApsMd.core.propup);
-
-		VD('html','HTML').append(_prop);
-
-		var _title    = _prop.find( '.ApsPropupMain h4' );
-		var _propBg   = _prop.find( '.ApsPropupSpace' );
-		var _propMain = _prop.find( '.ApsPropupMain' );
-		var _closeBtn = _prop.find( '.ApsPropupClose' );
-		var _container= _prop.find( '.ApsPropupMain .ApsPropupContent .row p' );
-
-		_title.html( title );
-		_container.html( content );
-
-		if( Aps.gui.animateOn ){
-			_prop.show();
-			_propBg.fadeIn();
-			_propMain.animate(ApsMd.animate.popIn,300);
-		}else{
-			_prop.fadeIn();
-		}
-		Aps.gui.onBlur('#VIEW');
-
-		var _close = function(){
-
-			if( Aps.gui.animateOn ){
-				_propMain.animate(ApsMd.animate.popOut,300,function(){_prop.remove()});
-				_propBg.fadeOut();
-			}else{
-				_prop.fadeOut();	    	
-			}
-			Aps.gui.noBlur('#VIEW');
-		}
-		_propBg.click(_close);		
-		_closeBtn.click(_close);
 	},
 
 	menu:function(title,menus,cancelTitle,cancelCall){ // menus [{'title','call':function(){}}]
@@ -2055,7 +2069,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		var cr = controler ? VD(controler) : vd.parent().find('span');
 		vd.toggleClass('closed');
 		cr.find('span') && cr.find('span').text(vd.hasClass('closed')?'展开':'收起');
-		cr.find('.ApsIcon').toggleClass('I-bottom').toggleClass('I-top');
+		cr.find('.a-icon').toggleClass('I-bottom').toggleClass('I-top');
 	}
 
 }
@@ -2154,46 +2168,57 @@ Aps.router     = Aps.fn({ // ! 路由控制  # router
 
 	},
 	
-	newWindow:function( url, params, options, responseCall ){
-		// use JS API postMessage
+    // 新窗口打开
+    // 由于openWindow不允许发送Post参数 所以可以在内容小时发送Get 或者通过JS在浏览器通讯发送数据
+    newWindow:function( url, params, options, responseCall ){
+        // use JS API postMessage
 
-		var options= options || {};
-		var width  = options.width||375; //弹出窗口的宽度;
-		var height = options.height||667; //弹出窗口的高度;
-		var top    = options.top ||( window.screen.availHeight-30-height )/2; //获得窗口的垂直位置;
-		var left   = options.left||( window.screen.availWidth-10-width )/2; //获得窗口的水平位置;        
-		var origin = options.origin || "*";
+        var options= options || {};
+        var width  = options.width||375; //弹出窗口的宽度;
+        var height = options.height||667; //弹出窗口的高度;
+        var top    = options.top ||( window.screen.availHeight-30-height )/2; //获得窗口的垂直位置;
+        var left   = options.left||( window.screen.availWidth-10-width )/2; //获得窗口的水平位置;
+        var origin = options.origin || "*";
 
-		var _window = window.open(url,'_blank',"height="+height+", width="+width+", top="+top+", left="+left+", menubar=no,location=no,resizable=no,scrollbars=yes,status=no");  
-	
-		var k = 0;
-		var _link  = setInterval(function(){
-			_window.postMessage('hello',origin);
-			if (k>19){ clearInterval(_link);}
-			k++;
-		},500);
+        var menubar    = options.menubar    ? 'yes' : 'no';
+        var location   = options.location   ? 'yes' : 'no';
+        var resizable  = options.resizable  ? 'yes' : 'no';
+        var scrollbars = options.scrollbars ? 'yes' : 'no';
+        var status     = options.status     ? 'yes' : 'no';
 
-		var _linkDone = function(){
+        var windowFeatures = "height="+height+",width="+width+",top="+top+",left="+left+",menubar="+menubar+",location="+location+",resizable="+resizable+",scrollbars=yes,status="+status;
 
-			clearInterval(_link);
-			_window.postMessage(params,origin);
+        var _window = window.open(url,'_blank',windowFeatures );
 
-		};
+        var k = 0;
+        var _link  = setInterval(function(){
+            _window.postMessage('hello',origin);
+            if (k>19){ clearInterval(_link);}
+            k++;
+        },500);
 
-		var _response = function(message){
+        var _linkDone = function(){
 
-			if(message.data==='ok'){
-				clearInterval(_link);
-				_linkDone();
-			}
-			if (typeof responseCall=='function'){
-				responseCall(message);
-			}
-		};
+            clearInterval(_link);
+            _window.postMessage(params,origin);
 
-		window.addEventListener('message',_response,origin);
+        };
 
-	},
+        var _response = function(message){
+
+            if(message.data==='ok'){
+                clearInterval(_link);
+                _linkDone();
+            }
+            if (typeof responseCall=='function'){
+                responseCall(message);
+            }
+        };
+
+        window.addEventListener('message',_response,origin);
+
+    },
+
 
 	close: function(delay) {
 
@@ -3189,6 +3214,23 @@ Aps.former     = Aps.fn({ // ? 表单
 
 	 */
 
+	enableClear:function( fieldOrSelector ){
+
+		if( fieldOrSelector._vlist ){
+
+			for( var k in fieldOrSelector.list ){
+				Aps.former.enableClear( fieldOrSelector.list[k] );
+			}
+			return;
+		}
+
+		var field = VD(fieldOrSelector);
+
+		var clearBtn = VD('<i class="a-icon I-error a-field-clear"></i>');
+
+
+	},
+
 	generateField  :function(opt){        // 生成表单项 
 
 		var require       = opt.require ? 'require' : '' ;      // ! 必填      # is required     
@@ -3210,12 +3252,12 @@ Aps.former     = Aps.fn({ // ? 表单
 		var fieldid  = 'f_'+fieldname;
 
 		Aps.dom.create('div',fieldid,[require,valid,'field'],{
-				fieldtype:fieldtype,
-				fieldname:fieldname,
-				checktype:checktype,
-				length:length,
-				form:formname,
-				style:hide?'display:none;':'',
+				'a-field-type':fieldtype,
+				'a-field-name':fieldname,
+				'a-field-check':checktype,
+				'a-field-length':length,
+				'a-form':formname,
+				'style':hide?'display:none;':'',
 			}
 		);
 
@@ -3228,14 +3270,14 @@ Aps.former     = Aps.fn({ // ? 表单
 		switch (fieldtype){
 			case 'text':
 			vdom[fieldid].append(
-				Aps.dom.create('span','m_'+formname+fieldname,['mainfield',fieldname])
+				Aps.dom.create('span','m_'+formname+fieldname,['a-field-main',fieldname])
 			);
 			case 'input':
 			case 'button':
 			case 'textarea':
 			case 'select':
 			vdom[fieldid].append(
-				Aps.dom.create(fieldtype,'m_'+formname+fieldname,['mainfield',fieldname],{
+				Aps.dom.create(fieldtype,'m_'+formname+fieldname,['a-field-main',fieldname],{
 					placeholder:placeholder,
 					value:value,
 					type:inputtype,
@@ -3307,18 +3349,44 @@ Aps.former     = Aps.fn({ // ? 表单
 
 		list.list.forEach(function(vd){
 
-			Aps.former.tmp[vd.attr('fieldname')] = Aps.former.getFieldValue(vd);
+			Aps.former.tmp[vd.attr('a-field-name')] = Aps.former.getFieldValue(vd);
 			vd.removeClass('valid');
 
 			vd.on('change',function(vd,e){
-				console.log(vd);
-				if( Aps.former.tmp[vd.attr('fieldname')] == Aps.former.getFieldValue(vd) ){
+
+				if( Aps.former.tmp[vd.attr('a-field-name')] == Aps.former.getFieldValue(vd) ){
 					vd.removeClass('valid');
 				}else{
 					vd.addClass('valid');
 				}
 			});
 
+		});
+	},
+
+	// 切换字段 (  )
+	switchField:function( vdomOrSelector ) {
+
+		var selector = VD(vdomOrSelector || '.a-field-switch');
+		if( !selector ){return;}
+
+		selector = selector.hasClass('a-field-main') ? selector : selector.find('.a-field-main');
+
+		selector.bind('onchange',function(){
+			var type = selector.value();
+
+			var vl = VL('.a-field.a-field-switch');
+
+			if(vl && type){
+
+				for( var k in vl.list ){
+					if( vl.list[k].attr('a-field-switch').indexOf(type)>-1 ){
+						vl.list[k].addClass('valid').removeClass('invalid');
+					}else{
+						vl.list[k].removeClass('valid').addClass('invalid');
+					}
+				}
+			}
 		});
 	},
 
@@ -3337,7 +3405,7 @@ Aps.former     = Aps.fn({ // ? 表单
 
 		var len  = list.length;
 		var ok   = 0;
-
+		this.form = {};
 		for (var i = 0; i < list.length; i++) {
 			if(this.checkField(list[i],passRequire||0)){
 				ok++;
@@ -3352,43 +3420,64 @@ Aps.former     = Aps.fn({ // ? 表单
 
 	getFieldValue:function(field){
 
-		var type         = field.attr('fieldtype');
-		var	name         = field.attr('fieldname');
+		var type         = field.attr('a-field-type');
+		var	name         = field.attr('a-field-name');
+		var value = null;
 
 		switch (type){
 			case 'input':
+			case 'number':
 			case 'select':
 			case 'textarea':
-			var value = field.find('.mainfield').value();
+			value = field.find('.a-field-main').value() || null;
 			break;
 
 			case 'radio':
-			var value = field.find('input:checked')?field.find('input:checked').value():'';
-			break;
+				value = field.find('input.a-field-main').property('checked')?field.find('input.a-field-main').value():null;
+				break;
+
+			case 'switch':
+				value = field.find('input.a-field-main').property('checked')?1:0;
+				break;
 
 			case 'checkbox':
 				if(field.finds('input:checked')){
 					var v = [];
 					field.finds('input:checked').each(function(target){
-						v.push(target.value());
+						if( target.property('checked') ){
+							v.push(target.value());
+						}
 					});
 					// value = JSON.stringify(v);
 					value = v;
 				}else{
-					value = '';
+					value = null;
 				}
 			break;
 
 			case 'text':
-			var value = field.find('span.mainfield').text();
+			value = field.find('span.a-field-main').text() || null;
 			break;
 
 			case 'summernote':
-			var value = field.find('.note-editable.panel-body').html();
+			value = field.find('.note-editable.panel-body').html();
 			break;
 
-			case 'number':
-			var value = parseFloat(field.find('.mainfield').value());
+			// Select2 Multiple selections
+			case 'muselect':
+			var selections = field.finds('.select2-selection__choice');
+			if( selections ){
+				value = [];
+				var optionsVL = field.finds('.a-field-main option');
+				var options = [];
+				for( var i in optionsVL.list ){
+					options[ optionsVL.list[i].text() ] = optionsVL.list[i].value();
+				}
+				for( var i in selections.list){
+					var v = options[selections.list[i].attr('title')];
+					if( v ){ value.push(v); }
+				}
+			}
 			break;
 		}
 		return value;
@@ -3398,44 +3487,44 @@ Aps.former     = Aps.fn({ // ? 表单
 		
 		var passRequire  = passRequire || 0;
 		var required     = field.hasClass('require') && field.hasClass('valid');
-		var type         = field.attr('fieldtype');
-		var	name         = field.attr('fieldname');
-		var	formname     = field.attr('form');
-		var checktype    = field.attr('checktype') || 0;
+		var type         = field.attr('a-field-type');
+		var	name         = field.attr('a-field-name');
+		var	formname     = field.attr('a-form');
+		var checktype    = field.attr('a-field-check') || 0;
 		var label        = field.find('label');
-		var length       = parseInt(field.attr('length'));
-		var placeholder  = field.find('.mainfield').attr('placeholder') || '' ;
+		var length       = parseInt(field.attr('a-field-length'));
+		var placeholder  = field.find('.a-field-main').attr('placeholder') || '' ;
 
 		var valid        = field.hasClass('valid') ? true : false;
 
 		var value = Aps.former.getFieldValue(field);
 
-		if (!passRequire && required && (( value!==0 && !value ) || value == '' || value== ' ')) {
+		if (!passRequire && required && !defined(value) ) {
 
-			Aps.gui.alert(
-				i18n('WRONG_INPUT'),
-				i18n('FIELD_REQUIRE',{txt:(label?label.text():placeholder)}),
-				{onOk:function(){ field.find('.mainfield').focus();}}
-			);
+			Aps.gui.toast( i18n('FIELD_REQUIRE',{txt:(label?label.text():placeholder)}), 3000, 'failed' );
+			if( field.find('.a-field-main') ){
+				field.find('.a-field-main').focus();
+			}
 			return false;
 
 		}else{
 
-			if (!valid) {
+			if (!valid || !defined(value) ) {
 				// this.form[name]=value;
 				return true;	
 			}
 
-			if (length<value.length) {	
+			if ( length < value.length ) {	
 
-				Aps.gui.alert(i18n('WRONG_INPUT'),i18n('WRONG_LENGTH',{txt:(label.text()||placeholder),length:length}));
+				Aps.gui.toast( i18n('WRONG_LENGTH',{txt:(label.text()||placeholder),length:length}),0, 'failed' );
 				field.find(type).focus();
 
 				return false;
 			}
 
 			if(this.checkType(value,checktype,field.find(type))){
-				if (value) {
+				if (defined(value)) {
+					if( type == 'number' ){ value = parseFloat(value); }
 					if (name.indexOf('.')>0) {
 						this.form = Aps.mixer.setChildValue(this.form,name,value);
 					}else{
@@ -3532,7 +3621,7 @@ Aps.former     = Aps.fn({ // ? 表单
 
 	confirm        :function(data,delay){     // 提交确认 
 
-		Aps.gui.submited();
+		Aps.gui.submitted();
 		
 		if (data.status!==0) {
 
@@ -3637,7 +3726,7 @@ Aps.user       = Aps.fn({ // ! 用户对象
 
 	getUserid:function(){
 
-		if ( this.userid==false || typeof(this.userid)=='undefined' ) {
+		if ( this.userid==false || !defined(this.userid) ) {
 
 			this.quickLoginOn && Aps.user.quickLogin('.app');
 			return false;
@@ -3647,7 +3736,7 @@ Aps.user       = Aps.fn({ // ! 用户对象
 
 	getToken:function(){
 
-		if (this.token==false || typeof(this.token)=='undefined') {
+		if (this.token==false || !defined(this.token)) {
 
 			Aps.user.quickLogin('.app');
 			return false;
@@ -3670,12 +3759,12 @@ Aps.user       = Aps.fn({ // ! 用户对象
 
 	fingerOauth:function(sCall,fCall,message){
 
-		if(typeof plus=='undefined'){
-			Aps.gui.toast(i18n('FINGER_NOT_SUPPORT'),'warning',2000);
+		if(!defined(plus)){
+			Aps.gui.toast(i18n('FINGER_NOT_SUPPORT'),2000,'warning');
 			return;
 		}
 
-		if(typeof plus!=='undefined' && plus.fingerprint.isSupport()&&plus.fingerprint.isEnrolledFingerprints()){
+		if(defined(plus) && plus.fingerprint.isSupport() && plus.fingerprint.isEnrolledFingerprints()){
 
 			plus.fingerprint.authenticate(function(){
 				if( typeof sCall == 'function' ){ sCall(); }
@@ -3684,8 +3773,8 @@ Aps.user       = Aps.fn({ // ! 用户对象
 			}, {
 				message:message||i18n('NEED_FINGER_OAUTH')
 			});
-		}else if(typeof plus!=='undefined' && !plus.fingerprint.isSupport()){
-			Aps.gui.toast(i18n('FINGER_NOT_SUPPORT'),'warning',2000);
+		}else if( !defined(plus) && !plus.fingerprint.isSupport()){
+			Aps.gui.toast(i18n('FINGER_NOT_SUPPORT'),2000,'warning');
 		}else{
 			if( typeof sCall == 'function' ){ sCall(); }
 		}
@@ -3781,7 +3870,7 @@ Aps.user       = Aps.fn({ // ! 用户对象
 
 	logout:function(){
 
-		if(!Aps.user.userid){ Aps.gui.toast(i18n('NEED_LOGIN'),i18n('WARNING'));return; };
+		if(!Aps.user.userid){ Aps.gui.toast(i18n('NEED_LOGIN'),0,i18n('WARNING'));return; };
 
 		Aps.gui.confirm(i18n('SIGN_OUT'),i18n('CONFIRM_OUT'),{
 			onOk:function(){
@@ -3870,9 +3959,9 @@ Aps.user       = Aps.fn({ // ! 用户对象
 	updateInfoCall:function(data){
 
 		if (!Aps.cajax.successful(data)){
-			Aps.gui.toast(data.message||'Network Error!',data.status?'success':'warning'); 
+			Aps.gui.toast(data.message||'Network Error!',3000,data.status?'success':'warning'); 
 		}else{
-			Aps.gui.toast(data.message||'Saved!','success');
+			Aps.gui.toast(data.message||'Saved!',300,'success');
 		}
 	},
 
@@ -3885,7 +3974,7 @@ Aps.user       = Aps.fn({ // ! 用户对象
 	personalInfoCall:function(data){
 
 		if (!Aps.cajax.successful(data)){
-			if (data.status===9999) { Aps.user.quickLogin(); }else{ Aps.gui.toast(data.message||'Network Error!',data.status?'success':'warning'); }
+			if (data.status===9999) { Aps.user.quickLogin(); }else{ Aps.gui.toast(data.message||'Network Error!',5000,data.status?'success':'warning'); }
 			return;
 		}
 
@@ -4074,7 +4163,7 @@ Aps.user       = Aps.fn({ // ! 用户对象
 
 			Aps.gui.confirm(i18n('AUTHORATION'),i18n('NEED_LOGIN'),{
 				onOk:function(){
-					vdom('.ApsPopup').remove();
+					vdom('.Apsmodal').remove();
 					Aps.user.quickLoginOn ? Aps.user.quickLogin() : Aps.router.open('login.html');
 				},
 				onCancel:function(){
@@ -4130,7 +4219,7 @@ Aps.promotion  = Aps.fn({ // ? 推广中心
 	check:function(){
 
 		this.init();
-		if ( typeof(this.promoterid)=='undefined' || this.promoterid==='' ) return false; // 是否有id
+		if ( !defined(this.promoterid) || this.promoterid==='' ) return false; // 是否有id
 
 		if ( this.promoteexpire < parseInt((new Date()).getTime()/1000) ){
 
@@ -4156,7 +4245,7 @@ Aps.promotion  = Aps.fn({ // ? 推广中心
 			var data = canvas.toDataURL("image/jpg");
 			VD(element).html("<img src="+data+">");
 
-			Aps.gui.submited('生成成功,请长按图片保存到手机 或 直接分享给朋友!');
+			Aps.gui.submitted('生成成功,请长按图片保存到手机 或 直接分享给朋友!');
 
 		});
 
@@ -4326,35 +4415,48 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 	mode:'oss',
 	galleryMd:"\
-		<div class='banners swipe-slide uploaderGallery uploaderGallery_{{idx}}'>\
-		<img src='{{url}}'>\
-		<div onclick=\"Aps.uploader.upFile({{idx}});\" class='uploaderControl up'><i class='ApsIcon Aps-up'></i> 上移</div>\
-		<div onclick=\"Aps.uploader.downFile({{idx}});\" class='uploaderControl down'><i class='ApsIcon Aps-down'></i> 下移</div>\
-		<div onclick=\"Aps.uploader.removeFile({{idx}});\" class='uploaderControl remove'><i class='ApsIcon Aps-close'></i> 删除</div>\
+		<li class='list-group-item'>\
+		<div class='row align-items-center uploaderGallery uploaderGallery_{{idx}}'>\
+		  <div class='col-auto'>\
+			<div class='avatar avatar-lg avatar-4by3'><img src='{{url}}!s' alt='{{url}}' class='avatar-img rounded'></div>\
+		  </div>\
+		  <div class='col ml-n2'>\
+			<h4 class='mb-1 name'>{{mediaid}}</h4>\
+			<p class='card-text small text-muted mb-1'>{{size}} {{type}}</p>\
+			<p class='card-text small text-muted'>{{url}}</p>\
+		  </div>\
+		  <a onclick='Aps.uploader.upFile({{idx}})'  class='btn btn-md btn-white fe fe-arrow-up mr-2'></a>\
+		  <a onclick='Aps.uploader.downFile({{idx}})' class='btn btn-md btn-white fe fe-arrow-down mr-2'></a>\
+		  <a onclick='Aps.uploader.removeFile({{idx}})' class='btn btn-md btn-white fe fe-delete text-danger mr-3'></a>\
 		</div>\
+		</li>\
 		",
 	videosMd:"\
 		<div class='banners swipe-slide uploaderGallery uploaderVideo_{{idx}}'>\
 		<video controls width='100%' src=\"{{url}}\">浏览器不支持视频标签，请使用现代浏览器如：Chrome,360极速,Safari,Firefox...</video>\
-		<div onclick=\"Aps.uploader.upFile({{idx}},'videos');\" class='uploaderControl up'><i class='ApsIcon Aps-up'></i> 上移</div>\
-		<div onclick=\"Aps.uploader.downFile({{idx}},'videos');\" class='uploaderControl down'><i class='ApsIcon Aps-down'></i> 下移</div>\
-		<div onclick=\"Aps.uploader.removeFile({{idx}},'videos');\" class='uploaderControl remove'><i class='ApsIcon Aps-close'></i> 删除</div>\
+		<div onclick=\"Aps.uploader.upFile({{idx}},'videos');\" class='uploaderControl up'><i class='a-icon I-up'></i> 上移</div>\
+		<div onclick=\"Aps.uploader.downFile({{idx}},'videos');\" class='uploaderControl down'><i class='a-icon I-down'></i> 下移</div>\
+		<div onclick=\"Aps.uploader.removeFile({{idx}},'videos');\" class='uploaderControl remove'><i class='a-icon I-close'></i> 删除</div>\
 		</div>\
 		",
 	optionsMd:"\
-		<div class='banners swipe-slide uploaderOptions uploaderOptions_{{idx}}'>\
-		<p>{{title}}</p>\
-		<div onclick=\"Aps.uploader.upFile({{idx}},'options');\" class='uploaderControl up'><i class='ApsIcon Aps-up'></i> 上移</div>\
-		<div onclick=\"Aps.uploader.downFile({{idx}},'options');\" class='uploaderControl down'><i class='ApsIcon Aps-down'></i> 下移</div>\
-		<div onclick=\"Aps.uploader.removeFile({{idx}},'options');\" class='uploaderControl remove'><i class='ApsIcon Aps-close'></i> 删除</div>\
+		<li class='list-group-item py-3'>\
+		<div class='row align-items-center uploaderOptions uploaderOptions_{{idx}}'>\
+		  <div class='col'>\
+			<h4 class='mb-1 name'>{{title}}</h4>\
+		  </div>\
+		  <a onclick='Aps.uploader.upFile({{idx}},\"options\");'  class='btn btn-sm btn-white fe fe-arrow-up mr-2'></a>\
+		  <a onclick='Aps.uploader.downFile({{idx}},\"options\");' class='btn btn-sm btn-white fe fe-arrow-down mr-2'></a>\
+		  <a onclick='Aps.uploader.removeFile({{idx}},\"options\");' class='btn btn-sm btn-white fe fe-delete text-danger mr-3'></a>\
 		</div>\
-	",		
+		</li>\
+		",	
 	textsMd:"\
 		<div class='banners swipe-slide uploaderOptions uploaderOptions_{{idx}}'>\
 		<p>{{v}}</p>\
-		<div onclick=\"Aps.uploader.upFile({{idx}},'options');\" class='uploaderControl up'><i class='ApsIcon Aps-up'></i> 上移</div>\
-		<div onclick=\"Aps.uploader.downFile({{idx}},'options');\" class='uploaderControl down'><i class='ApsIcon Aps-down'></i> 下移</div>\
-		<div onclick=\"Aps.uploader.removeFile({{idx}},'options');\" class='uploaderControl remove'><i class='ApsIcon Aps-close'></i> 删除</div>\
+		<div onclick=\"Aps.uploader.upFile({{idx}},'options');\" class='uploaderControl up'><i class='a-icon I-up'></i> 上移</div>\
+		<div onclick=\"Aps.uploader.downFile({{idx}},'options');\" class='uploaderControl down'><i class='a-icon I-down'></i> 下移</div>\
+		<div onclick=\"Aps.uploader.removeFile({{idx}},'options');\" class='uploaderControl remove'><i class='a-icon I-close'></i> 删除</div>\
 		</div>\
 	",	
 	gallery:[],
@@ -4411,9 +4513,8 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 	galleryUploaded:function(data,params){
 
 		Aps.uploader.gallery = Aps.uploader.gallery || [];
-		Aps.uploader.gallery.push({
-			url:data.content.url,
-		});
+
+		Aps.uploader.gallery.push(data.content);
 
 		var galleryList = vdom(params.input).value();
 		galleryList = galleryList ? JSON.parse(galleryList) : [];
@@ -4441,9 +4542,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 	videosUploaded:function(data,params){
 
 		Aps.uploader.videos = Aps.uploader.videos || [];
-		Aps.uploader.videos.push({
-			url:data.content.url,
-		});
+		Aps.uploader.videos.push(data.content);
 
 		var videosList = vdom(params.input).value();
 		videosList = videosList ? JSON.parse(videosList) : [];
@@ -4455,7 +4554,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 	galleryInit:function(){
 
-		var gallery = vdom('#gallery') ? JSON.parse(vdom('#gallery').value()) : 0;
+		var gallery = vdom('#gallery') && vdom('#gallery').value() ?  JSON.parse(vdom('#gallery').value()) : null;
 		Aps.uploader.galleryList = gallery;
 		Aps.uploader.gallery = [];
 
@@ -4466,6 +4565,22 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 		}
 
 		Aps.uploader.refreshGalleryPreview();
+
+	},
+
+	videosInit:function(){
+
+		var videos = vdom('#videos') ? JSON.parse(vdom('#videos').value()) : 0;
+		Aps.uploader.videosList = videos;
+		Aps.uploader.videos = [];
+
+		if (videos){
+			for (var i = 0; i < videos.length; i++) {
+				Aps.uploader.videos.push({url:videos[i]});
+			}
+		}
+
+		Aps.uploader.refreshVideosPreview();
 
 	},
 
@@ -4488,47 +4603,31 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 	},
 
-	videosInit:function(){
-
-		var videos = vdom('#videos') ? JSON.parse(vdom('#videos').value()) : 0;
-		Aps.uploader.videosList = videos;
-		Aps.uploader.videos = [];
-
-		if (videos){
-			for (var i = 0; i < videos.length; i++) {
-				Aps.uploader.videos.push({url:videos[i]});
-			}
-		}
-
-		Aps.uploader.refreshVideosPreview();
-
-	},
-
 	refreshGalleryPreview:function(clear){
 		vdom('#galleryList').empty();
 		vdom('#gallery').el.value= '';
-		if (clear) { return; }
+		if (clear || !defined(Aps.uploader.gallery) ) { return; }
 		var list = Aps.mixer.loop(Aps.uploader.galleryMd,Aps.uploader.gallery);
 		vdom('#galleryList').html(list);
 		vdom('#gallery').value(JSON.stringify(Aps.uploader.galleryList));
 	},
 
-	refreshOptionsPreview:function(clear){
-		vdom('#optionsList').empty();
-		vdom('#options').el.value= '';
-		if (clear) { return; }
-		var list = Aps.mixer.loop(Aps.uploader.optionsMd,Aps.uploader.options);
-		vdom('#optionsList').html(list);
-		vdom('#options').value(JSON.stringify(Aps.uploader.optionsList));
-	},
-
 	refreshVideosPreview:function(clear){
 		vdom('#videosList').empty();
 		vdom('#videos').el.value= '';
-		if (clear) { return; }
+		if (clear || !defined(Aps.uploader.videos) ) { return; }
 		var list = Aps.mixer.loop(Aps.uploader.videosMd,Aps.uploader.videos);
 		vdom('#videosList').html(list);
 		vdom('#videos').value(JSON.stringify(Aps.uploader.videosList));
+	},
+
+	refreshOptionsPreview:function(clear){
+		vdom('#optionsList').empty();
+		vdom('#options').el.value= '';
+		if (clear || !defined(Aps.uploader.options) ) { return; }
+		var list = Aps.mixer.loop(Aps.uploader.optionsMd,Aps.uploader.options);
+		vdom('#optionsList').html(list);
+		vdom('#options').value(JSON.stringify(Aps.uploader.optionsList));
 	},
 
 	upFile:function(idx,type){
@@ -4587,19 +4686,29 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 		var type = type || 'gallery';
 
-		vdom('#fileList div:nth-child('+(idx+1)+')').remove();
+		vdom('#'+ type +'List :nth-child('+(idx+1)+')').remove();
 
 		if(Aps.uploader[type].length <=1){ 
 			Aps.uploader[type] = []; 
 			Aps.uploader[type+'List'] = [];
-			Aps.uploader.refreshGalleryPreview(1);
+			switch(type){
+				case 'gallery':
+				Aps.uploader.refreshGalleryPreview(1);
+				break;
+				case 'videos':
+				Aps.uploader.refreshVideosPreview(1);
+				break;
+				case 'options':
+				Aps.uploader.refreshOptionsPreview(1);
+			};
 			return; 
 		}
 		var g  = [];
 		var gl = [];
 		for(var k in Aps.uploader[type]){
 			if (k!=parseInt(idx)) {
-				g.push({url:Aps.uploader[type][k].url});
+				g.push(Aps.uploader[type][k]);
+				// g.push({url:Aps.uploader[type][k].url});
 				gl.push(Aps.uploader[type+'List'][k]);
 			}
 		}
@@ -4657,7 +4766,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 			runtimes :            'html5,flash,silverlight,html4', // 上传环境
 			multi_selection :      options.multi ? true : false, // 是否支持批量上传
 			unique_names :         true, // 是否自动生成唯一文件名
-			url :  Aps.uploader.mode =='oss' ? CONFIGS.apihost : APILIST.getApiUrl('uploadServer'), // 上传地址
+			url :  Aps.uploader.mode === 'oss' ? CONFIGS.apihost : APILIST.getApiUrl('uploadServer'), // 上传地址
 
 			filters: {
 			  mime_types : [ // 支持的文件类型
@@ -4672,23 +4781,24 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 			init: {
 				PostInit: function() {   // 
 					if (typeof options.PostInit == 'function'){ options.PostInit(uploader); }
-					if (options.uploadBtn){
-						document.querySelector(options.uploadBtn).onclick = function() {
-							OSS.set_upload_param(uploader, '', false);
-							return false;
-						};
-					}
+					VD(options.uploadBtn||('#'+options.selector)).click( function() {
+						OSS.set_upload_param(uploader, '', false , Aps.user);
+						return false;
+					});
 				},
 
 				FilesAdded: function(up, files ) {  // 添加文件
 
+					var listMd = '<div id="{{id}}">{{name}} ( {{formatSize}} )<b></b><div class="progress"><div class="progress-bar" style="width: 0%"></div></div></div>';
 					if (options.fileList) { // 显示进度条
 						plupload.each(files, function(file) {
-							jQuery(options.fileList).append('<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ')<b></b><div class="progress"><div class="progress-bar" style="width: 0%"></div></div></div>');
+							file.formatSize = plupload.formatSize(file.size);
+							var singleFile = VD(Aps.mixer.mix( listMd, file )).id(file.id);
+							VD(options.fileList).append( singleFile );
 						});
 					}
 					if (!options.uploadBtn){ // 没有上传按钮则进行快速上传
-						if (Aps.uploader.mode=='oss')  OSS.set_upload_param(uploader, '', false, options.type);
+						if (Aps.uploader.mode==='oss')  OSS.set_upload_param(uploader, '', false );
 						up.start();
 					}
 					if (typeof options.FilesAdded == 'function'){ options.FilesAdded(uploader); }
@@ -4696,8 +4806,8 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 				BeforeUpload: function(up, file) {
 
-					Aps.gui.submiting('开始上传...');
-					if (Aps.uploader.mode=='oss'){ OSS.set_upload_param(up, file.name, true, options.type);}; 
+					Aps.gui.submitting('开始上传...');
+					if (Aps.uploader.mode==='oss'){ OSS.set_upload_param(up, file.name, true, options.type);};
 					if (typeof options.BeforeUpload == 'function'){ options.BeforeUpload(uploader); }
 				},
 
@@ -4705,12 +4815,11 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 					if (options.progress) {
 
-						var d = document.getElementById(file.id);
-						d.getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
-						var prog = d.getElementsByTagName('div')[0];
-						var progBar = prog.getElementsByTagName('div')[0];
-						progBar.style.width= file.percent+'%';
-						progBar.setAttribute('aria-valuenow', file.percent);
+					  	var dm = VD('#'+file.id);
+					  	dm.find('b').html('<span>' + file.percent + "%</span>");
+
+					  	var progressBar = dm.find('.progress-bar');
+					  	progressBar.css('width',file.percent+'%').attr('aria-valuenow', file.percent);
 		
 					}else{
 						Aps.gui.submitProgress('上传中...',file.percent);
@@ -4720,22 +4829,22 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 				},
 
 				FileUploaded: function(up, file, info) {
-					if (info.status == 200){
+					if (info.status === 200){
 
-						Aps.gui.submited('上传完成');
+						Aps.gui.submitted('上传完成');
 						var res = JSON.parse(info.response);	// 将回调返回的数据转换成json对象
 						if (typeof options.FileUploaded == 'function'){ options.FileUploaded(res,callParams||0); }
 
-					}else if (info.status == 203){ Aps.gui.submited('上传失败，请重试','failed');
-					}else{ Aps.gui.submited('上传失败，请重试','failed'); } 
+					}else if (info.status === 203){ Aps.gui.submitted('上传失败，请重试',2500,'failed');
+					}else{ Aps.gui.submitted('上传失败，请重试',2500,'failed'); } 
 
 				},
 
 				Error: function(up, err) {
-					if (err.code == -600) { Aps.gui.submited("选择的文件太大了");				  
-					}else if (err.code == -601) { Aps.gui.submited("选择的文件后缀不对");
-					}else if (err.code == -602) { Aps.gui.submited("这个文件已经上传过一遍了");
-					}else { Aps.gui.submited("Error xml:" + err.response); }
+					if (err.code === -600) { Aps.gui.submitted("选择的文件太大了",2500,'warning');
+					}else if (err.code === -601) { Aps.gui.submitted("选择的文件后缀不对",2500,'warning');
+					}else if (err.code === -602) { Aps.gui.submitted("这个文件已经上传过一遍了",2500,'warning');
+					}else { Aps.gui.submitted("Error xml:" + err.response,2500,'warning'); }
 
 					if (typeof options.Error == 'function'){ options.Error(uploader); }
 				}
@@ -4758,7 +4867,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 		  runtimes :            'html5,flash,silverlight,html4',             // 上传环境
 		  multi_selection :      false,                                      // 是否支持批量上传
 		  unique_names :         true,                                       // 是否自动生成唯一文件名
-		  url :  Aps.uploader.mode =='oss' ? CONFIGS.apihost : APILIST.getApiUrl('uploadServer'), // 上传地址
+		  url :  Aps.uploader.mode === 'oss' ? CONFIGS.apihost : APILIST.getApiUrl('uploadServer'), // 上传地址
 
 		  filters: {
 			  mime_types : [ // 支持的文件类型
@@ -4777,17 +4886,20 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 			  FilesAdded: function(up, files, type) {  // 添加文件
 
+				var listMd = '<div id="{{id}}">{{name}} ( {{formatSize}} )<b></b><div class="progress"><div class="progress-bar" style="width: 0%"></div></div></div>';
 				plupload.each(files, function(file) {
-					jQuery(options.progress||'#uploadProgress').html('<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ')<b></b><div class="progress"><div class="progress-bar" style="width: 0%"></div></div></div>');
+					file.formatSize = plupload.formatSize(file.size);
+					var singleFile = VD(Aps.mixer.mix( listMd, file )).id(file.id);
+					VD(options.progress||'#uploadProgress').append( singleFile );
 				});
-				if (Aps.uploader.mode=='oss')  OSS.set_upload_param(uploader, '', false, type);
+				if (Aps.uploader.mode==='oss')  OSS.set_upload_param(uploader, '', false, type);
 				up.start();
 
 			  },
 
 			  BeforeUpload: function(up, file) {
 
-				if (Aps.uploader.mode=='oss') OSS.set_upload_param(up, file.name, true, type); 
+				if (Aps.uploader.mode==='oss') OSS.set_upload_param(up, file.name, true, type);
 
 			  },
 
@@ -4799,36 +4911,36 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 			  },
 
 			  FileUploaded: function(up, file, info) {
-				  if (info.status == 200){
+				  if (info.status === 200){
 
-					  Aps.gui.submited('上传完成');
+					  Aps.gui.submitted('上传完成');
 
 					  var res = JSON.parse(info.response);  // 将回调返回的数据转换成json对象
 
 					  if(typeof uploadedCall=='function'){uploadedCall(res,callParams||0);};
 
 				  }
-				  else if (info.status == 203){
-					  Aps.gui.submited('上传失败，请重试');
+				  else if (info.status === 203){
+					  Aps.gui.submitted('上传失败，请重试',2000,'failed');
 				  }else{
-					  Aps.gui.submited('上传失败，请重试');
+					  Aps.gui.submitted('上传失败，请重试',2000,'failed');
 				  } 
 			  },
 
 			  Error: function(up, err) {
-				  if (err.code == -600) {
-					  Aps.gui.submited("选择的文件太大了");
+				  if (err.code === -600) {
+					  Aps.gui.submitted("选择的文件太大了",2000,'warning');
 				  
-				  }else if (err.code == -601) {
+				  }else if (err.code === -601) {
 
-					  Aps.gui.submited("选择的文件后缀不对");
+					  Aps.gui.submitted("选择的文件后缀不对",2000,'warning');
 				  
-				  }else if (err.code == -602) {
+				  }else if (err.code === -602) {
 
-					  Aps.gui.submited("这个文件已经上传过一遍了");
+					  Aps.gui.submitted("这个文件已经上传过一遍了",2000,'warning');
 				  
 				  }else {
-					  Aps.gui.submited("Error xml:" + err.response);
+					  Aps.gui.submitted("Error xml:" + err.response,3500,'failed');
 				  }
 			  }
 		  }
@@ -4867,7 +4979,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 				var target = jQuery(this).attr('data-event');
 
-				if (target == 'uploadImage' || target == 'uploadAudio' || target == 'uploadVideo' ) {
+				if (target === 'uploadImage' || target === 'uploadAudio' || target === 'uploadVideo' ) {
 				
 					jQuery(this).attr('id',uploadConfigs[target].id);
 
@@ -4875,58 +4987,60 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 				}
 			});
-		}
+		};
 
-		function generateSummerNoteUploader(config){
+		var generateSummerNoteUploader = function(options){
 			
 			var uploader = new plupload.Uploader({
 				runtimes :            'html5,flash,silverlight,html4',          // 上传环境
-				browse_button :        config.id,                     // 上传按钮id
+				browse_button :        options.id,                     // 上传按钮id
 				container :            document.getElementById('summerNote'),   // 上传容器
 				multi_selection :      true,                                    // 是否支持批量上传
 				unique_names :         true,                                    // 是否自动生成唯一文件名
-				url :  Aps.uploader.mode =='oss' ? CONFIGS.apihost : APILIST.getApiUrl('uploadServer'), // 上传地址
+				url :  Aps.uploader.mode === 'oss' ? CONFIGS.apihost : APILIST.getApiUrl('uploadServer'), // 上传地址
 
 				filters: {
-				  mime_types : [ config.mime ],
-				  max_file_size : config.limit, //最大只能上传10mb的文件
+				  mime_types : [ options.mime ],
+				  max_file_size : options.limit, //最大只能上传10mb的文件
 				  prevent_duplicates : false, //不允许选取重复文件
 				},
 
 				init: {
 				  PostInit: function() {   // 
-					  // document.getElementById('ossfile_1').innerHTML = '';
-					  document.getElementById(config.id).onclick = function() {
-						  OSS.set_upload_param(uploader, '', false);
-						  return false;
-					  };
+				  	VD(options.uploadBtn||('#'+options.id)).click( function() {
+						OSS.set_upload_param(uploader, '', false , Aps.user);
+						return false;
+					});
 				  },
 
 				  FilesAdded: function(up, files) {  // 添加文件
-					  plupload.each(files, function(file) {
-							jQuery('#'+config.id).parent().parent().append('<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ')<b></b>'
-						  +'<div class="progress"><div class="progress-bar" style="width: 0%"></div></div>'
-						  +'</div>');
-					  });
-					  up.start();
+
+					var listMd = '<div id="{{id}}">{{name}} ( {{formatSize}} )<b></b><div class="progress"><div class="progress-bar" style="width: 0%"></div></div></div>';
+					plupload.each(files, function(file) {
+						file.formatSize = plupload.formatSize(file.size);
+						var singleFile = VD(Aps.mixer.mix( listMd, file )).id(file.id);
+						VD('#summerNoteImageBtn').parent().parent().append( singleFile );
+					});
+					up.start();
 				  },
 
 				  BeforeUpload: function(up, file) {
-					  // OSS.check_object_radio();
+
 					  OSS.set_upload_param(up, file.name, true);
 				  },
 
 				  UploadProgress: function(up, file) {
-					var d = document.getElementById(file.id);
-					d.getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
-					var prog = d.getElementsByTagName('div')[0];
-					var progBar = prog.getElementsByTagName('div')[0];
-					progBar.style.width= file.percent+'%';
-					progBar.setAttribute('aria-valuenow', file.percent);
+
+				  	var dm = VD('#'+file.id);
+				  	dm.find('b').html('<span>' + file.percent + "%</span>");
+
+				  	var progressBar = dm.find('.progress-bar');
+				  	progressBar.css('width',file.percent+'%').attr('aria-valuenow', file.percent);
+
 				  },
 
 				  FileUploaded: function(up, file, info) {
-					  if (info.status == 200){
+					  if (info.status === 200){
 
 						  var res = JSON.parse(info.response);  // 将回调返回的数据转换成json对象
 					  
@@ -4935,47 +5049,47 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 							var Editor = jQuery.summernote.eventHandler.modules.editor;
 							var editable = jQuery('.note-editable.panel-body');
 
-							if(config.type=='image'){
+							if(options.type==='image'){
 
-								Editor.insertImage(editable, res.content.url+((res.content.name.indexOf('.gif')>-1)?'':'!middle'), res.content.name);
+								Editor.insertImage(editable, res.content.url+((res.content.name.indexOf('.gif')>-1)?'':'!m'), res.content.name);
 
-							}else if( config.type=='audio'){
+							}else if( options.type==='audio'){
 
 								var htmlString = '<div class=uploadMedia><audio data-filename="'+res.content.url+'"  src="'+res.content.url+'" controls="controls">您的浏览器不支持 audio 标签。</audio></div>';
 								Editor.pasteHTML(editable, htmlString, res.content.name );
 
-							}else if( config.type=='video'){
+							}else if( options.type==='video'){
 
 								var htmlString = '<div class=uploadMedia><video data-filename="'+res.content.url+'"  src="'+res.content.url+'" controls="controls">您的浏览器不支持 video 标签。</video></div>';
 								Editor.pasteHTML(editable, htmlString, res.content.name);
 
 							}
 
-							jQuery('#'+file.id).remove();
+							VD('#'+file.id).remove();
 							// var d = document.getElementById(file.id);
 
 					  }
-					else if (info.status == 203){
-						alert('上传失败，请重试');
+					else if (info.status === 203){
+						Aps.gui.submitted('上传失败，请重试',2500,'failed');
 					}else{
-						alert('上传失败，请重试');
+						Aps.gui.submitted('上传失败，请重试',2500,'failed');
 					}
 				},
 
 				  Error: function(up, err) {
-					  if (err.code == -600) {
-						  alert("选择的文件太大了");
+					  if (err.code === -600) {
+						  Aps.gui.submitted("选择的文件太大了",2000,'warning');
 					  
-					  }else if (err.code == -601) {
+					  }else if (err.code === -601) {
 
-						  alert("选择的文件后缀不对");
+						  Aps.gui.submitted("选择的文件后缀不对",2000,'warning');
 					  
-					  }else if (err.code == -602) {
+					  }else if (err.code === -602) {
 
-						  alert("这个文件已经上传过一遍了");
+						  Aps.gui.submitted("这个文件已经上传过一遍了",2000,'warning');
 					  
 					  }else {
-						  alert("Error xml:" + err.response);
+						  Aps.gui.submitted("Error xml:" + err.response,2500,'failed');
 					  }
 				  }
 				}
@@ -5121,17 +5235,17 @@ Aps.share      = Aps.fn({ // ? 分享( 二维码分享需要jQ Qrcode )  #share
 
 		var url = url || Aps.share.generateLink(); 
 
-		Aps.gui.propup(title||'长按保存二维码分享',Aps.share.generateQrcode(url));
+		Aps.gui.popup(title||'长按保存二维码分享',Aps.share.generateQrcode(url));
 
 	},
 
-	propShare:function(url,post){
+	popupShare:function(url,post){
 
 		var url = url || Aps.share.generateLink(); 
 
-		if( typeof post == 'undefined' ){
-			var post = VD('#postContainer') || VD('<div></div>').attr('id','postContainer').hide();		
-			VD('.app').append(post);
+		if( !defined(post) ){
+			var post = VD('#a-post-container') || VD('<div></div>').attr('id','a-post-container').hide();		
+			VD('html','HTML').append(post);
 			post.append(
 				VD('<div></div>').attr('id','post').addClass('content post')
 				.append(VD('.swiperContainer').HTML())
@@ -5139,19 +5253,19 @@ Aps.share      = Aps.fn({ // ? 分享( 二维码分享需要jQ Qrcode )  #share
 				.append(Aps.share.generateQrcode(url))
 			);
 		}else{
-			var qrcodeImage =  post.find('.qrcode') || post.find('.qrcodeImage');
+			var qrcodeImage =  post.find('.a-qrcode') || post.find('.a-qrcode-image');
 			qrcodeImage.html(Aps.share.generateQrcode(url));
 		}
 
-		VD('.ApsPropupContent p').html('<div class="c-align"><i class="ApsIcon color-blue I-loading rotation"></i>正在生成海报</div>');
+		VD('.a-popup-content').html('<div class="a-center"><i class="a-icon a-color-blue I-loading rotation"></i>正在生成海报</div>');
 		post.show();
 
 		html2canvas(post.el,{scale:2,useCORS:true,}).then(function(canvas){
 			var data = canvas.toDataURL("image/jpg"); var img = new Image();
 			img.src = data;
 			// img.className = 'post';
-			VD('.ApsPropupContent').addClass('postShare');
-			VD('.ApsPropupContent p').html(img);
+			VD('.a-popup').addClass('postShare');
+			VD('.a-popup-content').html(img);
 			post.hide();
 // 			VD('#postContainer').remove();
 		});
@@ -5210,9 +5324,13 @@ Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk
 		zoom:[5-20],
 		pitch: 60, // 角度
 		viewMode: '3D', // 3d模式
-		mapStyle: 'amap://styles/dark', //主题
+		mapStyle: 'amap://styles/light', //主题 默认 normal,幻影黑 dark,月光银 light,远山黛 whitesmoke,草色青 fresh,雅士灰 grey,涂鸦 graffiti,马卡龙 macaron,靛青蓝 blue,极夜蓝 darkblue,酱籽 wine
 		expandZoomRange: true, // 开启放大缩小
 	},
+	list:[],
+	current:{},
+	marks:[],
+	map:0,
 
 	init:function(containerId,options){
 
@@ -5225,6 +5343,58 @@ Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk
 	clear:function(){
 
 		this.map.clearMap();  // 清除地图覆盖物
+
+	},
+
+	POISearchInit:function(container,inputer,results,location,address){
+
+		var self = this;
+	    self.map = new AMap.Map(container||'container', {
+			// center:[110.3411189,20.03997361],
+			resizeEnable:true,
+			zoom:10,
+			pitch: 60, 			// 角度
+			viewMode: '3D', 	// 3d模式
+			mapStyle: 'amap://styles/light', //主题
+			expandZoomRange: true, // 开启放大缩小
+		});
+
+	    AMapUI.loadUI(['misc/PoiPicker'], function(PoiPicker) {
+
+	        var poiPicker = new PoiPicker({
+	            input: inputer||'searchInput',
+	            placeSearchOptions: {
+	                map: self.map,
+	                pageSize: 10
+	            },
+	            searchResultsContainer: results||'searchResults'
+	        });
+
+	        poiPicker.on('poiPicked', function(poiResult) {
+
+	            poiPicker.hideSearchResults();
+
+	            var source = poiResult.source,
+	                poi = poiResult.item;
+
+	            if (source !== 'search') {
+
+	                //suggest来源的，同样调用搜索
+	                poiPicker.searchByKeyword(poi.name);
+
+	            } else {
+
+	            	self.map.setZoom(17);
+	            	vdom(location||'#location').value(poi.location.lng+','+poi.location.lat);
+	            	vdom(address||'#addressPrompt').value(poi.address);
+	                // console.log(poi);
+	            }
+	        });
+
+	        poiPicker.onCityReady(function() {
+	            poiPicker.searchByKeyword('');
+	        });
+	    });
 
 	},
 
@@ -5270,7 +5440,7 @@ Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk
 
 	addMarks:function(data){
 
-		Aps.gui.globalLoad.start();
+		Aps.gui.loading.start();
 		// console.log(data);
 		var list = data.list ? data.content.list : data;
 
@@ -5289,7 +5459,7 @@ Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk
 		}
 
 		Aps.map.map.setFitView();
-		Aps.gui.globalLoad.success();
+		Aps.gui.loading.success();
 
 	},
 
@@ -5352,7 +5522,63 @@ Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk
 		}
 		return location;
 
-	} });
+	},
+
+
+	getLocation:function(){
+		// console.log(Aps.cache.has('tempLocation'),Aps.cache.get('tempLocation'));
+
+		if (Aps.cache.has('tempLocation')) {
+			console.log(Aps.cache.get('tempLocation'));
+			return Aps.cache.get('tempLocation');
+		}
+
+		if (navigator.geolocation){
+			navigator.geolocation.getCurrentPosition(Aps.map.tempLocation,Aps.map.getLocationFailed);
+		}else{
+			Aps.gui.toast('当前设备不支持定位信息.');
+		}
+		return;
+	},
+
+	getlocationFailed:function(){
+		Aps.gui.toast('无法获取您的位置信息,请允许定位后再试.');
+	},
+
+	tempLocation:function(position){
+
+		var lat = position.coords.latitude;
+		var lng = position.coords.longitude;
+		var location = [lng,lat];
+
+		Aps.cache.add('tempLocation',location,600);
+
+		Aps.scrollView.refresh();
+
+	},
+	
+	Rad:function(d) {    
+	  return d * Math.PI / 180;    
+	},     
+		
+	distance:function(lng1 ,lat1, lng2 ,lat2) {  
+
+		var radLat1 = Aps.map.Rad(lat1);
+		var radLat2 = Aps.map.Rad(lat2);
+		var a = radLat1 - radLat2;
+		var  b = Aps.map.Rad(lng1) - Aps.map.Rad(lng2);
+		var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +
+		Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+		s = s *6378.137 ;// EARTH_RADIUS;
+		s = Math.round(s * 10) / 10; //输出为公里
+		//s=s.toFixed(4);
+		return s;
+
+	}
+
+
+});
+
 Aps.swip       = Aps.fn({ // ! 滑动列表 
 
 	time:0,
@@ -5383,9 +5609,9 @@ Aps.searchbar  = Aps.fn({ // ! 搜索条
 	delay:  500,
 	time:   500,
 	timer:  0,
-	bar:    vdom('.ApsSearchBar'),
-	input:  vdom('.ApsSearchBar .ApsSearchInput'),
-	result: vdom('.ApsSearchResult'),
+	bar:    vdom('.a-searchbar'),
+	input:  vdom('.a-searchbar .a-search-input'),
+	result: vdom('.a-search-result'),
 
 	actionDict:{
 		searchAccount:i18n('ACCOUNTS'),
@@ -5417,13 +5643,13 @@ Aps.searchbar  = Aps.fn({ // ! 搜索条
 
 	isInputDone:function(){
 
-		return this.time<=0 && vdom('#ApsSearchInput').value().length>1;
+		return this.time<=0 && vdom('#a-search-input').value().length>1;
 
 	},
 
 	isInputEmpty:function(){
 
-		return vdom('#ApsSearchInput').value().length==0;
+		return vdom('#a-search-input').value().length==0;
 
 	},
 
@@ -5431,9 +5657,9 @@ Aps.searchbar  = Aps.fn({ // ! 搜索条
 
 		Aps.filters.action = action || 'searchAccount';
 
-		if (!vdom('.ApsSearchBar')) return;
+		if (!vdom('.a-searchbar')) return;
 
-		vdom('.ApsSearchBar .ApsSearchInput').on('input',function(e){
+		vdom('.a-searchbar .a-search-input').on('input',function(e){
 			if(Aps.searchbar.isInputDone()){
 				Aps.searchbar.search();
 			}else if(Aps.searchbar.isInputEmpty()){
@@ -5447,39 +5673,39 @@ Aps.searchbar  = Aps.fn({ // ! 搜索条
 
 	blur:function(){
 
-		vdom('.ApsSearchBar').removeClass('searching'); 
+		vdom('.a-searchbar').removeClass('a-searching'); 
 
 	},
 
 	changeAction:function(action){
 
 		Aps.filters.setAction(action);
-		// vdom('#ApsActionList').hide();
-		vlist('#ApsActionList li').removeClass('current');
-		vdom('#ApsCurrentAction').text(this.actionDict[action]);
-		vdom('#ApsActionList li.'+action).addClass('current');
+		// vdom('#a-action-list').hide();
+		vlist('#a-action-list li').removeClass('current');
+		vdom('#a-action-current').text(this.actionDict[action]);
+		vdom('#a-action-list li.'+action).addClass('current');
 
 	},
 
 	clear:function(){
-		vdom('.ApsSearchBar').removeClass('searching'); 
-		vdom('.ApsSearchBar .ApsSearchInput').value('');
-		vdom('.ApsSearchBar .ApsSearchResult').html("<div class='emptyInfo'>No result.</div>");
+		vdom('.a-searchbar').removeClass('a-searching'); 
+		vdom('.a-searchbar .a-search-input').value('');
+		vdom('.a-searchbar .a-search-result').html("<div class='a-empty'>No result.</div>");
 	},
 
 	search:function(){
 
-		vdom('.ApsSearchBar').addClass('searching');
+		vdom('.a-searchbar').addClass('a-searching');
 
 		this.setAction(Aps.filters.action);
-		this.setParams({keyword:vdom('.ApsSearchBar .ApsSearchInput').value(),page:1,size:25});
+		this.setParams({keyword:vdom('.a-searchbar .a-search-input').value(),page:1,size:25});
 		if (this.needLogin){
 			this.addHeaders({'userid':Aps.user.userid,'token':Aps.user.token,'scope':Aps.user.scope});
 		}
 		this.setCallback(this.searchCall);
 		this.setExpire(30);
 
-		Aps.gui.localLoad.start('.ApsSearchResult');
+		Aps.gui.localLoad.start('.a-search-result');
 		Aps.cajax.request(this.options);
 
 	},
@@ -5500,7 +5726,7 @@ Aps.qrcode      = {
 		width		: 256,
 		height		: 256,
 		typeNumber	: -1,
-		correctLevel	: typeof QRErrorCorrectLevel!='undefined' ? QRErrorCorrectLevel.H : 2,
+		correctLevel	: defined(window.QRErrorCorrectLevel) ? QRErrorCorrectLevel.H : 2,
         background      : "#ffffff",
         foreground      : "#000000"
 	},
@@ -5619,7 +5845,7 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 
 		}else{
 
-			CONTAINER.append('<p class="emptyInfo">'+emptyInfo+'</p>').attr('inited','inited');
+			CONTAINER.append('<p class="a-empty">'+emptyInfo+'</p>').attr('inited','inited');
 			CONTAINER.attr('max',1).attr('page',page);
 
 		}
@@ -5645,7 +5871,7 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 		var detail  = Aps.cajax.getData(data);
 		detail['_'+Aps.converter.exchange('category',detail['categoryid'])] = 1;
 
-		if (typeof callback!=='undefined') {
+		if (defined(callback)) {
 			callback(detail);
 		}else{
 			VD('#content').html(Aps.mixer.mix( ApsMd.page[type],detail ));
@@ -5659,7 +5885,7 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 
 		if ( typeof(form)=='object') {
 
-			Aps.gui.submiting(i18n('SUBMITING'));
+			Aps.gui.submitting(i18n('SUBMITING'));
 
 			this.resetOptions();
 			this.setAction(target);
@@ -5683,17 +5909,17 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 
 	sendCall:function( data, type, txt ){
 
-		if (!Aps.cajax.successful(data)) { Aps.gui.submited(Aps.cajax.getMessage(data),'failed'); return; }
+		if (!Aps.cajax.successful(data)) { Aps.gui.submitted(Aps.cajax.getMessage(data),'failed'); return; }
 
-		Aps.gui.submited(Aps.cajax.getMessage(data),'success',3500);
+		Aps.gui.submitted(Aps.cajax.getMessage(data),'success',3500);
 
 	},
 
 	suggestCall:function( data ){
 
-		if (!Aps.cajax.successful(data)) { Aps.gui.submited(Aps.cajax.getMessage(data),'failed'); return; }
+		if (!Aps.cajax.successful(data)) { Aps.gui.submitted(Aps.cajax.getMessage(data),'failed'); return; }
 
-		Aps.gui.submited(Aps.cajax.getMessage(data),'success',3500);
+		Aps.gui.submitted(Aps.cajax.getMessage(data),'success',3500);
 
 		setTimeout(function(){
 			Aps.router.close();
