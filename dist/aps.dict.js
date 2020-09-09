@@ -28,8 +28,8 @@
 if (!ApsMd){ var ApsMd={};};
 
 ApsMd.locale = {
-	'ZHCN':{
-		'CURRENT_LANGUAGE':'ZHCN',
+	'zh-CN':{
+		'CURRENT_LANGUAGE':'zh-CN',
 		'ACCOUNTS':'账号',
 		'ATTACHMENTS':'附注',
 
@@ -132,8 +132,8 @@ ApsMd.locale = {
 		'FIELD_REQUIRE':function(p){ return p.txt+'是必填项, 请完善后再试.';},
 	},
 
-	'EN':{
-		'CURRENT_LANGUAGE':'EN',
+	'en-WW':{
+		'CURRENT_LANGUAGE':'en-WW',
 		'ACCOUNTS':'Accounts',
 		'ATTACHMENTS':'Attachments',
 
@@ -307,14 +307,56 @@ ApsMd.animate = { // ? 动画模板
 		name:'fadeIn',
 		frames:{
 			0:{opacity:0},
-			100:{opacity:1}
+			// 100:{opacity:1}
 		}
 	},
 	fadeOut:{
 		name:'fadeOut',
 		frames:{
-			0:{opacity:1},
+			// 0:{opacity:1},
 			100:{opacity:0}
+		}
+	},
+	scaleIn:{
+		name:'scaleIn',
+		frames:{
+			0:{width:0,height:0},
+			// 100:{opacity:1}
+		}
+	},
+	scaleOut:{
+		name:'scaleOut',
+		frames:{
+			// 0:{opacity:1},
+			100:{width:0,height:0}
+		}
+	},
+	scaleInX:{
+		name:'scaleInX',
+		frames:{
+			0:{width:0,},
+			// 100:{opacity:1}
+		}
+	},
+	scaleOutX:{
+		name:'scaleOutX',
+		frames:{
+			// 0:{opacity:1},
+			100:{width:0,}
+		}
+	},
+	scaleInY:{
+		name:'scaleInY',
+		frames:{
+			0:{height:0},
+			// 100:{opacity:1}
+		}
+	},
+	scaleOutY:{
+		name:'scaleOutY',
+		frames:{
+			// 0:{opacity:1},
+			100:{height:0}
 		}
 	},
 	fadeInDown:{
@@ -332,6 +374,24 @@ ApsMd.animate = { // ? 动画模板
 			50:{ opacity:1,transform:"translate3d(0, -2%, 0)"},
 			100:{ opacity:1,transform:"translate3d(0, 0, 0)"},
 		}
+	},
+	fadeOutDown:{
+		name:'fadeOutDown',
+		frames:{
+			0:{ opacity:1,transform:"translate3d(0, 0, 0)"},
+			50:{ opacity:1,transform:"translate3d(0, 2%, 0)"},
+			100:{ opacity:0,transform:"translate3d(0, -150%, 0)"},
+		},
+		curve:"ease-in"
+	},
+	fadeOutUp:{
+		name:'fadeOutUp',
+		frames:{
+			0:{ opacity:1,transform:"translate3d(0, 0, 0)"},
+			50:{ opacity:1,transform:"translate3d(0, -2%, 0)"},
+			100:{ opacity:0,transform:"translate3d(0, 150%, 0)"},
+		},
+		curve:"ease-in"
 	},
 	popIn:{
 		name:'popIn',
@@ -370,7 +430,12 @@ ApsMd.animate = { // ? 动画模板
 		curve:"cubic-bezier(0.215, 0.61, 0.355, 1)"
 	},
 	slideInLeft:{
-
+		name:'slideInLeft',
+		frames:{
+			0:{transform:"translate(-100%,0)"},
+			100:{transform:"translate(0,0)"},
+		},
+		curve:"cubic-bezier(0.215, 0.61, 0.355, 1)"
 	},
 	slideOutBottom:{
 		name:'slideOutBottom',
@@ -388,13 +453,6 @@ ApsMd.animate = { // ? 动画模板
 		},
 		curve:"cubic-bezier(0.215, 0.61, 0.355, 1)"
 	},
-	// pullInDown:{ //废弃
-	// 	name:'pullInDown',
-	// 	frames:{
-	// 		0:{height:0,margin:0,overflow:'hidden'},
-	// 		100:{overflow:'hidden','padding-bottom':'10px'}
-	// 	}
-	// },
 	onBlur:function(range){
 		return {
 			name:'onBlur',

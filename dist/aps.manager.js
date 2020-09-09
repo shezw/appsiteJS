@@ -30,7 +30,7 @@ var MANAGER = Aps.fn({
 
     testApi:function( previewerID ){
 
-        var preData = Aps.former.checkForm(vlist('.field.valid'));
+        var preData = Aps.former.checkForm(vlist('.a-field.valid'));
 
         if(!preData) return;
 
@@ -79,67 +79,45 @@ var MANAGER = Aps.fn({
 
     filterSearch:function() {
 
-        var filtersToLink = function(filters){
+        var filters = Aps.former.checkForm(vlist('.filterSearch .a-field.valid'));
+        if(!filters){ return; }
 
-            var query = '';
+        Aps.query.addFilter( $filters );
 
-            for( var k in filters){
-                if (filters[k]) {
-                    query += '&'+k+'='+filters[k];
-                }
+    },
+
+    add:function(data,itemClass,call){
+
+        if(data){
+            data.itemClass = itemClass;
+        }else{
+            var data = Aps.former.checkForm(vlist('.a-field.valid'));
+            if(!data) return;
+            data = {
+                data:data,
+                itemClass:itemClass
+            };
+        }
+        Aps.gui.submitting('正在向服务器提交请求...');
+        MANAGER.post('manager/addItem',call||MANAGER.chooseCall,data,{update:1,needLogin:1});
+
+    },
+
+    update:function(data,id,itemClass,call){
+
+        if(data){
+            data.itemType = itemClass;
+            data.itemId   = id;
+        }else{
+            var data = Aps.former.checkForm(vlist('.a-field.valid'));
+            if(!data) return;
+            data = {
+                data:data,
+                itemClass:itemClass,
+                itemId:id
             }
-            return query;
         }
-
-        var filters = Aps.former.checkForm(vlist('.filterSearch .field.valid'));
-        if(!filters) return;
-
-        var query = filtersToLink(filters);
-
-        if (query) {
-
-            query = '?act='+jQuery.query.get('act')+query;
-            location.href= location.origin + location.pathname + query;
-        }
-
-    },
-
-    add:function(data,type,call){
-
-        if(data){
-            data.itemtype = type;
-        }else{
-            var data = Aps.former.checkForm(vlist('.field.valid'));
-            if(!data) return;
-            data.itemtype = type;
-        }
-        Aps.gui.submiting('正在向服务器提交请求...');
-        MANAGER.post('addItem',call||MANAGER.backCall,data,{update:1,needLogin:1});
-
-    },
-
-    postFormToAction:function(action,data,call,noAuth){
-
-        var data = data || Aps.former.checkForm(vlist('.field.valid'));
-        if(!data) return;
-
-        Aps.gui.submiting('正在向服务器提交请求...');
-        MANAGER.post(action,call||MANAGER.backCallDelay,data,{update:1,needLogin:noAuth?0:1});
-
-    },
-
-    update:function(data,id,type,call){
-
-        if(data){
-            data.itemtype = type;
-            data.itemid   = id;
-        }else{
-            var data = Aps.former.checkForm(vlist('.field.valid'));
-            if(!data) return;
-            data.itemtype = type;
-            data.itemid = id;
-        }
-        MANAGER.post('updateItem',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
+        MANAGER.post('manager/updateItem',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
 
     },
 
@@ -151,119 +129,54 @@ var MANAGER = Aps.fn({
 
     },
 
-    offlineDesk:function(id){
+    postFormToAction:function(action,data,call,noAuth){
 
-        MANAGER.post('offlineDesk',MANAGER.reloadCall,{deskid:id},{update:1,needLogin:1});
+        var data = data || Aps.former.checkForm(vlist('.a-field.valid'));
+        if(!data) return;
 
-    },
-
-    recoverDesk:function(id){
-
-        MANAGER.post('recoverDesk',MANAGER.reloadCall,{deskid:id},{update:1,needLogin:1});
+        Aps.gui.submitting('正在向服务器提交请求...');
+        MANAGER.post(action,call||MANAGER.backCallDelay,data,{update:1,needLogin:noAuth?0:1});
 
     },
 
-    preUnbind:function(combineid,itemtype){
+    preUnbind:function(combineId,itemClass){
 
         Aps.gui.confirm('是否确认取消绑定?','下次需要可以再次绑定.',{okTxt:"确定",onOk:function(){
-                MANAGER.post('unbindCombine',MANAGER.reloadCall,{combineid:combineid,itemtype:itemtype},{update:1,needLogin:1});
+                MANAGER.post('unbindCombine',MANAGER.reloadCall,{combineId:combineId,itemtype:itemClass},{update:1,needLogin:1});
             }});
-
-    },
-
-    preViewOfficeMessage:function( userid, preMessage ){
-
-        if(Aps.cache.has('viewOfficeMsg')){
-            Aps.gui.toast('一天内只能发送一条预约消息.');
-        }
-
-        Aps.gui.form('请输入预约留言',"<div class='field valid require' fieldtype='textarea' fieldname='content' length=200><label></label><textarea class=mainfield>"+(preMessage||'')+"</textarea>",
-            {
-                okTxt:"确定",
-                cancelTxt:"取消",
-                onOk:function(){
-
-                    var form = Aps.former.checkForm(VL('.ApsPopupForm .field.valid'));
-                    if( !form ){ return false; }
-
-                    form.userid = userid;
-
-                    MANAGER.postFormToAction('viewOfficeMessage',form,MANAGER.reloadCall);
-                    Aps.cache.add('viewOfficeMsg',true,3600*24);
-                    return true;
-                }
-            });
-
-    },
-
-    preApplyContractRequest:function(requestid,data){
-
-        Aps.gui.confirm('确认签约',"您将和 "+data.party+" 正式签约,签约主体为:"+data.target+",请确认.",
-            {
-                okTxt:"确定",
-                cancelTxt:"取消",
-                onOk:function(){
-
-                    MANAGER.postFormToAction('applyContractRequest',{requestid:requestid},MANAGER.reloadCall);
-                    return true;
-                }
-            });
-
-    },
-
-    preDelegateService:function( serviceid ){
-
-        if(!Aps.user.needLogin(true)){
-            return;
-        }
-
-        Aps.gui.form('请输入您的联系方式',"<form class='mb-0 form service'><div class='field valid require' fieldname='replyid' fieldtype='input' length='8'><input type='hidden' class='mainfield' value='"+serviceid+"'></div><div class='form-group field valid require' fieldname='content.nickname' fieldtype='input' length='12'><label>您的称呼:</label><input type='text' class='form-control mainfield'></div><div class='form-group field valid require' fieldname='content.contact' fieldtype='input' length='16' checktype='mobile'><label>您的联系电话:</label><input type='mobile' class='form-control mainfield'></div></form>",
-            {
-                okTxt:"确定预约",
-                cancelTxt:"取消",
-                onOk:function(){
-                    Aps.user.customerDelegate('.service .field.valid','service');
-                }
-            });
-    },
-
-
-    preRejectContractRequest:function(requestid){
-
-        Aps.gui.confirm('拒绝签约邀请',"拒绝后将不能再通过,请确认.",
-            {
-                okTxt:"确定",
-                cancelTxt:"取消",
-                onOk:function(){
-
-                    MANAGER.postFormToAction('rejectContractRequest',{requestid:requestid},MANAGER.reloadCall);
-                    return true;
-                }
-            });
 
     },
 
     remove:function(id,type,call){
 
         var data = {
-            itemid:id,
-            itemtype:type,
-        }
-        MANAGER.post('removeItem',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
+            itemId:id,
+            itemClass:type
+        };
+        MANAGER.post('manager/removeItem',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
+
+    },
+
+    deleteMedia:function( mediaId, call ){
+
+        var data = {
+            mediaId:mediaId
+        };
+        MANAGER.post('manager/deleteMedia',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
 
     },
 
     status:function( id,type,status,call ){
 
         var data = {
-            itemtype:type,
-            itemid:id,
+            itemClass:type,
+            itemId:id,
             data:{
                 status:status
             }
-        }
+        };
 
-        MANAGER.post('updateItem',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
+        MANAGER.post('manager/updateItem',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
     },
 
     trash:  function(id,type){ this.status( id, type, 'trash' );	},
@@ -287,93 +200,38 @@ var MANAGER = Aps.fn({
     setFeature:function(id,type,isFeatured,call){
 
         var data = {
-            itemtype:type,
-            itemid:id,
-            featured:isFeatured||0
-        }
+            itemClass:type,
+            itemId:id,
+            data:{
+                featured:isFeatured||0
+            }
+        };
 
-        MANAGER.post('updateItem',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
+        MANAGER.post('manager/updateItem',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
 
     },
 
     sortUp:function(id,type,size,call){
 
         var data = {
-            itemtype:type,
-            itemid:id,
+            itemClass:type,
+            itemId:id,
             size:size||1
-        }
 
-        MANAGER.post('sortIncreaseItem',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
-
-    },
-
-    showContact:function(el,authorid,title){
-        var hashid = 'authorContact'+authorid;
-        if(!Aps.user.forcedLogin()){
-            return ;
-        }
-        if(Aps.cache.has(hashid)){
-
-            var vd = vdom(el);
-            vd.value(Aps.cache.get(hashid));
-            console.log(hashid,Aps.cache.get(hashid));
-            return;
-        }
-        MANAGER.postFormToAction('requestContact',{
-            authorid:authorid,
-            title:title,
-        },function(data){
-            Aps.gui.submited('请求成功');
-            if(data.status===0){
-
-                Aps.cache.add(hashid,data.content,3600*24);
-
-                var vd = vdom(el);
-                vd.value(data.content);
-
-            }else if(data.status==10086){
-                Aps.gui.confirm('现在无法查看',data.message,{
-                    okTxt:"前往绑定",
-                    cancelTxt:"取消",
-                    onOk:function(){
-
-                        Aps.router.switch('../../../myAccount/');
-                        return true;
-                    }
-                });
-            }else{
-                Aps.gui.toast(data.message);
-            }
-        });
+        MANAGER.post('manager/sortIncreaseItem',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
 
     },
+
     sortDown:function(id,type,size,call){
 
         var data = {
-            itemtype:type,
-            itemid:id,
+            itemClass:type,
+            itemId:id,
             size:size||1
-        }
+        };
 
-        MANAGER.post('sortDecreaseItem',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
+        MANAGER.post('manager/sortDecreaseItem',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
 
-    },
-
-    aiCompanyOffice:function( data, params ){
-        var url = data.content.url;
-        vdom(params.preview).attr('src',url);
-
-        Aps.gui.submiting('正在请求AI服务器...');
-
-        MANAGER.postFormToAction('getCompanyDetailFromImageAI',{imageUrl:url},function(data){
-            Aps.gui.submited();
-            if(data.status===0){
-                MANAGER.autoCompelete(data.content);
-            }else{
-                Aps.gui.toast(data.message);
-            }
-        });
     },
 
     autoCompelete:function( keyList ){
@@ -405,7 +263,7 @@ var MANAGER = Aps.fn({
         var data = {
             commentid:commentid,
             featured:isFeatured||0
-        }
+        };
 
         MANAGER.post('updateComment',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
 
@@ -424,7 +282,7 @@ var MANAGER = Aps.fn({
         var data = {
             commentid:commentid,
             status:status||0
-        }
+        };
 
         MANAGER.post('updateComment',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
 
@@ -439,7 +297,7 @@ var MANAGER = Aps.fn({
             relationtype:relationtype,
             type:type,
             rate:rate||3,
-        }
+        };
 
         MANAGER.post('bindItems',MANAGER.reloadCall,data,{update:1,needLogin:1});
     },
@@ -448,7 +306,7 @@ var MANAGER = Aps.fn({
 
         var data = {
             combineid:combineid,
-        }
+        };
 
         MANAGER.post('unBindItem',MANAGER.reloadCall,data,{update:1,needLogin:1});
 
@@ -458,13 +316,12 @@ var MANAGER = Aps.fn({
 
         if (!Aps.cajax.successful(data)){
 
-            Aps.gui.submited('提交失败','cancel');
-            Aps.gui.alert('操作失败',data.message);
-            return;
+            Aps.gui.submitted('提交失败',2500,'failed');
+            Aps.gui.alert( data.message );
 
         }else{
 
-            Aps.gui.submited(data.message,'success');
+            Aps.gui.submitted(data.message,2500,'success');
 
             setTimeout(function(){
 
@@ -475,12 +332,27 @@ var MANAGER = Aps.fn({
                     case 'reload':
                         Aps.router.reload();
                         break;
+                    case 'confirmReload':
+                        Aps.gui.confirm('Success','Do you want reload?',function(){ Aps.router.reload(); });
+                        break;
+                    case 'choose':
+                        Aps.gui.confirm('成功','请选择返回或刷新',{
+                            onOk:function(){
+                                Aps.router.reload();
+                            },
+                            onCancel:function(){
+                                Aps.router.back(-1);
+                            },
+                            okText:'刷新',
+                            cancelText:'返回上一页',
+                        });
+                        break;
                     case 'stay':
                         break;
                     default:
                         break;
-                };
-            },t||0);
+                }
+            },t||500);
         }
 
     },
@@ -488,6 +360,8 @@ var MANAGER = Aps.fn({
     backCall:function(data){ MANAGER.call(data,'back'); },
     stayCall:function(data){ MANAGER.call(data,'stay'); },
     reloadCall:function(data){ MANAGER.call(data,'reload'); },
+    confirmReloadCall:function(data){ MANAGER.call(data,'confirmReload'); },
+    chooseCall:function(data){ MANAGER.call(data,'choose'); },
 
     backCallDelay:function(data){  MANAGER.call(data,'back',2000); },
     stayCallDelay:function(data){ MANAGER.call(data,'stay',2000); },
@@ -519,11 +393,11 @@ var MANAGER = Aps.fn({
         if(data){
             data.character = type;
         }else{
-            var data = Aps.former.checkForm(vlist('.field.valid'));
+            var data = Aps.former.checkForm(vlist('.a-field.valid'));
             if(!data) return;
             data.character = type;
         }
-        Aps.gui.submiting('正在向服务器提交请求...');
+        Aps.gui.submitting('正在向服务器提交请求...');
         MANAGER.post('addUser',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
 
     },
@@ -533,11 +407,11 @@ var MANAGER = Aps.fn({
         if(data){
             data.character = type;
         }else{
-            var data = Aps.former.checkForm(vlist('.field.valid'));
+            var data = Aps.former.checkForm(vlist('.a-field.valid'));
             if(!data) return;
             if (type){ data.character = type; }
         }
-        Aps.gui.submiting('正在向服务器提交请求...');
+        Aps.gui.submitting('正在向服务器提交请求...');
         MANAGER.post('updateUser',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
 
     },
@@ -547,7 +421,7 @@ var MANAGER = Aps.fn({
         var status = status || 'block';
         if(!userid){ return; }
 
-        Aps.gui.submiting('正在向服务器提交请求...');
+        Aps.gui.submitting('正在向服务器提交请求...');
         MANAGER.post('updateUser',call||MANAGER.reloadCall,{user:userid,status:status},{update:1,needLogin:1})
 
     },
@@ -577,62 +451,20 @@ var MANAGER = Aps.fn({
         var status = status || 'rejected';
         if(!requestid){ return; }
 
-        Aps.gui.submiting('正在向服务器提交请求...');
+        Aps.gui.submitting('正在向服务器提交请求...');
         MANAGER.post('statusRequest',call||MANAGER.reloadCall,{requestid:requestid,status:status},{update:1,needLogin:1})
 
     },
 
 
+    // 改成可以post到特定页面的模式
 
+    // 显示预览窗口
+    preview:function(url,windowSize) {
 
-    preview:function(data,type,itemid) {
+        var data = Aps.former.checkForm(vlist('.a-field.valid'));
 
-        var data = Aps.former.checkForm(vlist('.field.valid'));
-        if(!data) return;
-        data[type+'id'] = itemid || 'ZZZZZZZZ';
-
-        this.newWindow('../front/mobile/preview.html',{content:[data],type:type});
-
-    },
-
-    newWindow:function( url, params, options, responseCall ){
-        // use JS API postMessage
-
-        var options= options || {};
-        var width  = options.width||375; //弹出窗口的宽度;
-        var height = options.height||667; //弹出窗口的高度;
-        var top    = options.top ||( window.screen.availHeight-30-height )/2; //获得窗口的垂直位置;
-        var left   = options.left||( window.screen.availWidth-10-width )/2; //获得窗口的水平位置;
-        var origin = options.origin || "*";
-
-        var _window = window.open(url,'_blank',"height="+height+", width="+width+", top="+top+", left="+left+", menubar=no,location=no,resizable=no,scrollbars=yes,status=no");
-
-        var k = 0;
-        var _link  = setInterval(function(){
-            _window.postMessage('hello',origin);
-            if (k>19){ clearInterval(_link);}
-            k++;
-        },500);
-
-        var _linkDone = function(){
-
-            clearInterval(_link);
-            _window.postMessage(params,origin);
-
-        };
-
-        var _response = function(message){
-
-            if(message.data==='ok'){
-                clearInterval(_link);
-                _linkDone();
-            }
-            if (typeof responseCall=='function'){
-                responseCall(message);
-            }
-        };
-
-        window.addEventListener('message',_response,origin);
+        Aps.router.newWindow(url,data, windowSize ? {width:windowSize.width,height:windowSize.height}: null );
 
     },
 
@@ -749,13 +581,13 @@ var MULTISELECTOR = Aps.fn({
         if(!vd.value()){
 
             this.clear(vd.id());
-            vd.addClass('mainfield');
+            vd.addClass('a-field-main');
             return;
         }
 
-        vlist(this.selector+' select').removeClass('mainfield');
+        vlist(this.selector+' select').removeClass('a-field-main');
 
-        vd.addClass('mainfield');
+        vd.addClass('a-field-main');
 
         this.clear(vd.id());
         this.request(vd.value());
@@ -841,21 +673,21 @@ var EXPORTS = {
 
     STRUCT:{
         order:{
-            orderid:{    name:'orderid'   ,     label:'订单ID',      },
-            itemtype_:{  name:'itemtype_' ,     label:'订单类型', },
-            title:{      name:'title'   ,       label:'名称',     },
-            amount:{     name:'amount'   ,      label:'金额',      },
-            userid:{     name:'userid'   ,      label:'用户ID',    },
+            'orderid':{    name:'orderid'   ,     label:'订单ID',      },
+            'itemtype_':{  name:'itemtype_' ,     label:'订单类型', },
+            'title':{      name:'title'   ,       label:'名称',     },
+            'amount':{     name:'amount'   ,      label:'金额',      },
+            'userid':{     name:'userid'   ,      label:'用户ID',    },
             'user.nickname':{ name:'nickname' , label:'昵称',      },
             'details.mobile':{name:'mobile'   , label:'下单手机号', },
             'details.name':{ name:'name'   ,    label:'姓名',      },
-            createtime_:{name:'createtime_'  ,  label:'交易时间',  },
-            status_:{    name:'status_'  ,      label:'状态',      },
-            writeoff_:{  name:'writeoff_'  ,    label:'是否核销',   },
+            'createtime_':{name:'createtime_'  ,  label:'交易时间',  },
+            'status_':{    name:'status_'  ,      label:'状态',      },
+            'writeoff_':{  name:'writeoff_'  ,    label:'是否核销',   },
 
         },
         user:{
-            userid:{     name:'userid'   ,      label:'用户ID',      },
+            'userid':{   name:'userid'   ,      label:'用户ID',      },
             'nickname':{ name:'nickname' ,      label:'昵称',      },
             'mobile':{   name:'mobile'   , label:'手机号', },
             'realname':{ name:'realname'   ,    label:'姓名',      },
@@ -865,66 +697,12 @@ var EXPORTS = {
             'information.country': { name:'country'  ,  label:'国家',  },
             'information.province': { name:'province'  ,  label:'省份',  },
             'information.city': { name:'city'  ,  label:'城市',  },
-            point:{  name:'point'  ,    label:'瓯圆',   },
-            registtime_:{  name:'registtime_'  ,    label:'注册日期',   },
-            status_:{    name:'status_'  ,      label:'状态',      },
+            'point':{  name:'point'  ,    label:'瓯圆',   },
+            'registtime_':{ name:'registtime_'  ,    label:'注册日期',   },
+            'status_':{  name:'status_'  ,      label:'状态',      },
 
         },
 
-        regist:{
-            'id':{         name:'id', label:'ID', },
-            'region':{     name:'region', label:'区域\nRegion'},
-            'dealership':{ name:'dealership', label:'经销商名称\nDealership'},
-            'jobcn':{      name:'jobcn', label:'职位'},
-            'joben':{      name:'joben', label:'Position'},
-
-            'titlecn':{    name:'titlecn', label:'称谓'},
-            'titleen':{    name:'titleen', label:'Title'},
-            'namecn':{     name:'namecn', label:'姓名'},
-            'nameen.first':{     name:'nameen.first', label:'Surname'},
-            'nameen.last':{     name:'nameen.last', label:'Given name'},
-            'gender':{     name:'gender', label:'性别\nGender'},
-            'country':{    name:'country', label:'国籍\nNationality'},
-            'email':{      name:'email', label:'邮箱\nEmail'},
-            'mobile':{     name:'mobile', label:'手机\nMobile'},
-
-            'emergency':{  name:'emergency', label:'紧急联系人\nEmergncy'},
-            'emergencymobile':{ name:'emergencymobile', label:'紧急联系人手机\nEmergncy Mobile'},
-            'food':{       name:'food', label:'饮食需求\nFood Specials'},
-            'allergic':{   name:'allergic', label:'过敏源\nAllergic to'},
-            'requirement':{name:'requirement', label:'其他需求\nOther Special Requirement'},
-
-            // 'visa.agent':{name:'visa.agent', label:'VISA办理'},
-
-            'departure.city':{  name:'departure.city', label:'出发城市\nDeparture City'   },
-            'departure.othercity':{  name:'departure.othercity', label:'其他城市\nOther City'   },
-            'departure.flightno':{  name:'departure.flightno', label:'出发航班号\nDeparture Flight No.'   },
-            'departure.otherflightno':{  name:'departure.otherflightno', label:'其他航班号\nOther Departure Flight No.'   },
-            'departure.date':{  name:'departure.date', label:'出发日期\nDeparture Date'   },
-            'departure.time':{  name:'departure.time', label:'出发时间\nDeparture Time'   },
-            'directflight':{  name:'directflight', label:'是否直达航班\nDirect flight'   },
-            'connection.airport':{  name:'connection.airport', label:'转机机场\nAirport of Connection'},
-            'connection.flightno':{  name:'connection.flightno', label:'转机到拉斯维加斯航班号\nConnected Flight No.'   },
-            'connection.date':{  name:'connection.date', label:'转机出发日期\nDeparture Date'   },
-            'connection.time':{  name:'connection.time', label:'转机出发时间\nDeparture Time'   },
-            'arrival.date':{  name:'arrival.date', label:'到达拉斯维加斯日期\nArr. Date'   },
-            'arrival.time':{  name:'arrival.time', label:'到达拉斯维加斯时间\nArr. Time'   },
-            'arrival.airport':{  name:'arrival.airport', label:'到达拉斯维加斯机场\nArr. Airport'   },
-            'arrival.terminal':{  name:'arrival.terminal', label:'到达拉斯维加斯航站楼\nArr. Terminal'   },
-            'back.flightno':{  name:'back.flightno', label:'拉斯维加斯返程航班号\nReturn Flight No.'   },
-            'back.date':{  name:'back.date', label:'拉斯维加斯返程日期\nDeparture Date'   },
-            'back.time':{  name:'back.time', label:'拉斯维加斯返程时间\nDeparture Time'   },
-            'back.airport':{  name:'back.airport', label:'返程机场\nAirport of Return'   },
-            'back.terminal':{  name:'back.terminal', label:'返程航站楼\nTerminal of Return'   },
-            'services':{  name:'services', label:'酒店其他服务\nHotel Other Services'   },
-
-            'visa.passport':{ name:'passport', label:'护照图片地址\nPassport Image link'},
-
-            'status':{ name:'status', label:'确认状态\nConfirming Status'},
-            'createtime_':{ name:'createtime_', label:'初次填写时间\nFirst Regist Time'},
-            'lasttime_':{ name:'lasttime_', label:'最后更新时间\nLast Updated Time'},
-
-        }
     },
 
     STYLE:{
@@ -1084,7 +862,7 @@ var BANNER = Aps.fn({
             console.log(data);
             // alert('系统错误');
 
-        }else if(data.content==false){
+        }else if(data.content===false){
 
             vdom('#bannerList').html('');
             Aps.gui.alert('当前分类下没有内容，请先添加内容!');
