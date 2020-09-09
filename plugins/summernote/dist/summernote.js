@@ -2569,13 +2569,14 @@
       // fontName
       fontNames: [
         'STHeiti','Ping Hei','微软雅黑','黑体','宋体','仿宋体','SourceHanSansCN',
-        'Arial', 'Arial Black', 'Courier New',
+        'Arial', 'Arial Black','HK Grotesk','HK Grotesk bold', 'Courier New',
+
         'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
         'Tahoma', 'Times New Roman', 'Verdana','Comic Sans MS',
       ],
       fontNamesIgnoreCheck: [],
 
-      fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36', '48'],
+      fontSizes: ['8', '9', '10', '11', '12', '14', '18', '20', '24', '28', '32', '36', '40', '48','60','72'],
 
       // pallete colors(n x n)
       colors: [
@@ -6195,9 +6196,10 @@
       fontname: function (lang, options) {
         var realFontList = [];
         var items = options.fontNames.reduce(function (memo, v) {
-          if (!agent.isFontInstalled(v) && !list.contains(options.fontNamesIgnoreCheck, v)) {
-            return memo;
-          }
+          // if (!agent.isFontInstalled(v) && !list.contains(options.fontNamesIgnoreCheck, v)) {
+          // if (!list.contains(options.fontNamesIgnoreCheck, v)) {
+          //   return memo;
+          // }
           realFontList.push(v);
           return memo + '<li><a data-event="fontName" href="#" data-value="' + v + '" style="font-family:\'' + v + '\'">' +
                           '<i class="' + options.iconPrefix + options.icons.misc.check + '"></i> ' + v +
