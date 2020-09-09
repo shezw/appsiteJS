@@ -217,6 +217,7 @@ var MANAGER = Aps.fn({
             itemClass:type,
             itemId:id,
             size:size||1
+        };
 
         MANAGER.post('manager/sortIncreaseItem',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
 
@@ -536,6 +537,40 @@ var MANAGER = Aps.fn({
 
         }
     },
+
+    print:function( selector, src ){
+
+        //判断iframe是否存在，不存在则创建iframe
+        var iframe=document.getElementById("print-iframe");
+        if(!iframe){
+            var content = VD(selector);
+            iframe = document.createElement('IFRAME');
+            if(src){
+                iframe.setAttribute('src',src);
+            }
+            iframe.setAttribute("id", "print-iframe");
+            iframe.setAttribute('style', 'position:absolute;width:0px;height:0px;left:-500px;top:-500px;');
+            document.body.appendChild(iframe);
+            //这里可以自定义样式
+            //doc.write("<LINK rel="stylesheet" type="text/css" href="css/print.css">");
+            // doc.write('<div>' + content.HTML() + '</div>');
+            // doc.close();
+        }
+
+        iframe.onload = function(){
+
+            var doc = iframe.contentWindow.document;
+            var container = doc.querySelector('#printContent') || doc.querySelector('body');
+            container.innerHTML = content.HTML();
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+            if (navigator.userAgent.indexOf("MSIE") > 0){
+                document.body.removeChild(iframe);
+            }
+        };
+    }
+
+
 });
 
 

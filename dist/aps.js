@@ -415,7 +415,12 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			return this;
 		},
 		toggle:function(show){
-			this.el.style.display = this.el.style.display==='none'?'':'none';
+			if( typeof show == 'boolean' ){
+				show && this.show();
+				!show && this.hide();
+			}else{
+				this.el.style.display==='none' ? this.show() : this.hide();
+			}
 			return this;
 		},
 		index:function(selector){
@@ -1120,7 +1125,7 @@ Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & for
 		if(opts.requesttype==='POST'){ _.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); } /* Set Content-Type by POST */
 
 		_.withCredentials = true;
-		_.timeout = opts.timeout || 2000;
+		_.timeout = opts.timeout || 10000;
 
 		// PROGRESS 
 		// onloadstart, onprogress, onabort, onerror, onload, ontimeout, onloadend, onreadystatechange
@@ -1861,7 +1866,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 
 		start:function(message,options,forced) {
 
-			if (VD('html','HTML').isLoad()){ return; }
+			if (VD('body','BODY').isLoad()){ return; }
 
 			var options = options || {};
 
@@ -1871,8 +1876,8 @@ Aps.gui        = { // ! 界面交互  # basic gui
 			options.message  = (options.icon ? Aps.gui.icon[options.icon] : '') + message ;
 
 			var loading = VD(Aps.mixer.mix(ApsMd.core.toast,options)).addClass('a-loading').id('G_LOADING');
-			if( forced ){ VD('html','HTML').append(VD(ApsMd.core.mask).id('G_LOADING_MASK')); }
-			VD('html','HTML').loading().append(loading);
+			if( forced ){ VD('body','BODY').append(VD(ApsMd.core.mask).id('G_LOADING_MASK')); }
+			VD('body','BODY').loading().append(loading);
 			loading.fadeIn();
 
 		},
@@ -3420,8 +3425,9 @@ Aps.former     = Aps.fn({ // ? 表单
 
 	getFieldValue:function(field){
 
-		var type         = field.attr('a-field-type');
-		var	name         = field.attr('a-field-name');
+		var type     = field.attr('a-field-type');
+		var	name     = field.attr('a-field-name');
+		var convert  = field.attr('a-field-convert');
 		var value = null;
 
 		switch (type){
@@ -3433,7 +3439,11 @@ Aps.former     = Aps.fn({ // ? 表单
 			break;
 
 			case 'radio':
-				value = field.find('input.a-field-main').property('checked')?field.find('input.a-field-main').value():null;
+				field.finds('input.a-field-main').list.forEach(function(vd){
+					if( vd.property('checked') ){
+						value = vd.value();
+					}
+				});
 				break;
 
 			case 'switch':
@@ -3480,6 +3490,21 @@ Aps.former     = Aps.fn({ // ? 表单
 			}
 			break;
 		}
+
+		if( convert ){
+
+			switch(convert){
+
+				case "json":
+				case "JSON":
+
+				value = value ? JSON.parse(value) : null;
+
+				break;
+
+			}
+		}
+
 		return value;
 	},
 
@@ -3491,7 +3516,7 @@ Aps.former     = Aps.fn({ // ? 表单
 		var	name         = field.attr('a-field-name');
 		var	formname     = field.attr('a-form');
 		var checktype    = field.attr('a-field-check') || 0;
-		var label        = field.find('label');
+		var label        = type!=='radio' ? field.find('label') : null;
 		var length       = parseInt(field.attr('a-field-length'));
 		var placeholder  = field.find('.a-field-main').attr('placeholder') || '' ;
 
@@ -3499,12 +3524,19 @@ Aps.former     = Aps.fn({ // ? 表单
 
 		var value = Aps.former.getFieldValue(field);
 
+		field.find('.a-field-main').removeClass('is-invalid');
+
 		if (!passRequire && required && !defined(value) ) {
 
-			Aps.gui.toast( i18n('FIELD_REQUIRE',{txt:(label?label.text():placeholder)}), 3000, 'failed' );
-			if( field.find('.a-field-main') ){
-				field.find('.a-field-main').focus();
+			if( field.find('.invalid-feedback') ){
+
+				field.find('.a-field-main').addClass('is-invalid');
+
+			}else{
+
+				Aps.gui.alert( 'Input required', i18n('FIELD_REQUIRE',{txt:(label?label.text():placeholder)}) );
 			}
+			field.find('.a-field-main').focus();
 			return false;
 
 		}else{
@@ -3516,7 +3548,7 @@ Aps.former     = Aps.fn({ // ? 表单
 
 			if ( length < value.length ) {	
 
-				Aps.gui.toast( i18n('WRONG_LENGTH',{txt:(label.text()||placeholder),length:length}),0, 'failed' );
+				Aps.gui.alert( 'Invalid Input', i18n('WRONG_LENGTH',{txt:(label.text()||placeholder),length:length}));
 				field.find(type).focus();
 
 				return false;
@@ -3842,7 +3874,6 @@ Aps.user       = Aps.fn({ // ! 用户对象
 			Aps.user.setProperty('scope',params.scope);
 			Aps.user.setProperty('tokenexpire',params.expire);
 
-			Aps.user.refresh();
 		}
 
 	},
