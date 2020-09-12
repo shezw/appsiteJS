@@ -32,7 +32,7 @@ if(!CONFIGS){var CONFIGS = {}};
 /* 核心组件(必要) */
 window.vdom = window.VD = function( selector,hash ){ return selector ? Aps.dom.get(selector,hash) : this; };
 window.vlist= window.VL = function( selector,hash ){ return selector ? Aps.dom.list(selector,hash) : this; };
-window.defined = function( object ){ return !(typeof object === 'undefined' || object === null); }
+window.defined = function( object ){ return !(typeof object === 'undefined' || object === null); };
 
 Aps.fn = function(obj) { // ! 内核组件  # core factory 
 	var fn = {
@@ -1125,7 +1125,7 @@ Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & for
 		if(opts.requesttype==='POST'){ _.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); } /* Set Content-Type by POST */
 
 		_.withCredentials = true;
-		_.timeout = opts.timeout || 10000;
+		_.timeout = opts.timeout || 5000;
 
 		// PROGRESS 
 		// onloadstart, onprogress, onabort, onerror, onload, ontimeout, onloadend, onreadystatechange
@@ -1457,13 +1457,13 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 	getLoopIdx:function(i){
 		var i   = parseInt(i);
 		var idx = 'loopItem';
-			idx += (i+1)%2==0  ? ' loop2th' : '';
-			idx += (i+1)%3==0  ? ' loop3th' : '';
-			idx += (i+1)%4==0  ? ' loop4th' : '';
-			idx += (i+1)%5==0  ? ' loop5th' : '';
-			idx += (i+1)%6==0  ? ' loop6th' : '';
-			idx += (i+1)%8==0  ? ' loop8th' : '';
-			idx += (i+1)%12==0 ? ' loop12th': '';
+			idx += (i+1)%2===0  ? ' loop2th' : '';
+			idx += (i+1)%3===0  ? ' loop3th' : '';
+			idx += (i+1)%4===0  ? ' loop4th' : '';
+			idx += (i+1)%5===0  ? ' loop5th' : '';
+			idx += (i+1)%6===0  ? ' loop6th' : '';
+			idx += (i+1)%8===0  ? ' loop8th' : '';
+			idx += (i+1)%12===0 ? ' loop12th': '';
 		return idx;
 	},
 
@@ -1574,8 +1574,6 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 		var preg = new RegExp(FindText,'g');
 
 		return res.replace(preg,RepText);
-		// return res.replace(eval(preg),RepText);
-
 	},
 
 	setChildValue:function(obj,stringStruct,value){
@@ -1608,7 +1606,7 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 
 	}
 
-}
+};
 ApsMd.core = { // ! 组件dom模版(核心功能)
 	mask:'<div class="modal-backdrop show a-mask"></div>',
 	toast:'\
@@ -1622,7 +1620,7 @@ ApsMd.core = { // ! 组件dom模版(核心功能)
 	</div>\
 	',
 	modal:'\
-	<div class="modal fade show">\
+	<div class="a-modal fade show">\
 	  <div class="modal-dialog modal-dialog-centered {{size}}" >\
 	    <div class="modal-content">\
 	      <div class="modal-header">\
@@ -1667,7 +1665,7 @@ ApsMd.core = { // ! 组件dom模版(核心功能)
 	view:"<div class='a-view' id='{{viewid}}'></div>",
 
 	loadingInner:"<div class='a-loading-inner'><i class='a-icon I-load a-color-primary a-rotation'></i>"+i18n('LOADING')+"</div>",
-	transptant:"<div class='loading transptant'><div class='logo a-rotation'><i class='a-icon I-load a-color-primary'></i></div></div>",
+	transptant:"<div class='a-loading loading transptant'><div class='logo a-rotation'><i class='a-icon I-load a-color-primary'></i></div></div>",
 	notice:{
 		point:"<i class='ApsNotice'></i>",
 	},
@@ -1753,28 +1751,26 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		modal.show().animate(ApsMd.animate.fadeInUp);
 
 		var _close = function(){
-			mask.fadeOut();
-			modal.animate(ApsMd.animate.fadeOutUp,0,function(){ modal.remove(); });
-		}
+			mask._vdom && mask.fadeOut();
+			modal._vdom && modal.animate(ApsMd.animate.fadeOutUp,0,function(){ modal.remove(); });
+		};
 
 		var _ok = function(){
 			if( typeof _okCall !== 'function' ){
 				_close();
 			}else{
-				if( type == 'form' ){
-					_okCall() && _close();
+				if( type === 'form' ){
+					_okCall( mask, modal ) && _close();
 				}else{
 					_close();
-					_okCall();
+					_okCall( mask, modal );
 				}
 			}
-			return ;
-		}
+		};
 
 		var _cancel = function(){
-			( !_cancelCall || _cancelCall() ) && _close(); 
-			return ;
-		}
+			( !_cancelCall || _cancelCall( mask, modal ) ) && _close( ); 
+		};
 
 		_okButton     && _okButton.click(_ok);		
 		_cancelButton && _cancelButton.click(_cancel);
@@ -1859,6 +1855,8 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		};
 		mask.click(closePopup);		
 		closeBtn.click(closePopup);
+
+		return popup;
 	},
 
 
@@ -1866,7 +1864,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 
 		start:function(message,options,forced) {
 
-			if (VD('body','BODY').isLoad()){ return; }
+			if (VD('html','HTML').isLoad()){ return; }
 
 			var options = options || {};
 
@@ -1876,8 +1874,8 @@ Aps.gui        = { // ! 界面交互  # basic gui
 			options.message  = (options.icon ? Aps.gui.icon[options.icon] : '') + message ;
 
 			var loading = VD(Aps.mixer.mix(ApsMd.core.toast,options)).addClass('a-loading').id('G_LOADING');
-			if( forced ){ VD('body','BODY').append(VD(ApsMd.core.mask).id('G_LOADING_MASK')); }
-			VD('body','BODY').loading().append(loading);
+			if( forced ){ VD('html','HTML').append(VD(ApsMd.core.mask).id('G_LOADING_MASK')); }
+			VD('html','HTML').loading().append(loading);
 			loading.fadeIn();
 
 		},
@@ -1946,7 +1944,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		var getTranslate = function(transformCSS){
 			var translate = transformCSS.match(/translate([^\)]+)?/ig)[0].replace("translate(","").split(",");
 			return {x:parseInt(translate[0].replace('px','')),y:parseInt(translate[1].replace('px',''))};
-		}
+		};
 
 		var options = options || {blur:1,lockX:0,lockY:0,backup:1,ending:0};
 		var lockX   = options.lockX || 0;
@@ -2059,7 +2057,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 			_main.animate(ApsMd.animate.slideOutBottom,300,function(){_menu.remove()});
 			_bg.fadeOut();
 			typeof cancelCall == 'function' && cancelCall();
-		}
+		};
 		_menus.on(Aps.setting.plus?'tap':'click',function(vd){var idx = vd.index(); typeof menus[idx].call =='function' && menus[vd.index()].call(vd,vd.index());_close();});
 
 		_menu.show();
@@ -2077,7 +2075,8 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		cr.find('.a-icon').toggleClass('I-bottom').toggleClass('I-top');
 	}
 
-}
+};
+
 Aps.router     = Aps.fn({ // ! 路由控制  # router 
 	params:0,
 	mode:'general',
@@ -3548,7 +3547,7 @@ Aps.former     = Aps.fn({ // ? 表单
 
 			if ( length < value.length ) {	
 
-				Aps.gui.alert( 'Invalid Input', i18n('WRONG_LENGTH',{txt:(label.text()||placeholder),length:length}));
+				Aps.gui.toast( i18n('WRONG_LENGTH',{txt:(label.text()||placeholder),length:length}),0, 'failed' );
 				field.find(type).focus();
 
 				return false;

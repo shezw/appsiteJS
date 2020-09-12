@@ -2570,7 +2570,6 @@
       fontNames: [
         'STHeiti','Ping Hei','微软雅黑','黑体','宋体','仿宋体','SourceHanSansCN',
         'Arial', 'Arial Black','HK Grotesk','HK Grotesk bold', 'Courier New',
-
         'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
         'Tahoma', 'Times New Roman', 'Verdana','Comic Sans MS',
       ],
