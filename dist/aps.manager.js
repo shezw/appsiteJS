@@ -82,7 +82,7 @@ var MANAGER = Aps.fn({
         var filters = Aps.former.checkForm(vlist('.filterSearch .a-field.valid'));
         if(!filters){ return; }
 
-        Aps.query.addFilter( $filters );
+        Aps.query.toFilters( filters );
 
     },
 
@@ -179,11 +179,11 @@ var MANAGER = Aps.fn({
         MANAGER.post('manager/updateItem',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
     },
 
-    trash:  function(id,type){ this.status( id, type, 'trash' );	},
-    recover:function(id,type){ this.status( id, type, 'enabled' );	},
-    online: function(id,type){ this.status( id, type, 'enabled' );	},
-    offline:function(id,type){ this.status( id, type, 'offline' );	},
-    block:  function(id,type){ this.status( id, type, 'block' );	},
+    trash:  function(id,type){ this.status( id, type, 'trash' );    },
+    recover:function(id,type){ this.status( id, type, 'enabled' );  },
+    online: function(id,type){ this.status( id, type, 'enabled' );  },
+    offline:function(id,type){ this.status( id, type, 'offline' );  },
+    block:  function(id,type){ this.status( id, type, 'blocked' );  },
 
     feature:function(id,type){
 
@@ -389,42 +389,35 @@ var MANAGER = Aps.fn({
 
     },
 
-    addUser:function(data,type,call){
+    // addUser:function(data,type,call){
+    //
+    //     if(data){
+    //         data.character = type;
+    //     }else{
+    //         var data = Aps.former.checkForm(vlist('.a-field.valid'));
+    //         if(!data) return;
+    //         data.character = type;
+    //     }
+    //     Aps.gui.submitting('正在向服务器提交请求...');
+    //     MANAGER.post('addUser',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
+    //
+    // },
+    //
+    updateUser:function(data,userid,call) {
 
-        if(data){
-            data.character = type;
-        }else{
+        if(!data){
             var data = Aps.former.checkForm(vlist('.a-field.valid'));
             if(!data) return;
-            data.character = type;
+            data.userid = userid;
         }
         Aps.gui.submitting('正在向服务器提交请求...');
-        MANAGER.post('addUser',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
-
-    },
-
-    updateUser:function(data,type,call) {
-
-        if(data){
-            data.character = type;
-        }else{
-            var data = Aps.former.checkForm(vlist('.a-field.valid'));
-            if(!data) return;
-            if (type){ data.character = type; }
-        }
-        Aps.gui.submitting('正在向服务器提交请求...');
-        MANAGER.post('updateUser',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
+        MANAGER.post('manager/updateUser',call||MANAGER.reloadCall, {data:data,userId:userid},{update:1,needLogin:1});
 
     },
 
     statusUser:function(userid,status,call) {
 
-        var status = status || 'block';
-        if(!userid){ return; }
-
-        Aps.gui.submitting('正在向服务器提交请求...');
-        MANAGER.post('updateUser',call||MANAGER.reloadCall,{user:userid,status:status},{update:1,needLogin:1})
-
+        MANAGER.updateUser({status:status},userid,call);
     },
 
     blockUser:function(userid) {
@@ -472,7 +465,7 @@ var MANAGER = Aps.fn({
 
     exportXsl:function(group,filter){
 
-        var	data = {'group':group,'filter':filter};
+        var data = {'group':group,'filter':filter};
 
         this.post('exportData',this.exportXslCall,data,{needLogin:1,update:1},data);
 
@@ -570,6 +563,78 @@ var MANAGER = Aps.fn({
         };
     }
 
+
+    // preViewOfficeMessage:function( userid, preMessage ){
+
+    //     if(Aps.cache.has('viewOfficeMsg')){
+    //         Aps.gui.toast('一天内只能发送一条预约消息.');
+    //     }
+
+    //     Aps.gui.form('请输入预约留言',"<div class='a-field valid require' a-field-type='textarea' a-field-name='content' a-field-length=200><label></label><textarea class='a-field-main'>"+(preMessage||'')+"</textarea>",
+    //         {
+    //             okTxt:"确定",
+    //             cancelTxt:"取消",
+    //             onOk:function(){
+
+    //                 var form = Aps.former.checkForm(VL('.a-modal-form .a-field.valid'));
+    //                 if( !form ){ return false; }
+
+    //                 form.userid = userid;
+
+    //                 MANAGER.postFormToAction('viewOfficeMessage',form,MANAGER.reloadCall);
+    //                 Aps.cache.add('viewOfficeMsg',true,3600*24);
+    //                 return true;
+    //             }
+    //         });
+
+    // },
+
+    // preApplyContractRequest:function(requestid,data){
+
+    //     Aps.gui.confirm('确认签约',"您将和 "+data.party+" 正式签约,签约主体为:"+data.target+",请确认.",
+    //         {
+    //             okTxt:"确定",
+    //             cancelTxt:"取消",
+    //             onOk:function(){
+
+    //                 MANAGER.postFormToAction('applyContractRequest',{requestid:requestid},MANAGER.reloadCall);
+    //                 return true;
+    //             }
+    //         });
+
+    // },
+
+    // preDelegateService:function( serviceid ){
+
+    //     if(!Aps.user.needLogin(true)){
+    //         return;
+    //     }
+
+    //     Aps.gui.form('请输入您的联系方式',"<form class='mb-0 form service'><div class='field valid require' fieldname='replyid' fieldtype='input' length='8'><input type='hidden' class='mainfield' value='"+serviceid+"'></div><div class='form-group field valid require' fieldname='content.nickname' fieldtype='input' length='12'><label>您的称呼:</label><input type='text' class='form-control mainfield'></div><div class='form-group field valid require' fieldname='content.contact' fieldtype='input' length='16' checktype='mobile'><label>您的联系电话:</label><input type='mobile' class='form-control mainfield'></div></form>",
+    //         {
+    //             okTxt:"确定预约",
+    //             cancelTxt:"取消",
+    //             onOk:function(){
+    //                 Aps.user.customerDelegate('.service .a-field.valid','service');
+    //             }
+    //         });
+    // },
+
+
+    // preRejectContractRequest:function(requestid){
+
+    //     Aps.gui.confirm('拒绝签约邀请',"拒绝后将不能再通过,请确认.",
+    //         {
+    //             okTxt:"确定",
+    //             cancelTxt:"取消",
+    //             onOk:function(){
+
+    //                 MANAGER.postFormToAction('rejectContractRequest',{requestid:requestid},MANAGER.reloadCall);
+    //                 return true;
+    //             }
+    //         });
+
+    // },
 
 });
 
@@ -859,17 +924,17 @@ var BANNER = Aps.fn({
 
         var modules = {
             homevip:"\
-				<option disabled=\"disabled\" selected=\"selected\">请选择</option>\
-				<option value=\"vippackage\">会员包</option>",
+                <option disabled=\"disabled\" selected=\"selected\">请选择</option>\
+                <option value=\"vippackage\">会员包</option>",
             hometop:"\
-				<option disabled=disabled selected=selected>请选择</option>\
-				<option value=activesuit>联盟活动</option>\
-				<option value=merchant>商户</option>\
-			",
+                <option disabled=disabled selected=selected>请选择</option>\
+                <option value=activesuit>联盟活动</option>\
+                <option value=merchant>商户</option>\
+            ",
             trainingcourse:"\
-				<option disabled=\"disabled\" selected=\"selected\">请选择</option>\
-				<option value=\"trainingcourse\">训练营</option>\
-			",
+                <option disabled=\"disabled\" selected=\"selected\">请选择</option>\
+                <option value=\"trainingcourse\">训练营</option>\
+            ",
         };
 
         var location = vdom('#bannerLocation').value();

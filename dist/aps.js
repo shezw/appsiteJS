@@ -29,6 +29,239 @@ if(!Aps){var Aps = {}};
 if(!ApsMd){var ApsMd = {}};
 if(!CONFIGS){var CONFIGS = {}};
 
+ApsMd.animate = { // ? 动画模板
+	fadeIn:{
+		name:'fadeIn',
+		frames:{
+			0:{opacity:0},
+			// 100:{opacity:1}
+		}
+	},
+	fadeOut:{
+		name:'fadeOut',
+		frames:{
+			// 0:{opacity:1},
+			100:{opacity:0}
+		}
+	},
+	scaleIn:{
+		name:'scaleIn',
+		frames:{
+			0:{width:0,height:0},
+			// 100:{opacity:1}
+		}
+	},
+	scaleOut:{
+		name:'scaleOut',
+		frames:{
+			// 0:{opacity:1},
+			100:{width:0,height:0}
+		}
+	},
+	scaleInX:{
+		name:'scaleInX',
+		frames:{
+			0:{width:0,},
+			// 100:{opacity:1}
+		}
+	},
+	scaleOutX:{
+		name:'scaleOutX',
+		frames:{
+			// 0:{opacity:1},
+			100:{width:0,}
+		}
+	},
+	scaleInY:{
+		name:'scaleInY',
+		frames:{
+			0:{height:0},
+			// 100:{opacity:1}
+		}
+	},
+	scaleOutY:{
+		name:'scaleOutY',
+		frames:{
+			// 0:{opacity:1},
+			100:{height:0}
+		}
+	},
+	fadeInDown:{
+		name:'fadeInDown',
+		frames:{
+			0:{ opacity:0,transform:"translate3d(0, -15%, 0)"},
+			50:{ opacity:1,transform:"translate3d(0, 2%, 0)"},
+			100:{ opacity:1,transform:"translate3d(0, 0, 0)"},
+		}
+	},
+	fadeInUp:{
+		name:'fadeInUp',
+		frames:{
+			0:{ opacity:0,transform:"translate3d(0, 15%, 0)"},
+			50:{ opacity:1,transform:"translate3d(0, -2%, 0)"},
+			100:{ opacity:1,transform:"translate3d(0, 0, 0)"},
+		}
+	},
+	fadeOutDown:{
+		name:'fadeOutDown',
+		frames:{
+			0:{ opacity:1,transform:"translate3d(0, 0, 0)"},
+			50:{ opacity:1,transform:"translate3d(0, 2%, 0)"},
+			100:{ opacity:0,transform:"translate3d(0, -150%, 0)"},
+		},
+		curve:"ease-in"
+	},
+	fadeOutUp:{
+		name:'fadeOutUp',
+		frames:{
+			0:{ opacity:1,transform:"translate3d(0, 0, 0)"},
+			50:{ opacity:1,transform:"translate3d(0, -2%, 0)"},
+			100:{ opacity:0,transform:"translate3d(0, 150%, 0)"},
+		},
+		curve:"ease-in"
+	},
+	popIn:{
+		name:'popIn',
+		frames:{
+			0:{transform:"scale(0.5)",opacity:0},
+			70:{transform:"scale(1.05)",opacity:1},
+			100:{transform:"scale(1)",opacity:1}
+		},
+		// curve:"cubic-bezier(0, 1.57, 0.7, 1.26)"
+		curve:"ease-out"
+	},
+	popOut:{
+		name:'popOut',
+		frames:{
+			0:{transform:"scale(1)",opacity:1},
+			30:{transform:"scale(1.05)",opacity:1},
+			80:{transform:"scale(0.5)",opacity:0},
+			100:{transform:"scale(0)",opacity:0},
+		},
+		// curve:"cubic-bezier(0.4,-0.14, 0.68, 0.19)"
+	},
+	slideInRight:{
+		name:'slideInRight',
+		frames:{
+			0:{transform:"translate(100%,0)"},
+			100:{transform:"translate(0,0)"},
+		},
+		curve:"cubic-bezier(0.215, 0.61, 0.355, 1)"
+	},
+	slideInBottom:{
+		name:'slideInBottom',
+		frames:{
+			0:{transform:"translate(0,100%)"},
+			100:{transform:"translate(0,0)"},
+		},
+		curve:"cubic-bezier(0.215, 0.61, 0.355, 1)"
+	},
+	slideInLeft:{
+		name:'slideInLeft',
+		frames:{
+			0:{transform:"translate(-100%,0)"},
+			100:{transform:"translate(0,0)"},
+		},
+		curve:"cubic-bezier(0.215, 0.61, 0.355, 1)"
+	},
+	slideOutBottom:{
+		name:'slideOutBottom',
+		frames:{
+			0:{transform:"translate(0,0)"},
+			100:{transform:"translate(0,120%)"},
+		},
+		curve:"ease-out"
+	},
+	slideOutRight:{
+		name:'slideOutRight',
+		frames:{
+			0:{transform:"translate(0,0)",filter:"blur(0)"},
+			100:{transform:"translate(100%,0)",filter:"blur(1rem)"},
+		},
+		curve:"cubic-bezier(0.215, 0.61, 0.355, 1)"
+	},
+	onBlur:function(range){
+		return {
+			name:'onBlur',
+			frames:{
+				0:{ filter:"blur(0px)" },
+				100:{ filter:"blur(5px)" }
+			},
+			count:2,
+		}
+	}
+};
+ApsMd.gui = { // ! 组件dom模版(核心功能)
+	mask:'<div class="modal-backdrop show a-mask"></div>',
+	toast:'\
+	<div class="a-toast {{position}}-toast">\
+		<div class="alert alert-{{style}} a-toast-content" role="alert">\
+			<div class="a-toast-message">{{message}}</div>\
+			[if[::closeButton::<button type="button" class="close">\
+              	<span>×</span>\
+            </button>]if]\
+		</div>\
+	</div>\
+	',
+	modal:'\
+	<div class="a-modal fade show">\
+	  <div class="modal-dialog modal-dialog-centered {{size}}" >\
+	    <div class="modal-content">\
+	      <div class="modal-header">\
+	        <h5 class="modal-title" >{{title}}</h5>\
+	      </div>\
+	      <div class="modal-body">\
+	      <div class="[if[::type=form::a-modal-form]if] contents">\
+	        {{type}}{{content}}\
+          </div>\
+	    </div>\
+	      <div class="modal-footer">\
+	        [if[::type=confirm::\
+	        <button type="button" class="btn btn-secondary button cancel" data-dismiss="modal">{{cancelText}}</button>\
+	        ]if]\
+	        <button type="button" class="btn btn-primary button ok">{{okText}}</button>\
+	      </div>\
+	    </div>\
+	  </div>\
+	</div>\
+	',
+	popup:'\
+	<div class="a-popup modal fade show">\
+	  <div class="modal-backdrop show a-mask"></div>\
+	  <div class="modal-dialog a-main">\
+	    <div class="modal-content">\
+	      <div class="modal-header">\
+	        <h5 class="modal-title">{{title}}</h5>\
+	        <button type="button" class="close">\
+	          <span>&times;</span>\
+	        </button>\
+	      </div>\
+	      <div class="modal-body">\
+		      [if[::coverUrl::<div class="a-popup-cover"><img src="{{coverUrl}}" alt="cover" class="img-fluid"></div>]if]\
+		      <div class="a-popup-content">{{content}}</div>\
+	      </div>\
+	    </div>\
+	   </div>\
+      </div>\
+	',
+	menu:"<div class='ApsMenu'><div class='space'></div><div class='main'><h4 class='title'></h4><div class='menus'></div><div class='close'></div></div></div>",
+	page:"[if[:cover:::<div class='pageCover'><img src='{{cover}}!cover'></div>]if]<div class='contents'>{{introduce}}</div>",
+	view:"<div class='a-view' id='{{viewid}}'></div>",
+
+	loadingInner:"<div class='a-loading-inner'><i class='a-icon I-load a-color-primary a-rotation'></i>"+i18n('LOADING')+"</div>",
+	transptant:"<div class='a-loading loading transptant'><div class='logo a-rotation'><i class='a-icon I-load a-color-primary'></i></div></div>",
+	notice:{
+		point:"<i class='ApsNotice'></i>",
+	},
+	cityPicker:"\
+	<section id='areaLayer' class='express-area-box'>\
+	<header><h3>选择地区</h3><a id='backUp' class='back' href='javascript:void(0)' title='返回'></a><a id='closeArea' class='close' href='javascript:void(0)' title='关闭'></a></header>\
+	<article id='areaBox'><ul id='areaList' class='area-list'></ul></article>\
+	</section>\
+	<div id='areaMask' class='mask'></div>\
+	",
+};
+
 /* 核心组件(必要) */
 window.vdom = window.VD = function( selector,hash ){ return selector ? Aps.dom.get(selector,hash) : this; };
 window.vlist= window.VL = function( selector,hash ){ return selector ? Aps.dom.list(selector,hash) : this; };
@@ -1125,7 +1358,7 @@ Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & for
 		if(opts.requesttype==='POST'){ _.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); } /* Set Content-Type by POST */
 
 		_.withCredentials = true;
-		_.timeout = opts.timeout || 5000;
+		_.timeout = opts.timeout || 10000;
 
 		// PROGRESS 
 		// onloadstart, onprogress, onabort, onerror, onload, ontimeout, onloadend, onreadystatechange
@@ -1346,7 +1579,7 @@ Aps.setting    = Aps.fn({ // ! 设置和属性
 	},
 });
 
-window.i18n  = function( code , params ){ return params ? (ApsMd.locale[Aps.setting.language][code](params)||code) : (ApsMd.locale[Aps.setting.language][code]||code); }
+window.i18n  = function( code , params ){ return params ? (ApsMd.i18n[Aps.setting.language][code](params)||code) : (ApsMd.i18n[Aps.setting.language][code]||code); }
 
 Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core 
 
@@ -1607,76 +1840,6 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 	}
 
 };
-ApsMd.core = { // ! 组件dom模版(核心功能)
-	mask:'<div class="modal-backdrop show a-mask"></div>',
-	toast:'\
-	<div class="a-toast {{position}}-toast">\
-		<div class="alert alert-{{style}} a-toast-content" role="alert">\
-			<div class="a-toast-message">{{message}}</div>\
-			[if[::closeButton::<button type="button" class="close">\
-              	<span>×</span>\
-            </button>]if]\
-		</div>\
-	</div>\
-	',
-	modal:'\
-	<div class="a-modal fade show">\
-	  <div class="modal-dialog modal-dialog-centered {{size}}" >\
-	    <div class="modal-content">\
-	      <div class="modal-header">\
-	        <h5 class="modal-title" >{{title}}</h5>\
-	      </div>\
-	      <div class="modal-body">\
-	      <div class="[if[::type=form::a-modal-form]if] contents">\
-	        {{type}}{{content}}\
-          </div>\
-	    </div>\
-	      <div class="modal-footer">\
-	        [if[::type=confirm::\
-	        <button type="button" class="btn btn-secondary button cancel" data-dismiss="modal">{{cancelText}}</button>\
-	        ]if]\
-	        <button type="button" class="btn btn-primary button ok">{{okText}}</button>\
-	      </div>\
-	    </div>\
-	  </div>\
-	</div>\
-	',
-	popup:'\
-	<div class="a-popup modal fade show">\
-	  <div class="modal-backdrop show a-mask"></div>\
-	  <div class="modal-dialog a-main">\
-	    <div class="modal-content">\
-	      <div class="modal-header">\
-	        <h5 class="modal-title">{{title}}</h5>\
-	        <button type="button" class="close">\
-	          <span>&times;</span>\
-	        </button>\
-	      </div>\
-	      <div class="modal-body">\
-		      [if[::coverUrl::<div class="a-popup-cover"><img src="{{coverUrl}}" alt="cover" class="img-fluid"></div>]if]\
-		      <div class="a-popup-content">{{content}}</div>\
-	      </div>\
-	    </div>\
-	   </div>\
-      </div>\
-	',
-	menu:"<div class='ApsMenu'><div class='space'></div><div class='main'><h4 class='title'></h4><div class='menus'></div><div class='close'></div></div></div>",
-	page:"[if[:cover:::<div class='pageCover'><img src='{{cover}}!cover'></div>]if]<div class='contents'>{{introduce}}</div>",
-	view:"<div class='a-view' id='{{viewid}}'></div>",
-
-	loadingInner:"<div class='a-loading-inner'><i class='a-icon I-load a-color-primary a-rotation'></i>"+i18n('LOADING')+"</div>",
-	transptant:"<div class='a-loading loading transptant'><div class='logo a-rotation'><i class='a-icon I-load a-color-primary'></i></div></div>",
-	notice:{
-		point:"<i class='ApsNotice'></i>",
-	},
-	cityPicker:"\
-	<section id='areaLayer' class='express-area-box'>\
-	<header><h3>选择地区</h3><a id='backUp' class='back' href='javascript:void(0)' title='返回'></a><a id='closeArea' class='close' href='javascript:void(0)' title='关闭'></a></header>\
-	<article id='areaBox'><ul id='areaList' class='area-list'></ul></article>\
-	</section>\
-	<div id='areaMask' class='mask'></div>\
-	",
-};
 
 Aps.gui        = { // ! 界面交互  # basic gui 
 	icon:{
@@ -1704,7 +1867,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		options.message  = (options.icon ? Aps.gui.icon[icon] : '') + message ;
 		options.closeButton = options.autoClose ? false : true;
 
-		var msg = VD(Aps.mixer.mix(ApsMd.core.toast,options));
+		var msg = VD(Aps.mixer.mix(ApsMd.gui.toast,options));
 		VD('html','HTML').append(msg);
 		msg.fadeIn();
 
@@ -1735,8 +1898,8 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		var _okCall     = options.onOk || ( typeof optionsOrOkCall == 'function' ? optionsOrOkCall : 0 );
 		var _cancelCall = options.onCancel || 0;
 
-		var mask   = VD(ApsMd.core.mask).hide();
-		var modal  = VD(Aps.mixer.mix(ApsMd.core.modal,_modal)).hide();
+		var mask   = VD(ApsMd.gui.mask).hide();
+		var modal  = VD(Aps.mixer.mix(ApsMd.gui.modal,_modal)).hide();
 
 		VD('html','HTML').append(mask);
 		VD('html','HTML').append(modal);
@@ -1766,11 +1929,13 @@ Aps.gui        = { // ! 界面交互  # basic gui
 					_okCall( mask, modal );
 				}
 			}
-		};
+			return ;
+		}
 
 		var _cancel = function(){
-			( !_cancelCall || _cancelCall( mask, modal ) ) && _close( ); 
-		};
+			( !_cancelCall || _cancelCall() ) && _close(); 
+			return ;
+		}
 
 		_okButton     && _okButton.click(_ok);		
 		_cancelButton && _cancelButton.click(_cancel);
@@ -1789,7 +1954,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		options.icon     = options.icon  || 'loading';
 		options.message  = Aps.gui.icon.loading + (message ||i18n('SUBMITING'));
 
-		var msg = VD(Aps.mixer.mix(ApsMd.core.toast,options));
+		var msg = VD(Aps.mixer.mix(ApsMd.gui.toast,options));
 		msg.id('a-submit-toast');
 		VD('html','HTML').append(msg);
 		msg.fadeIn();
@@ -1818,7 +1983,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		options.message  = Aps.gui.icon[ options.icon ] + (message ||i18n('SUBMITtED'));
 		options.delay    = options.delay || delayOrOptions || 2500;
 
-		var msg = VD(Aps.mixer.mix(ApsMd.core.toast,options));
+		var msg = VD(Aps.mixer.mix(ApsMd.gui.toast,options));
 		msg.id('a-submit-toast');
 		VD('html','HTML').append(msg);
 		msg.fadeIn();
@@ -1836,8 +2001,8 @@ Aps.gui        = { // ! 界面交互  # basic gui
 			coverUrl:coverUrl
 		};
 
-		// var mask  = VD(ApsMd.core.mask).hide();
-		var popup = VD(Aps.mixer.mix(ApsMd.core.popup,options)).hide();
+		// var mask  = VD(ApsMd.gui.mask).hide();
+		var popup = VD(Aps.mixer.mix(ApsMd.gui.popup,options)).hide();
 
 		VD('html','HTML').append(popup);
 
@@ -1855,8 +2020,6 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		};
 		mask.click(closePopup);		
 		closeBtn.click(closePopup);
-
-		return popup;
 	},
 
 
@@ -1864,7 +2027,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 
 		start:function(message,options,forced) {
 
-			if (VD('html','HTML').isLoad()){ return; }
+			if (VD('body','BODY').isLoad()){ return; }
 
 			var options = options || {};
 
@@ -1873,9 +2036,9 @@ Aps.gui        = { // ! 界面交互  # basic gui
 			options.icon     = options.icon  || 'loading';       // info, loading, warning, success, failed
 			options.message  = (options.icon ? Aps.gui.icon[options.icon] : '') + message ;
 
-			var loading = VD(Aps.mixer.mix(ApsMd.core.toast,options)).addClass('a-loading').id('G_LOADING');
-			if( forced ){ VD('html','HTML').append(VD(ApsMd.core.mask).id('G_LOADING_MASK')); }
-			VD('html','HTML').loading().append(loading);
+			var loading = VD(Aps.mixer.mix(ApsMd.gui.toast,options)).addClass('a-loading').id('G_LOADING');
+			if( forced ){ VD('body','BODY').append(VD(ApsMd.gui.mask).id('G_LOADING_MASK')); }
+			VD('body','BODY').loading().append(loading);
 			loading.fadeIn();
 
 		},
@@ -1905,7 +2068,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 
 	loadingInner:{
 		start   :function(containerOrSelector,message,append){
-			var loading = VD(ApsMd.core.loadingInner);
+			var loading = VD(ApsMd.gui.loadingInner);
 			loading.animate(ApsMd.animate.fadeInDown);
 			return append ? vdom( containerOrSelector ).loading().append(loading) : vdom( containerOrSelector ).loading().prepend(loading); 
 		},
@@ -1944,7 +2107,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		var getTranslate = function(transformCSS){
 			var translate = transformCSS.match(/translate([^\)]+)?/ig)[0].replace("translate(","").split(",");
 			return {x:parseInt(translate[0].replace('px','')),y:parseInt(translate[1].replace('px',''))};
-		};
+		}
 
 		var options = options || {blur:1,lockX:0,lockY:0,backup:1,ending:0};
 		var lockX   = options.lockX || 0;
@@ -2023,7 +2186,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 	},
 
 	cityPicker:function(){
-		var cityPicker = ApsMd.core.cityPicker;
+		var cityPicker = ApsMd.gui.cityPicker;
 		vdom('body').append(cityPicker);
 	},
 
@@ -2038,7 +2201,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 
 	menu:function(title,menus,cancelTitle,cancelCall){ // menus [{'title','call':function(){}}]
 
-		var _menu = VD(ApsMd.core.menu);
+		var _menu = VD(ApsMd.gui.menu);
 
 		VD('html','HTML').append(_menu);
 
@@ -2057,7 +2220,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 			_main.animate(ApsMd.animate.slideOutBottom,300,function(){_menu.remove()});
 			_bg.fadeOut();
 			typeof cancelCall == 'function' && cancelCall();
-		};
+		}
 		_menus.on(Aps.setting.plus?'tap':'click',function(vd){var idx = vd.index(); typeof menus[idx].call =='function' && menus[vd.index()].call(vd,vd.index());_close();});
 
 		_menu.show();
@@ -2075,8 +2238,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		cr.find('.a-icon').toggleClass('I-bottom').toggleClass('I-top');
 	}
 
-};
-
+}
 Aps.router     = Aps.fn({ // ! 路由控制  # router 
 	params:0,
 	mode:'general',
@@ -2110,7 +2272,7 @@ Aps.router     = Aps.fn({ // ! 路由控制  # router
 		var params = Aps.router.params || {};
 		var viewid = params.viewid || 'view';
 
-		VD(Aps.mixer.mix(ApsMd.core.view,params),viewid).addClass('targetView');
+		VD(Aps.mixer.mix(ApsMd.gui.view,params),viewid).addClass('targetView');
 		vdom('body').append(vdom[viewid].html(Aps.mixer.mix(data,params)));
 
 		return this;
@@ -2141,7 +2303,7 @@ Aps.router     = Aps.fn({ // ! 路由控制  # router
 		this.params.viewid = viewid;
 
 		if ( typeof page!='object' && !page.url ) {
-			VD(Aps.mixer.mix(ApsMd.core.view,this.params),viewid);
+			VD(Aps.mixer.mix(ApsMd.gui.view,this.params),viewid);
 			VD('html','HTML').append(VD[viewid].html(Aps.mixer.mix(page,this.params)));
 			VD[viewid].animate(ApsMd.animate.slideInRight,250);
 		}else{
@@ -2155,7 +2317,7 @@ Aps.router     = Aps.fn({ // ! 路由控制  # router
 		var params = Aps.router.params || {};
 		var viewid = params.viewid || 'view';
 
-		var _view  = VD(Aps.mixer.mix(ApsMd.core.view,params),viewid);
+		var _view  = VD(Aps.mixer.mix(ApsMd.gui.view,params),viewid);
 		VD('html','HTML').append(_view.html(Aps.mixer.mix(data,params)));
 		_view.animate(ApsMd.animate.slideInRight,250);
 
@@ -2830,7 +2992,7 @@ Aps.switcher   = Aps.fn({ // 列表切换  # switcher
 			+  "append=\""+append+"\" "
 			+  "filters=\""+(filters ? filters+",":"")+"type:"+list[k].id+"\""
 			+  ">"
-			+  ApsMd.core.loading.local
+			+  ApsMd.gui.loading.local
 			+  "</div>" ;
 
 		}
@@ -3547,7 +3709,7 @@ Aps.former     = Aps.fn({ // ? 表单
 
 			if ( length < value.length ) {	
 
-				Aps.gui.toast( i18n('WRONG_LENGTH',{txt:(label.text()||placeholder),length:length}),0, 'failed' );
+				Aps.gui.alert( 'Invalid Input', i18n('WRONG_LENGTH',{txt:(label.text()||placeholder),length:length}));
 				field.find(type).focus();
 
 				return false;
@@ -3927,10 +4089,10 @@ Aps.user       = Aps.fn({ // ! 用户对象
 		if (Aps.cajax.successful(data)){ // 有新消息
 
 			if (vdom('.tabBar')) {
-				vdom('.tabBar .tabs.my').append(ApsMd.core.notice.point);
+				vdom('.tabBar .tabs.my').append(ApsMd.gui.notice.point);
 			}
 			if (vdom('.setting')) {
-				vdom('.settings.notification').append(ApsMd.core.notice.point);
+				vdom('.settings.notification').append(ApsMd.gui.notice.point);
 			}
 		}else{
 
@@ -4115,7 +4277,7 @@ Aps.user       = Aps.fn({ // ! 用户对象
 
 		if(!vdom('.ApsLogin')){
 
-			vdom(selector).append(vdom.vm_quickLogin||VD(Aps.mixer.mix(ApsMd.core.quickLogin[mode],Aps.user.quickLoginMode),'vm_quickLogin'));
+			vdom(selector).append(vdom.vm_quickLogin||VD(Aps.mixer.mix(ApsMd.gui.quickLogin[mode],Aps.user.quickLoginMode),'vm_quickLogin'));
 			var login = vdom('.ApsLogin');
 
 			Aps.gui.animateOn
@@ -5085,12 +5247,12 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 							}else if( options.type==='audio'){
 
-								var htmlString = '<div class=uploadMedia><audio data-filename="'+res.content.url+'"  src="'+res.content.url+'" controls="controls">您的浏览器不支持 audio 标签。</audio></div>';
+								var htmlString = '<div class=uploadMedia><audio data-filename="'+res.content.url+'"  src="'+res.content.url+'" controls="controls" autoplay="false">您的浏览器不支持 audio 标签。</audio></div>';
 								Editor.pasteHTML(editable, htmlString, res.content.name );
 
 							}else if( options.type==='video'){
 
-								var htmlString = '<div class=uploadMedia><video data-filename="'+res.content.url+'"  src="'+res.content.url+'" controls="controls">您的浏览器不支持 video 标签。</video></div>';
+								var htmlString = '<div class=uploadMedia><video data-filename="'+res.content.url+'"  src="'+res.content.url+'" controls="controls" autoplay="false">您的浏览器不支持 video 标签。</video></div>';
 								Editor.pasteHTML(editable, htmlString, res.content.name);
 
 							}
@@ -5609,29 +5771,6 @@ Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk
 
 });
 
-Aps.swip       = Aps.fn({ // ! 滑动列表 
-
-	time:0,
-
-	option:{
-
-		selector:'#swiperContainer',
-		pagination:'.swiper-pagination',
-		// autoplay:3500,
-		speed:500,
-
-	},
-
-	init:function(option){
-
-		var option   = option || this.option;
-		var selector = option.selector || '#swiperContainer';
-
-		if (VD(selector)) {
-			var swpier  = new Swiper(option.selector||'#swiperContainer',option);
-		}
-	},
-});
 Aps.searchbar  = Aps.fn({ // ! 搜索条  
 	
 	needLogin:1,
@@ -5745,7 +5884,7 @@ Aps.searchbar  = Aps.fn({ // ! 搜索条
 		// var list = Aps.cajax.getData(data);
 		// vdom((Aps.searchbar.switcher?'.ApsSwitchMain.current':'.searchResult'),'searchList');
 
-		// vdom.searchList.html(Aps.mixer.loop(ApsMd.core.searchResult,list));
+		// vdom.searchList.html(Aps.mixer.loop(ApsMd.gui.searchResult,list));
 
 	}, });
 
@@ -6056,13 +6195,6 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 	Aps.switcher.init();
 	
 	if (Aps.setting.isWeixin){ document.documentElement.classList.add('wx'); }
-	// Aps.cache.init();
-	// Aps.cache.clear();
-	// Aps.checker.checkBroswer();
-	// ACCOUNT.checkLevel();
-	// Aps.checker.checkDevice();
-
-	// Aps.searchbar.init();
 	})();
 
 

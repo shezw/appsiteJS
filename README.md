@@ -1,37 +1,84 @@
 # appsiteJS
 
-#### 介绍
-appsite 前端js框架
+[中文](./README.zh-CN.md) | English
 
-#### 软件架构
-软件架构说明
+### Indroduction
+
+appsiteJS is a front-end javascript library for appsite framework, includes virtual dom, AJAX, Data Cache, interaction GUI and i18n features and more.
+
+### Features
+
+##### Virtual dom
+
+Virtual dom provides a jQuery like syntax to bind a v-dom object to a html dom, and most jQuery dom methods such as addClass(), show(), remove().
+**vdom always select one dom explicitly. VD() is the abbreviation of vdom().**
+**vlist provide a dom list selection. VL() is the abbreviation of vlist().**
+
+```javascript
+// CSS selection
+let title = VD('h1.title');
+	title.toggleClass('active');
+	
+// list selection	
+let selections = VL('select option');	
+    selections.each( (vd)=>{ // Every vd is a vdom object
+        console.log( vd.isSelected() );
+        console.log( vd.value() ); 
+    });	
+
+// read and set value	
+let field = VD('.filed');
+	console.log( field.value() );
+	field.value('Value Changed');
+	console.log( filed.value() );
+
+// bind event
+VD("select.picker").on( 'change', (vd)=> {
+    console.log( vd.value() );
+});
+```
+
+vdom provide an extra feature animate() to add css animate to doms by an animate description object.
+```javascript
+let fadeInUpAnimate = {
+    name:'fadeInUp',
+    frames:{
+        0:{ opacity:0,transform:"translate3d(0, 15%, 0)"},
+        50:{ opacity:1,transform:"translate3d(0, -2%, 0)"},
+        100:{ opacity:1,transform:"translate3d(0, 0, 0)"},
+    }
+}
+
+VD('.popup').animate( fadeInUpAnimate );
+
+/**
+ * animateCSS() is used for prepared animates in aps.i18n.js
+ * see more at dist/aps.i18n.js
+ */
+
+VD('.popup').animateCSS('fadeInUp', ()=>{} );
+
+```
+
+### Documentation
+
+Writing...
+
+### How to use
+
+include aps.css at head part.
+include aps.i18n.js, aps.js at foot part.
+```html
+<link rel="stylesheet" href="./dist/aps.css">
+</head>
+
+</body>
+
+<script src="dist/aps.i18n.js"></script><!-- i18n -->
+
+<script src="dist/aps.js"></script><!-- core -->
+
+```
 
 
-#### 安装教程
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 使用说明
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 参与贡献
-
-1. Fork 本仓库
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
-
-
-#### 码云特技
-
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+aps.manager.js is used for appsite back-end management.
