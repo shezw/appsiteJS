@@ -25,9 +25,16 @@
 */
 
 "use strict";
-if(!Aps){var Aps = {}};
-if(!ApsMd){var ApsMd = {}};
-if(!CONFIGS){var CONFIGS = {}};
+if(!Aps){var Aps = {};}
+if(!ApsMd){var ApsMd = {};}
+if(!CONFIGS){var CONFIGS = {};}
+
+/* 核心组件(必要) */
+window.vdom = window.VD = function( selector,hash ){ return selector ? Aps.dom.get(selector,hash) : this; };
+window.vlist= window.VL = function( selector,hash ){ return selector ? Aps.dom.list(selector,hash) : this; };
+window.defined = function( object ){ return !(typeof object === 'undefined' || object === null); };
+window.getLang = function(){ return typeof Aps.setting !== 'undefined' ? Aps.setting.language : 'en-WW'; }
+window.i18n  = function( code , params ){ return params ? (ApsMd.i18n[getLang()][code](params)||code) : (ApsMd.i18n[getLang()][code]||code); }
 
 ApsMd.animate = { // ? 动画模板
 	fadeIn:{
@@ -261,11 +268,6 @@ ApsMd.gui = { // ! 组件dom模版(核心功能)
 	<div id='areaMask' class='mask'></div>\
 	",
 };
-
-/* 核心组件(必要) */
-window.vdom = window.VD = function( selector,hash ){ return selector ? Aps.dom.get(selector,hash) : this; };
-window.vlist= window.VL = function( selector,hash ){ return selector ? Aps.dom.list(selector,hash) : this; };
-window.defined = function( object ){ return !(typeof object === 'undefined' || object === null); };
 
 Aps.fn = function(obj) { // ! 内核组件  # core factory 
 	var fn = {
@@ -1578,8 +1580,6 @@ Aps.setting    = Aps.fn({ // ! 设置和属性
 		}
 	},
 });
-
-window.i18n  = function( code , params ){ return params ? (ApsMd.i18n[Aps.setting.language][code](params)||code) : (ApsMd.i18n[Aps.setting.language][code]||code); }
 
 Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core 
 
