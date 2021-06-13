@@ -369,6 +369,18 @@
 .ft-Verdana-I{font-family:"Verdana-Italic"}
 .ft-Zapfino{font-family:"Zapfino"}
 
+/**
+Chinese Fonts
+ */
+.ft-SY-SongR{ font-family: "思源宋体 CN Regular" }
+.ft-SY-SongH{ font-family: "思源宋体 CN Heavy" }
+.ft-FY-Sunzhongshan{ font-family: 'FangYuansunzhongshan' }
+.ft-ZTQ-JiXiangSong{ font-family: '字体圈欣意吉祥宋' }
+.ft-FoXi{ font-family: '演示佛系体' }
+.ft-FZ-Kai{ font-family: '方正楷体简体' }
+.ft-YRD-ZhuShiR{ font-family: '杨任东竹石体 Regular' }
+.ft-YRD-ZhuShiH{ font-family: '杨任东竹石体 Heavy' }
+.ft-YYP-QiuHongKai{ font-family: '演示秋鸿楷' }
 
 .a-only .a-topbar{height:4rem;width:20rem;text-align:center;line-height:2.8rem;padding-top:1.2rem;position:fixed;top:0;z-index:10;color:#333;background:#fff;border-bottom:1px solid #eee}
 .a-only .a-topbar.noStatusBar{height:2.8rem;padding-top:0}
@@ -421,9 +433,9 @@
 .a-only .a-field label:first-child{margin-right:0}
 .a-only .a-field input, .a-only .a-field select{width:100%;line-height:1.6rem;padding:.1rem .5rem;font-size:.8rem;box-sizing:border-box;font-weight:400;display:inline-block;color:#333;background:#f3f3f3;border-radius:.2rem}
 .a-only .a-field input[type=checkbox]{position:relative;padding:0;width:1rem;height:1rem;display:inline-block;border:1px solid #eee;float:left;margin-right:.25rem}
-.a-only .a-field input[type=checkbox]:checked:before{font-family:ApsIcon;content:'\e651';position:absolute;font-size:1.2rem;width:1rem;height:1rem;left:-.15rem;top:0;line-height:1rem;color:#39c2d0}
+.a-only .a-field input[type=checkbox]:checked:before{font-family:'ApsIcon';content:'\e651';position:absolute;font-size:1.2rem;width:1rem;height:1rem;left:-.15rem;top:0;line-height:1rem;color:#39c2d0}
 .a-only .a-field input[type=radio]{display:inline-block;position:relative;padding:0;width:1rem;height:1rem;margin-right:.25rem;border:1px solid #eee;border-radius:50%;background:#eee;float:left}
-.a-only .a-field input[type=radio]:checked:before{font-family:ApsIcon;content:'\e60b';position:absolute;width:1rem;height:1rem;left:0;top:0;line-height:1rem;color:#39c2d0;FONT-SIZE:1rem}
+.a-only .a-field input[type=radio]:checked:before{font-family:'ApsIcon';content:'\e60b';position:absolute;width:1rem;height:1rem;left:0;top:0;line-height:1rem;color:#39c2d0;FONT-SIZE:1rem}
 .a-only .a-field input[type=tel]{font-weight:400}
 .a-only .a-field input.a-VerifyCode{width:10rem;margin-right:.5rem;float:left}
 .a-only .a-field .a-RequestCode{width:7rem;line-height:1rem;font-size:.8rem;margin-left:.5rem;margin-right:0;padding:.4rem;box-sizing:border-box;color:#fff;text-align:center;border-radius:.3rem}
@@ -437,6 +449,9 @@ button.a-fullButton.line{border:.1rem solid;background:0 0}
 
 .a-field{}
 .a-field-main{}
+textarea.a-field-main{ min-height: 64px; }
+textarea.a-field-main.large{ min-height: 128px; }
+
 .a-field-selector{}
 
 .a-field .a-field-clear {position: absolute;height: 50%;right: 5%;top: 25%;margin-top: 0;cursor: pointer;color: #bbb;}

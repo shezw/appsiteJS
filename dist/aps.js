@@ -40,7 +40,7 @@ ApsMd.animate = { // ? 动画模板
 	fadeIn:{
 		name:'fadeIn',
 		frames:{
-			0:{opacity:0},
+			0:{opacity:0}
 			// 100:{opacity:1}
 		}
 	},
@@ -54,7 +54,7 @@ ApsMd.animate = { // ? 动画模板
 	scaleIn:{
 		name:'scaleIn',
 		frames:{
-			0:{width:0,height:0},
+			0:{width:0,height:0}
 			// 100:{opacity:1}
 		}
 	},
@@ -68,7 +68,7 @@ ApsMd.animate = { // ? 动画模板
 	scaleInX:{
 		name:'scaleInX',
 		frames:{
-			0:{width:0,},
+			0:{width:0}
 			// 100:{opacity:1}
 		}
 	},
@@ -76,13 +76,13 @@ ApsMd.animate = { // ? 动画模板
 		name:'scaleOutX',
 		frames:{
 			// 0:{opacity:1},
-			100:{width:0,}
+			100:{width:0}
 		}
 	},
 	scaleInY:{
 		name:'scaleInY',
 		frames:{
-			0:{height:0},
+			0:{height:0}
 			// 100:{opacity:1}
 		}
 	},
@@ -98,7 +98,7 @@ ApsMd.animate = { // ? 动画模板
 		frames:{
 			0:{ opacity:0,transform:"translate3d(0, -15%, 0)"},
 			50:{ opacity:1,transform:"translate3d(0, 2%, 0)"},
-			100:{ opacity:1,transform:"translate3d(0, 0, 0)"},
+			100:{ opacity:1,transform:"translate3d(0, 0, 0)"}
 		}
 	},
 	fadeInUp:{
@@ -106,7 +106,7 @@ ApsMd.animate = { // ? 动画模板
 		frames:{
 			0:{ opacity:0,transform:"translate3d(0, 15%, 0)"},
 			50:{ opacity:1,transform:"translate3d(0, -2%, 0)"},
-			100:{ opacity:1,transform:"translate3d(0, 0, 0)"},
+			100:{ opacity:1,transform:"translate3d(0, 0, 0)"}
 		}
 	},
 	fadeOutDown:{
@@ -114,7 +114,7 @@ ApsMd.animate = { // ? 动画模板
 		frames:{
 			0:{ opacity:1,transform:"translate3d(0, 0, 0)"},
 			50:{ opacity:1,transform:"translate3d(0, 2%, 0)"},
-			100:{ opacity:0,transform:"translate3d(0, -150%, 0)"},
+			100:{ opacity:0,transform:"translate3d(0, -150%, 0)"}
 		},
 		curve:"ease-in"
 	},
@@ -123,7 +123,7 @@ ApsMd.animate = { // ? 动画模板
 		frames:{
 			0:{ opacity:1,transform:"translate3d(0, 0, 0)"},
 			50:{ opacity:1,transform:"translate3d(0, -2%, 0)"},
-			100:{ opacity:0,transform:"translate3d(0, 150%, 0)"},
+			100:{ opacity:0,transform:"translate3d(0, 150%, 0)"}
 		},
 		curve:"ease-in"
 	},
@@ -143,15 +143,15 @@ ApsMd.animate = { // ? 动画模板
 			0:{transform:"scale(1)",opacity:1},
 			30:{transform:"scale(1.05)",opacity:1},
 			80:{transform:"scale(0.5)",opacity:0},
-			100:{transform:"scale(0)",opacity:0},
-		},
+			100:{transform:"scale(0)",opacity:0}
+		}
 		// curve:"cubic-bezier(0.4,-0.14, 0.68, 0.19)"
 	},
 	slideInRight:{
 		name:'slideInRight',
 		frames:{
 			0:{transform:"translate(100%,0)"},
-			100:{transform:"translate(0,0)"},
+			100:{transform:"translate(0,0)"}
 		},
 		curve:"cubic-bezier(0.215, 0.61, 0.355, 1)"
 	},
@@ -159,7 +159,7 @@ ApsMd.animate = { // ? 动画模板
 		name:'slideInBottom',
 		frames:{
 			0:{transform:"translate(0,100%)"},
-			100:{transform:"translate(0,0)"},
+			100:{transform:"translate(0,0)"}
 		},
 		curve:"cubic-bezier(0.215, 0.61, 0.355, 1)"
 	},
@@ -167,7 +167,7 @@ ApsMd.animate = { // ? 动画模板
 		name:'slideInLeft',
 		frames:{
 			0:{transform:"translate(-100%,0)"},
-			100:{transform:"translate(0,0)"},
+			100:{transform:"translate(0,0)"}
 		},
 		curve:"cubic-bezier(0.215, 0.61, 0.355, 1)"
 	},
@@ -175,7 +175,7 @@ ApsMd.animate = { // ? 动画模板
 		name:'slideOutBottom',
 		frames:{
 			0:{transform:"translate(0,0)"},
-			100:{transform:"translate(0,120%)"},
+			100:{transform:"translate(0,120%)"}
 		},
 		curve:"ease-out"
 	},
@@ -183,18 +183,18 @@ ApsMd.animate = { // ? 动画模板
 		name:'slideOutRight',
 		frames:{
 			0:{transform:"translate(0,0)",filter:"blur(0)"},
-			100:{transform:"translate(100%,0)",filter:"blur(1rem)"},
+			100:{transform:"translate(100%,0)",filter:"blur(1rem)"}
 		},
 		curve:"cubic-bezier(0.215, 0.61, 0.355, 1)"
 	},
-	onBlur:function(range){
+	onBlur:function(){
 		return {
 			name:'onBlur',
 			frames:{
 				0:{ filter:"blur(0px)" },
 				100:{ filter:"blur(5px)" }
 			},
-			count:2,
+			count:2
 		}
 	}
 };
@@ -252,13 +252,13 @@ ApsMd.gui = { // ! 组件dom模版(核心功能)
       </div>\
 	',
 	menu:"<div class='ApsMenu'><div class='space'></div><div class='main'><h4 class='title'></h4><div class='menus'></div><div class='close'></div></div></div>",
-	page:"[if[:cover:::<div class='pageCover'><img src='{{cover}}!cover'></div>]if]<div class='contents'>{{introduce}}</div>",
+	page:"[if[:cover:::<div class='pageCover'><img alt='image' src='{{cover}}!cover'></div>]if]<div class='contents'>{{introduce}}</div>",
 	view:"<div class='a-view' id='{{viewid}}'></div>",
 
 	loadingInner:"<div class='a-loading-inner'><i class='a-icon I-load a-color-primary a-rotation'></i>"+i18n('LOADING')+"</div>",
 	transptant:"<div class='a-loading loading transptant'><div class='logo a-rotation'><i class='a-icon I-load a-color-primary'></i></div></div>",
 	notice:{
-		point:"<i class='ApsNotice'></i>",
+		point:"<i class='ApsNotice'></i>"
 	},
 	cityPicker:"\
 	<section id='areaLayer' class='express-area-box'>\
@@ -266,7 +266,7 @@ ApsMd.gui = { // ! 组件dom模版(核心功能)
 	<article id='areaBox'><ul id='areaList' class='area-list'></ul></article>\
 	</section>\
 	<div id='areaMask' class='mask'></div>\
-	",
+	"
 };
 
 Aps.fn = function(obj) { // ! 内核组件  # core factory 
@@ -282,7 +282,7 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 			'requesttype': 'POST',
 			'loadingtype': 'Window',
 			'parameters': {},
-			'headers':{},
+			'headers':{}
 		},
 		/* 重置配置 */
 		resetOptions: function() {
@@ -297,7 +297,7 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 				'requesttype': 'POST',
 				'loadingtype': 'Window',
 				'parameters': {},
-				'headers':{},
+				'headers':{}
 			}
 		},
 		/* 强制更新 */
@@ -347,7 +347,7 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 		/* 添加参数 */
 		addParams: function(key, value) {
 			if (typeof key == 'object') {
-				for( var k in key){ this.options.parameters[k] = key[k]; }
+				for( var k in key){ if(key.hasOwnProperty(k)) this.options.parameters[k] = key[k]; }
 			}else{
 				this.options.parameters[key] = value;
 			}
@@ -355,7 +355,7 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 		/* 添加头部 */
 		addHeaders: function(key, value) {
 			if (typeof key == 'object') {
-				for( var k in key){ this.options.headers[k] = key[k]; }
+				for( var k in key){ if(key.hasOwnProperty(k)) this.options.headers[k] = key[k]; }
 			}else{
 				this.options.headers[key] = value;
 			}
@@ -389,16 +389,17 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 			var update    = option ? (option.update    || 0    ) : 0    ;
 			var gajax     = option ? (option.gajax     || 0    ) : 0    ;
 			var url       = option ? (option.url       || 0    ) : 0    ;
+			var callback;
 
 			this.resetOptions();
 			this.setAction(api);
 			this.setParams(params||{});
 
 			if( typeof call == 'object'){
-				var callback  = call.success || null;
+				callback  = call.success || null;
 				var errorCall = call.error || null;
 			}else if(typeof call== 'function'){
-				var callback  = call || null;
+				callback  = call || null;
 			}
 
 			if( needLogin && !Aps.user.forcedLogin() ){ return;}
@@ -429,14 +430,16 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 			var update    = option ? (option.update    || 0    ) : 0    ;
 			var gajax     = option ? (option.gajax     || 0    ) : 0    ;
 
+			var callback;
+
 			this.resetOptions();
 			this.setUrl(url);
 			this.setParams(params||{});
 			if( typeof call == 'object'){
-				var callback = call.success || null;
+				callback = call.success || null;
 				var errorCall = call.error || null;
 			}else if(typeof call== 'function'){
-				var callback  = call || null;
+				callback  = call || null;
 			}
 
 			if( needLogin && !Aps.user.forcedLogin() ){ return;}
@@ -460,8 +463,7 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 
 		},
 
-		// vlist:window.vlist,
-		_listen:Aps._listen,
+		_listen:Aps._listen
 	};
 	for (var k in fn) {
 		obj[k] = obj[k]||fn[k];
@@ -469,13 +471,15 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 
 	return obj;
 };
+
 Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟列表
-	vmap:{},
+	tData:{},
 	styles:{css:{}},
 	vdom:window.vdom,
 	init:function(){
-		var vd = function( selector,hash ){ return selector ? Aps.dom.get(selector,hash) : this; };
-		window.vdom = vd;
+		window.vdom = function (selector, hash) {
+			return selector ? Aps.dom.get(selector, hash) : this;
+		};
 		this.vdom   = window.vdom;
 	},
 	vf:{
@@ -484,7 +488,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 				var list = name.split(' ');
 				for( var k in list){ this.el.classList.add(list[k]); }
 			}else if(typeof name=='object'){
-				for( var k in name){ this.el.classList.add(name[k]); }
+				for( var i in name){ if(name.hasOwnProperty(i)) this.el.classList.add(name[i]); }
 			}else{
 				if(!name) return this;
 				this.el.classList.add(name);
@@ -525,6 +529,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 		},
 		styles:function(styles){
 			for(var k in styles){
+				if( !styles.hasOwnProperty(k) ) { continue; }
 				this.el.style[k] = styles[k];
 			}
 			return this;
@@ -532,6 +537,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 		setAttr:function(attrs){
 			if (typeof attrs!=='object') return;
 			for(var k in attrs){
+				if( !attrs.hasOwnProperty(k) ) { continue; }
 				this.attr(k,attrs[k]);
 			}
 			return this;
@@ -604,6 +610,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 		},
 		clearDom:function(){
 			for(var k in this){
+				if( !this.hasOwnProperty(k) ) { continue; }
 				this[k]=null;
 			}
 		},
@@ -698,7 +705,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			return this;
 		},
 		once:function(event,call,options){
-			if (options){ options.once=true; }else{ options={once:true}};
+			if (options){ options.once=true; }else{ options={once:true}}
 			var vd = this;
 			this.el.addEventListener(event,function(e){call(vd,e);},options);
 			return this;
@@ -735,34 +742,31 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			run:function(vd,eventname){
 				if (vd.tCalls[eventname]){
 					for(var i in vd.tCalls[eventname]){
+						if( !vd.tCalls[eventname].hasOwnProperty(i) ) { continue; }
 						vd.tCalls[eventname][i](vd);
 					}
 				}
 			},
 			/**
-			 * [_start 触控事件开始]
-			 * @Author   Sprite                   hello@shezw.com http://donsee.cn
-			 * @DateTime 2019-10-04T14:39:44+0800
-			 * @version  1.0
-			 * @param    {vdom}                 vd              [虚拟dom]
-			 * @param    {event}                 e               [事件]
+			 *
+			 * @param vd
+			 * @param e
+			 * @private
 			 */
 			_start:function(vd,e){
 				vd.tData.X_ = e.clientX || e.touches[0].clientX; 
 				vd.tData.Y_ = e.clientY || e.touches[0].clientY; 
 				vd.tData.T_ = e.timeStamp;
-				vd.tData.tap = vd.tData.longpress = 1;
+				vd.tData.tap = vd.tData.longPress = 1;
 				this.run(vd,'start');
 				// if(vd.tCalls.start){  }
 				// console.log('Touch start.',vd.tData.X_,vd.tData.Y_,vd.tData.T_);
 			},
 			/**
-			 * [_move 移动中]
-			 * @Author   Sprite                   hello@shezw.com http://donsee.cn
-			 * @DateTime 2019-10-04T14:41:23+0800
-			 * @version  1.0
-			 * @param    {vdom}                 vd              [虚拟dom]
-			 * @param    {event}                 e               [事件]
+			 *
+			 * @param vd
+			 * @param e
+			 * @private
 			 */
 			_move:function(vd,e){
 				vd.tData._x  = vd.tData.x; 
@@ -783,7 +787,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 				vd.tData.distanceX = vd.tData.x-vd.tData.X_;
 				vd.tData.distanceY = vd.tData.y-vd.tData.Y_;
 				
-				vd.tData.tap = vd.tData.longpress = 0;
+				vd.tData.tap = vd.tData.longPress = 0;
 				vd.tData.duration = vd.tData.t-vd.tData.T_;
 
 				vd.tData._up   = vy<0 && angle<1.62;
@@ -814,14 +818,14 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 				vd.tData.left = distanceX<0 && angle>0.62;
 				vd.tData.right= distanceX>0 && angle>0.62;
 				vd.tData.tap  = vd.tData.tap && vd.tData.duration>vd.tData.conf.tap[0] && vd.tData.duration<vd.tData.conf.tap[1];
-				vd.tData.longpress= vd.tData.longpress && vd.tData.duration>vd.tData.conf.longpress[0] && vd.tData.duration<vd.tData.conf.longpress[1];
+				vd.tData.longPress= vd.tData.longPress && vd.tData.duration>vd.tData.conf.longPress[0] && vd.tData.duration<vd.tData.conf.longPress[1];
 				
 				vd.tData.up   && !vd.tData.lockY && this.run(vd,'up');
 				vd.tData.down && !vd.tData.lockY && this.run(vd,'down');
 				vd.tData.left && !vd.tData.lockX && this.run(vd,'left');
 				vd.tData.right&& !vd.tData.lockX && this.run(vd,'right');
 				vd.tData.tap  && this.run(vd,'tap');
-				vd.tData.longpress && this.run(vd,'longpress');
+				vd.tData.longPress && this.run(vd,'longPress');
 
 				(vd.tData.up && vd.tData.left) && this.run(vd,'upleft');
 				(vd.tData.up && vd.tData.right) && this.run(vd,'upright');
@@ -842,9 +846,9 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			}
 		},
 		onTouch:function(eventname,call){ // For finger touch
-			var listeningIndex = function(list,cal){ if(list==false){return -1;}for(var k in list){if(cal==list[k]) return k;} return -1; };
+			var listeningIndex = function(list,cal){ if(list===false){return -1;}for(var k in list){if( list.hasOwnProperty(k) && cal===list[k]) return k;} return -1; };
 			var vd   = this;
-			var conf = { tap:[50,350],longpress:[500,2000], }; 
+			var conf = { tap:[50,350],longPress:[500,2000] };
 			vd.tData = vd.tData || {
 				_start:function(vd,e){Aps.dom.vf.fingerTouchFns._start(vd,e);},
 				_move:function(vd,e){Aps.dom.vf.fingerTouchFns._move(vd,e);},
@@ -855,12 +859,12 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 				_X:null,_Y:null,_T:null,       // end point
 				x:null,y:null,t:null,          // moving point
 				_x:null,_y:null,_t:null,       // moving point cache
-				tap:0,doubletap:0,longpress:0, // touch mode
+				tap:0,doubleTap:0,longPress:0, // touch mode
 				up:0,down:0,left:0,right:0,    // rotation
 				_up:0,_down:0,_left:0,_right:0,// rotation cache
 				ax:0,ay:0,                     // Acceleration
 				vx:0,vy:0,                     // Velocity speed
-				duration:0,
+				duration:0
 			};
 			vd.tCalls = vd.tCalls || {};
 			vd.tCalls[eventname] = vd.tCalls[eventname] || [];
@@ -873,7 +877,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			return this;
 		},
 		offTouch:function(eventname,call){
-			var listeningIndex = function(list,cal){ if(list===false){ return -1;} for(var k in list){if(cal===list[k]){return k;}} return -1; };
+			var listeningIndex = function(list,cal){ if(list===false){ return -1;} for(var k in list){if( list.hasOwnProperty(k) && cal===list[k]){return k;}} return -1; };
 			var vd   = this;
 			if(!eventname && !call){ 
 				this.off( Aps.setting.isMobile ? 'touchstart' : 'mousedown' ,vd.tData._start);
@@ -901,10 +905,12 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 				var wkcss = " transform backface-visibility transform-origin box-sizing";
 				var css = "@keyframes "+name+"{";
 				if (typeof frames=="string"){ return frames; }
-				for( var k in frames ){
-					css += k+'%{';
-						for( var m in frames[k]){
-							css += m+":"+frames[k][m]+";";
+				for( var f in frames ){
+					if( !frames.hasOwnProperty(f) ) { continue; }
+					css += f+'%{';
+						for( var n in frames[f]){
+							if( !frames[f].hasOwnProperty(n) ) { continue; }
+							css += n+":"+frames[f][n]+";";
 						}
 					css += "}";
 				}
@@ -913,8 +919,10 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 				css += "@-webkit-keyframes "+name+"{";
 				if (typeof frames=="string"){ return frames; }
 				for( var k in frames ){
+					if( !frames.hasOwnProperty(k) ) { continue; }
 					css += k+'%{';
 						for( var m in frames[k]){
+							if( !frames[k].hasOwnProperty(m) ) { continue; }
 							css += ((wkcss.indexOf(m)>0?"-webkit-"+m:m)+":")+frames[k][m]+";";
 						}
 					css += "}";
@@ -923,11 +931,9 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 				return css;
 			};
 
-			var animateHASH = 'Aps_'+Aps.dom.storagehash.hash(JSON.stringify([animate,duration,options]));
-
-			var options  = typeof optionsOrDuration =='object' ? optionsOrDuration : {}; 
+			var options  = typeof optionsOrDuration =='object' ? optionsOrDuration : {transformorigin:0,infinite:0};
 			var duration = typeof optionsOrDuration =='object' ? (optionsOrDuration.duration || 500)+"ms" : (optionsOrDuration || 500)+"ms"; 
-			var animatename  = typeof animate == 'object' ? animate.name : ( animate || "bounce");
+			var animateName  = typeof animate == 'object' ? animate.name : ( animate || "bounce");
 
 			var delay    = options.delay    ? options.delay+"ms" : '0ms' ;
 			var count    = options.count    || 1 ;	
@@ -937,18 +943,20 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			var speed    = animate.curve    || 'ease-out';
 
 			if(typeof speed=='object'){ speed = "cubic-bezier("+speed[0]+","+speed[1]+","+speed[2]+","+speed[3]+","+")" ;}
-			if(options.infinite){ count = 'infinite'; };			
+			if(options.infinite){ count = 'infinite'; }
 
-					// modern broswers
-			var css = "{ animation-name:" + animatename+";animation-duration:" + duration+";animation-timing-function: " + speed+";animation-delay: " + delay+";animation-iteration-count: " + count+";animation-direction: "+alternate+";"
+					// modern browsers
+			var css = "{ animation-name:" + animateName+";animation-duration:" + duration+";animation-timing-function: " + speed+";animation-delay: " + delay+";animation-iteration-count: " + count+";animation-direction: "+alternate+";"
 					+ "animation-fill-mode: "+end+";"
 					+ (transformorigin?"transform-origin: "+transformorigin+";":"");
 
-					// webkit broswers
-				css+= "-webkit-animation-name:" + animatename+";-webkit-animation-duration:" + duration+";-webkit-animation-timing-function:" + speed+";-webkit-animation-delay:" + delay+";-webkit-animation-iteration-count:" + count+";-webkit-animation-direction:" + alternate+";"
+					// webkit browsers
+				css+= "-webkit-animation-name:" + animateName+";-webkit-animation-duration:" + duration+";-webkit-animation-timing-function:" + speed+";-webkit-animation-delay:" + delay+";-webkit-animation-iteration-count:" + count+";-webkit-animation-direction:" + alternate+";"
 					+ "-webkit-animation-fill-mode: "+end+";"
 					+ (transformorigin?"webkit-transform-origin: "+transformorigin+";":"");
 				css+= "}\n";
+
+			var animateHASH = 'Aps_'+Aps.dom.storagehash.hash(JSON.stringify([animate,duration,options]));
 
 			var animateCLASS = Aps.dom.styles.css[animateHASH] ? animateHASH : Aps.dom.style(animateHASH,css+createAnimateCss(animate.frames,animate.name));
 
@@ -961,7 +969,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 					animation: 'animationend',
 					OAnimation: 'oAnimationEnd',
 					MozAnimation: 'mozAnimationEnd',
-					WebkitAnimation: 'webkitAnimationEnd',
+					WebkitAnimation: 'webkitAnimationEnd'
 				};
 
 				for (var t in animations) {
@@ -1038,10 +1046,10 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 				Object.defineProperty(self,key,{
 					enumerable: true,
 					configurable: false,
-					get: function() {
+					get: function(key) {
 						return self._data[key];
 					},
-					set: function(val) {
+					set: function(key,val) {
 						self._notify(key,val);
 						self._data[key] = val;
 					}
@@ -1059,7 +1067,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			_vdom:1,
 			selector:0,
 			loadStatus:0,
-			hash:hash||Aps.dom.uuid(),	
+			hash:hash||Aps.dom.uuid()
 		};
 		for(var k in Aps.dom.vf){ m[k] = Aps.dom.vf[k];}
 		if(!m.id()){ m.id(m.hash); }
@@ -1080,13 +1088,13 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 				if(typeof call!=='function') console.error('Invalid Inner function type:', typeof call);
 				this.list.forEach(function(vd){call(vd)});
 			},
-			on:function(evt,call){
+			on:function(event,call){
 				if(typeof call!=='function') console.error('Invalid Inner function type:', typeof call);
-				this.list.forEach(function(vd){vd.on(evt,function(e){ call(vd);})});
+				this.list.forEach(function(vd){vd.on(event,function(e){ call(vd,e);})});
 			},
 			addClass:function(name){ return this.vdf('addClass',name); },
 			removeClass:function(name){ return this.vdf('removeClass',name); },
-			remove:function(name){ return this.vdf('remove'); },
+			remove:function(){ return this.vdf('remove'); }
 			// each:function(func){
 			// 	this.list.forEach(function(vdom){
 			// 		if(typeof func == 'function') func(vdom);
@@ -1098,22 +1106,23 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 		return hash?this.vdom[hash]:vlist;
 	},
 	get:function(selector,hash){
+		var dom;
 		if(typeof selector=='object'){
 			if ( selector.hash ) {
 				return selector;
 			}else{
-				var dom = selector;
+				dom = selector;
 				selector = '';
 			}
 		}else if(typeof selector=='string'){
-			if(selector.indexOf('.')*selector.indexOf('#')!==0 && "a,abbr,address,area,article,aside,audio,b,base,big,blockquote,body,br,button,canvas,caption,code,col,colgroup,command,dd,div,dl,dt,em,embed,fieldset,footer,form,frame,frameset,h1,h2,h3,h4,h5,h6,head,header,hr,html,i,iframe,img,input,label,legend,li,link,map,mark,menu,menuitem,meta,nav,ol,optgroup,option,output,p,param,pre,progress,q,rp,script,section,select,small,source,span,strong,style,sub,summary,sup,table,tbody,td,textarea,tfoot,th,thead,time,title,tr,track,tt,ul,var,video,wbr".indexOf(selector)==-1){
+			if(selector.indexOf('.')*selector.indexOf('#')!==0 && "a,abbr,address,area,article,aside,audio,b,base,big,blockquote,body,br,button,canvas,caption,code,col,colgroup,command,dd,div,dl,dt,em,embed,fieldset,footer,form,frame,frameset,h1,h2,h3,h4,h5,h6,head,header,hr,html,i,iframe,img,input,label,legend,li,link,map,mark,menu,menuitem,meta,nav,ol,optgroup,option,output,p,param,pre,progress,q,rp,script,section,select,small,source,span,strong,style,sub,summary,sup,table,tbody,td,textarea,tfoot,th,thead,time,title,tr,track,tt,ul,var,video,wbr".indexOf(selector)===-1){
 				return Aps.dom.create(selector,hash);
 			}
-			var dom = document.querySelector(selector) ;
-		};
+			dom = document.querySelector(selector) ;
+		}
 		return dom ? this.vm(dom,selector,hash) : 0;
 	},
-	list:function(selector,hash){
+	list:function(selector){
 		var list = [];
 		var all  = document.querySelectorAll(selector);
 		if (all.length>0) {
@@ -1124,13 +1133,11 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 		return all.length>0 ? this.vl(list) : 0;
 	},
 	new:function(htmlString,hash){
-		var parser = new DOMParser();
 		var el     = this.parse(htmlString);
 		return this.vm(el,null,hash);
-		// return this.vm(html,hash);
 	},
-	create:function(type,id,classes,attrs){
-		var id = id || this.uuid();
+	create:function(type,uid,classes,attrs){
+		var id = uid || this.uuid();
 		if(!classes && !attrs){
 			this.vm(this.parse(type),'#'+id,id).id(id);
 		}else{
@@ -1150,7 +1157,7 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			var css = "";
 			for( var k in list){
 				// css += k+'{' + list[k] + "} \n";
-				css += k+' ' + list[k] + " \n";
+				if(list.hasOwnProperty(k)) css += k+' ' + list[k] + " \n";
 			}
 			return css;
 		};
@@ -1188,16 +1195,15 @@ Aps.dom   = { // ! dom操作 快捷方式 VD,vdom 虚拟元素 ,VL,vlist 虚拟�
 			return retValue;
 		},
 		valueSort: function(obj, value) {
-			var list = Object.keys(obj).sort(function(a, b) {
+			return Object.keys(obj).sort(function (a, b) {
 				return value ? (obj[a] > value && obj[a] - obj[b]) : obj[a] - obj[b]
 			});
-			return list;
 		}
 	},
 	uuid:function(){
-		var i = "g_" + (new Date()).getTime()+parseInt(Math.random()*1000);//弹窗索引
+        var i = "v_" + Math.floor(Math.random()*1000) + (new Date()).getTime()+Math.floor(Math.random()*1000);
 		return vdom("#"+i) ? this.uuid() : i;
-	},
+	}
 };
 
 Aps.local = { // ! 浏览器本地存储 扩展数据类型  # localstorage Adv Api 
@@ -1208,38 +1214,37 @@ Aps.local = { // ! 浏览器本地存储 扩展数据类型  # localstorage Adv 
 			v: value,
 			t: type
 		});
-		localStorage.setItem(this.unikey(key), v);
+		localStorage.setItem(this.UniqueKey(key), v);
 		return 1;
 	},
 	/* 读取数据 */
 	get: function(key) {
-		var data = localStorage.getItem(this.unikey(key)) || 0,
-			res = data ? JSON.parse(data).v : undefined;
-		return res;
+		var data = localStorage.getItem(this.UniqueKey(key)) || 0;
+		return data ? JSON.parse(data).v : undefined;
 	},
 	/* 单次读取 */
 	once: function(key) {
-		var data = this.get(this.unikey(key));
-		this.remove(this.unikey(key));
-		return res;
+		var data = this.get(this.UniqueKey(key));
+		this.remove(this.UniqueKey(key));
+		return data;
 	},
 	/* 删除数据 */
 	remove: function(key) {
-		localStorage.removeItem(this.unikey(key));
+		localStorage.removeItem(this.UniqueKey(key));
 		return 1;
 	},
 	/* 检测数据 */
 	has: function(key) {
-		return localStorage.getItem(this.unikey(key)) ? 1 : 0;
+		return localStorage.getItem(this.UniqueKey(key)) ? 1 : 0;
 	},
 	/* 清空数据 */
 	removeAll: function(arr) {
 		for (var i = 0; i < arr.length; i++) {
-			var k = this.unikey(arr[i]);
+			var k = this.UniqueKey(arr[i]);
 			localStorage.removeItem(k);
 		}
 	},
-	unikey:function(key){
+	UniqueKey:function(key){
 		return CONFIGS.appid ? CONFIGS.appid+'_'+key : key;
 	}
 };
@@ -1247,8 +1252,8 @@ Aps.local = { // ! 浏览器本地存储 扩展数据类型  # localstorage Adv 
 Aps.cache = { // ! 数据缓存 主要自动处理数据请求的缓存以及相关过期  # data cache with auto expire 
 	init: function() {
 		this.max = 100;
-		this.list = Aps.local.get('CACHELIST') || {};
-		this.collect = Aps.local.get('CACHECOLLECT') || {};
+		this.list = Aps.local.get('CacheList') || {};
+		this.collect = Aps.local.get('CacheCollection') || {};
 		this.count = this.list.length;
 		this.time = Math.round(new Date().getTime() / 1000);
 		return this;
@@ -1264,15 +1269,15 @@ Aps.cache = { // ! 数据缓存 主要自动处理数据请求的缓存以及相
 		if (collect) {
 			this.addToCollect(cacheid,collect);
 		}
-		Aps.local.set('CACHELIST', this.list);
-		Aps.local.set('CACHE_' + cacheid, data);
+		Aps.local.set('CacheList', this.list);
+		Aps.local.set('Cache_' + cacheid, data);
 		this.checkMax();
 		this.refresh();
 		return this;
 	},
 	get: function(cacheid) {
-		var data = Aps.local.get('CACHE_' + cacheid);
-		if (!data){ return 0; };
+		var data = Aps.local.get('Cache_' + cacheid);
+		if (!data){ return 0; }
 		return defined(data.status) || defined(data.code) ? data : 0;
 	},
 	update: function(cacheid, data, expire) {
@@ -1281,8 +1286,8 @@ Aps.cache = { // ! 数据缓存 主要自动处理数据请求的缓存以及相
 	},
 	remove: function(cacheid) {
 		delete this.list[cacheid];
-		Aps.local.set('CACHELIST', this.list);
-		Aps.local.remove('CACHE_' + cacheid);
+		Aps.local.set('CacheList', this.list);
+		Aps.local.remove('Cache_' + cacheid);
 		this.refresh();
 		return 0;
 	},
@@ -1290,15 +1295,15 @@ Aps.cache = { // ! 数据缓存 主要自动处理数据请求的缓存以及相
 		for (var i = 0; i < arr.length; i++) {
 			this.remove(arr[i]);
 		}
-		Aps.local.set('CACHELIST', this.list);
+		Aps.local.set('CacheList', this.list);
 		this.refresh();
 		return this;
 	},
 	clear: function() {
 		for (var key in this.list) {
-			Aps.local.remove('CACHE_' + this.list[key]);
+			if(this.list.hasOwnProperty(key)) Aps.local.remove('Cache_' + this.list[key]);
 		}
-		Aps.local.remove('CACHELIST');
+		Aps.local.remove('CacheList');
 		this.list = {};
 		this.refresh();
 		return this;
@@ -1310,14 +1315,14 @@ Aps.cache = { // ! 数据缓存 主要自动处理数据请求的缓存以及相
 			this.collect[collect]={};
 			this.collect[collect][cacheid]=1;
 		}
-		Aps.local.set('CACHECOLLECT',this.collect);
+		Aps.local.set('CacheCollection',this.collect);
 	},
 	clearCollect:function(collect){
 		for( var k in this.collect[collect]){
-			this.remove(k);
+			if(this.collect[collect].hasOwnProperty(k)) this.remove(k);
 		}
 		delete this.collect[collect];
-		Aps.local.set('CACHECOLLECT',this.collect);
+		Aps.local.set('CacheCollection',this.collect);
 	},
 	clearExpired: function() {
 		this.refresh();
@@ -1328,25 +1333,31 @@ Aps.cache = { // ! 数据缓存 主要自动处理数据请求的缓存以及相
 	refresh: function() {
 		this.time = Math.round(new Date().getTime() / 1000);
 		this.count = Object.keys(this.list).length;
-		this.list = Aps.local.get('CACHELIST') || {};
-		// this.collect = Aps.local.get('CACHECOLLECT') || {};
+		this.list = Aps.local.get('CacheList') || {};
+		// this.collect = Aps.local.get('CacheCollection') || {};
 		return this;
 	},
 	checkMax: function() {
 		this.refresh();
 		if (this.count >= (this.max - (this.max) / 5)) {
 			var olderList = Aps.dom.storagehash.valueSort(this.list, 0);
-			olderList = olderList.slice(0, parseInt((this.count) / 5) - 1);
+			olderList = olderList.slice(0, Math.round(this.count/5)-1);
 			this.removeAll(olderList);
 		}
-	},
+	}
 };
 
 Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & forced update 
 	parseParam: function(param,key) {
 		var paramStr = "",type = typeof param;
-		if (type === 'string' || type === 'number' || type === 'boolean') { paramStr += "&" + encodeURIComponent(key) + "=" + encodeURIComponent(param); }
-		else { for(var i in param){ var k = key == null ? i : key + "[" + i + "]"; paramStr += '&' + this.parseParam(param[i], k); }; }
+		if (type === 'string' || type === 'number' || type === 'boolean') { paramStr += "&" + encodeURIComponent(key) + "=" + encodeURIComponent(param);
+		}else{
+			for(var i in param){
+				if(!param.hasOwnProperty(i)) continue;
+				var k = typeof key === 'undefined' ? i : key + "[" + i + "]";
+				paramStr += '&' + this.parseParam(param[i], k);
+			}
+		}
 		return paramStr.substr(1);
 	},
 	socket: function(url,opts){
@@ -1356,7 +1367,7 @@ Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & for
 		var _ = new XMLHttpRequest();
 		_.open(opts.requesttype,opts.url,!opts.useSync);
 
-		if(opts.headers){ for(var k in opts.headers){ _.setRequestHeader(k,opts.headers[k]); } }
+		if(opts.headers){ for(var k in opts.headers){if( opts.headers.hasOwnProperty(k)) _.setRequestHeader(k,opts.headers[k]); } }
 		if(opts.requesttype==='POST'){ _.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); } /* Set Content-Type by POST */
 
 		_.withCredentials = true;
@@ -1407,7 +1418,7 @@ Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & for
 		// console.log(options);
 		/* 请求模式 */
 		var reuqestMode = options.mode        || 'ajax';
-		var apimode     = CONFIGS.apimode     || 'AppSite'; // ? RESTFUL 
+		var apimode     = CONFIGS.apimode     || 'AppSite'; // ? RESTFUL
 		var update      = options.update      || 0; /* 强制更新 */
 		var url         = options.url         || 0; /* 请求地址 */
 		var headers     = options.headers     || 0; /* Head参数 */
@@ -1420,11 +1431,11 @@ Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & for
 		var loadingtype = options.loadingtype || 'Window'; /* 加载类型 */
 		var useCORS     = options.useCORS     || 0; /* 跨域请求 */
 		var useSync     = options.useSync     || 0; /* 同步请求 */
-		var expire      = (options.expire     || options.expire === 0) ? options.expire : 1 * 3; /* 有效时间 */
+		var expire      = (options.expire     || options.expire === 0) ? options.expire : 3; /* 有效时间 */
 		var request = {  /* 请求参数 */
 			'url': url,
 			'parameters': parameters,
-			'requesttype': requesttype,
+			'requesttype': requesttype
 		};
 		var gajax      = options.gajax        || 0;  /* 常规模式 */
 		var cacheid = Aps.dom.storagehash.hash(JSON.stringify(request)); /* 缓存ID  */
@@ -1446,9 +1457,11 @@ Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & for
 					!gajax && Aps.cache.add(cacheid, data, expire, update, collect); 
 					callback(data, status); 
 				} 
-			}else{  
-				Aps.cache.remove(cacheid);
-				!gajax && Aps.cache.add(cacheid, data, expire, update, collect);
+			}else{
+				options.callback  = function(data,status){
+					Aps.cache.remove(cacheid);
+					!gajax && Aps.cache.add(cacheid, data, expire, update, collect);
+				}
 			}
 			if(typeof errorCall=='function'){ 
 				options.errorCall = function(status){
@@ -1473,14 +1486,17 @@ Aps.query = { // ! 对于浏览器头的携带信息进行管理  # simply
 	toString:function(){
 		if(!this.params){return '';}
 		var s = '',i=0;
-		for(var k in this.params){ s+= (i==0?'?':'&')+k+'='+this.params[k]; i++; }
+		for(var k in this.params){ if( this.params.hasOwnProperty(k)) {
+			s += (i === 0 ? '?' : '&') + k + '=' + this.params[k];
+			i++;
+		} }
 		return s;
 	},
 	/* 设置 */
 	set:function(arr,val){
 		this.parse();
 		if(val){ this.params[arr] = val; } 
-		else{ for (var i in arr) { this.params[i] = arr[i]; } }
+		else{ for (var i in arr) { if(arr.hasOwnProperty(i)) this.params[i] = arr[i]; } }
 		history.replaceState({}, CONFIGS.appname||'AppSite', location.origin + location.pathname + this.toString());
 	},
 	/* 获取数据 */
@@ -1492,7 +1508,7 @@ Aps.query = { // ! 对于浏览器头的携带信息进行管理  # simply
 	remove: function(arr) {
 		this.parse();
 		if(typeof arr=='string'){ delete this.params[arr];}
-		else{ for (var i in arr) { delete this.params[arr[i]]; }}
+		else{ for (var i in arr) { if( arr.hasOwnProperty(i)) delete this.params[arr[i]]; }}
 		history.replaceState({}, CONFIGS.appname||'AppSite', location.origin + location.pathname + this.toString());
 	},
 	/* 清空 */
@@ -1504,8 +1520,8 @@ Aps.query = { // ! 对于浏览器头的携带信息进行管理  # simply
 		return location.pathname;
 	},
 	/* 当前页 */
-	currentPageName: function(terminal) {
-		var terminal = terminal || 'mobile';
+	currentPageName: function(specificTerminal) {
+		var terminal = specificTerminal || 'mobile';
 		return ((location.origin + location.pathname).replace(CONFIGS.fronthost + terminal + '/', '')).replace('.html', '');
 	},
 	/* 页面检测 */
@@ -1578,7 +1594,7 @@ Aps.setting    = Aps.fn({ // ! 设置和属性
 				failedCall();
 			}
 		}
-	},
+	}
 });
 
 Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core 
@@ -1594,15 +1610,18 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 		var ifStruct      = this.getIfStruct(module);
 		var notStruct     = this.getNotStruct(module);
 
-		for( var i in ifStruct ){
+		var condition;
 
-			var condition = ifStruct[i].match(pregCondition)[0].replace('::','').replace('::','');
+		for( var i in ifStruct ){
+			if( !ifStruct.hasOwnProperty(i) ) { continue; }
+
+			condition = ifStruct[i].match(pregCondition)[0].replace('::','').replace('::','');
 			if (condition.indexOf('=')>0){
 				var ifCondition = condition.split('=');
-				var key = ifCondition[0];
-				var val = ifCondition[1];
+				var Key = ifCondition[0];
+				var Val = ifCondition[1];
 
-				if ( !defined(data[key]) || data[key]!==val) {
+				if ( !defined(data[Key]) || data[Key]!==Val) {
 					res = res.replace('[if['+ifStruct[i]+']if]','');
 				}else{
 					res = res.replace('[if[::'+condition+'::','').replace(']if]','');
@@ -1618,12 +1637,13 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 			}
 		}
 
-		for( var i in notStruct ){
+		for( var n in notStruct ){
+			if( !notStruct.hasOwnProperty(n) ) { continue; }
 
-			var condition = notStruct[i].match(pregCondition)[0].replace('::','').replace('::','');
+			condition = notStruct[n].match(pregCondition)[0].replace('::','').replace('::','');
 
 			if ( defined(data[condition]) && data[condition]>0 ) {
-				res = res.replace('[not['+notStruct[i]+']not]','');
+				res = res.replace('[not['+notStruct[n]+']not]','');
 			}else{
 				res = res.replace('[not[::'+condition+'::','').replace(']not]','');
 			}
@@ -1631,20 +1651,22 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 
 		var struct     = this.getStruct(module);
 		var loopStruct = this.getLoopStruct(module);
-		var fdata      = this.flatData(data);
+		var flatData   = this.flatData(data);
 		// var ldata      = this.loopData(data);
 
-		for (var i in struct) {
+		for (var s in struct) {
+			if( !struct.hasOwnProperty(s) ) { continue; }
 
-			var mkey = '{{'+struct[i]+'}}';
-			res = this.replaceAll(res,mkey,fdata[struct[i]]||fdata[struct[i]]===0?fdata[struct[i]]:'');
+			var mKey = '{{'+struct[s]+'}}';
+			res = this.replaceAll(res,mKey,flatData[struct[s]]||flatData[struct[s]]===0?flatData[struct[s]]:'');
 
 		}
 
-		for (var i in loopStruct) { 
+		for (var l in loopStruct) {
+			if( !loopStruct.hasOwnProperty(l) ) { continue; }
 
-			var condition = loopStruct[i].match(pregCondition)[0].replace('::','').replace('::','');
-			var keys      = loopStruct[i].match(pregInner);
+			condition = loopStruct[l].match(pregCondition)[0].replace('::','').replace('::','');
+			var keys      = loopStruct[l].match(pregInner);
 			var loop      = '';
 
 			if ( defined(data[condition]) ) {
@@ -1655,9 +1677,10 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 					loop += loopStruct[i].replace('::'+condition+'::','');
 
 					for( var k in keys ) {
+						if( !keys.hasOwnProperty(k) ) { continue; }
 
 						var key = keys[k].replace('[[','').replace(']]','');
-						loop =  data[condition][j][key]||data[condition][j][key]==0 ? loop.replace('[['+key+']]',data[condition][j][key]) : loop.replace('[['+key+']]',data[condition][j]);
+						loop =  data[condition][j][key]||data[condition][j][key]===0 ? loop.replace('[['+key+']]',data[condition][j][key]) : loop.replace('[['+key+']]',data[condition][j]);
 
 					}
 				}
@@ -1680,6 +1703,7 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 		var final = '';
 
 		for (var i in data ) {
+			if( !data.hasOwnProperty(i) ) { continue; }
 			data[i]['loopIdx'] = this.getLoopIdx(i);
 			data[i]['idx'] = i;
 			final += this.mix(module,data[i]);
@@ -1687,8 +1711,8 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 		return final;
 	},
 
-	getLoopIdx:function(i){
-		var i   = parseInt(i);
+	getLoopIdx:function(index){
+		var i   = parseInt(index);
 		var idx = 'loopItem';
 			idx += (i+1)%2===0  ? ' loop2th' : '';
 			idx += (i+1)%3===0  ? ' loop3th' : '';
@@ -1703,63 +1727,67 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 	getStruct:function(module){
 
 		var preg = /\{\{([^\}\}]+)?\}\}/g;
-		var stru = module.match(preg);
+		var struct = module.match(preg);
 
-		if (stru) {
-			for (var i in stru ) {
-				stru[i] = stru[i].replace('{{','');
-				stru[i] = stru[i].replace('}}','');
+		if (struct) {
+			for (var i in struct ) {
+				if ( !struct.hasOwnProperty(i) ) continue;
+				struct[i] = struct[i].replace('{{','');
+				struct[i] = struct[i].replace('}}','');
 			}
 		}
-		return stru;
+		return struct;
 
 	},
 
 	getLoopStruct:function(module){
 
 		var preg = /\{loop\{([^\}\}]+)?\}loop\}/g;
-		var stru = module.match(preg);
+		var struct = module.match(preg);
 
-		if (stru) {
-			for (var i in stru ) {
-				stru[i] = stru[i].replace('{loop{','');
-				stru[i] = stru[i].replace('}loop}','');
+		if (struct) {
+			for (var i in struct ) {
+				if ( !struct.hasOwnProperty(i) ) continue;
+				struct[i] = struct[i].replace('{loop{','');
+				struct[i] = struct[i].replace('}loop}','');
 			}	    	
 		}
 
-		return stru;
+		return struct;
 
 	},
 
 	getIfStruct:function(module){
 
 		var preg = /\[if\[[^\]]*\]if\]/g;
-		var stru = module.match(preg);
+		var struct = module.match(preg);
 
-		if (stru) {
-			for (var i in stru ) {
-				stru[i] = stru[i].replace('[if[','');
-				stru[i] = stru[i].replace(']if]','');
+		if (struct) {
+			for (var i in struct ) {
+				if ( !struct.hasOwnProperty(i) ) continue;
+				struct[i] = struct[i].replace('[if[','');
+				struct[i] = struct[i].replace(']if]','');
 			}	    	
 		}
 
-		return stru;
+		return struct;
 
 	},
 
 	getNotStruct:function(module){
 
 		var preg = /\[not\[[^\]]*\]not\]/g;
-		var stru = module.match(preg);
+		var struct = module.match(preg);
 
-		if (stru) {
-			for (var i in stru ) {
-				stru[i] = stru[i].replace('[not[','');
-				stru[i] = stru[i].replace(']not]','');
+		if (struct) {
+			for (var i in struct ) {
+				if ( !struct.hasOwnProperty(i) ) continue;
+				struct[i] = struct[i].replace('[not[','');
+				struct[i] = struct[i].replace(']not]','');
 			}	    	
 		}
 
-		return stru;
+		return struct;
 
 	},
 
@@ -1770,6 +1798,7 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 		var tempData = [];
 
 		for( var k in data ){
+			if ( !data.hasOwnProperty(k) ) continue;
 
 			var key = prefix ? prefix+'.'+k : k ;
 			var val = data[k];
@@ -1787,14 +1816,12 @@ Aps.mixer      = { // ! 混合器 目前结构不太理想 后期优化 # core
 		if (tempData.length>0) {
 
 			for (var i in tempData ) {
+				if ( !tempData.hasOwnProperty(i) ) continue;
 
 				for( var j in tempData[i] ){
+					if ( !tempData[i].hasOwnProperty(j) ) continue;
 
-					var key = j;
-					var val = tempData[i][j];
-
-					flatData[key] = val;
-
+					flatData[j] = tempData[i][j];
 				}
 			}
 		}
@@ -1847,7 +1874,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		loading:"<i class='a-icon a-color-blue I-loading a-rotation'></i> ",
 		warning:"<i class='a-icon a-color-orange I-warning'></i> ",
 		success:"<i class='a-icon a-color-green I-success'></i> ",
-		failed:"<i class='a-icon a-color-red I-error'></i> ",
+		failed:"<i class='a-icon a-color-red I-error'></i> "
 	},
 	animateOn:CONFIGS.animatecss||1,
 	toucheEvt:0,
@@ -1865,7 +1892,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		options.style    = options.style || 'white';          // wihte, primary, secondary, success, danger, warning, info, light, dark
 		options.icon     = options.icon  || icon || '';       // info, loading, warning, success, failed
 		options.message  = (options.icon ? Aps.gui.icon[icon] : '') + message ;
-		options.closeButton = options.autoClose ? false : true;
+		options.closeButton = !options.autoClose;
 
 		var msg = VD(Aps.mixer.mix(ApsMd.gui.toast,options));
 		VD('html','HTML').append(msg);
@@ -1929,12 +1956,10 @@ Aps.gui        = { // ! 界面交互  # basic gui
 					_okCall( mask, modal );
 				}
 			}
-			return ;
 		}
 
 		var _cancel = function(){
-			( !_cancelCall || _cancelCall() ) && _close(); 
-			return ;
+			( !_cancelCall || _cancelCall() ) && _close();
 		}
 
 		_okButton     && _okButton.click(_ok);		
@@ -2025,11 +2050,11 @@ Aps.gui        = { // ! 界面交互  # basic gui
 
 	loading:{
 
-		start:function(message,options,forced) {
+		start:function(message,opts,forced) {
 
 			if (VD('body','BODY').isLoad()){ return; }
 
-			var options = options || {};
+			var options = opts || {};
 
 			options.position = options.position || 'center';   // topleft, topcenter, topright, bottomleft, bottomcenter, bottomright, center
 			options.style    = options.style || 'white';          // wihte, primary, secondary, success, danger, warning, info, light, dark
@@ -2096,9 +2121,9 @@ Aps.gui        = { // ! 界面交互  # basic gui
 	 * @DateTime 2019-10-04T14:54:24+0800
 	 * @version  [version]
 	 * @param    {vdom}                 vd              [元素]
-	 * @param    {string:mixed}         options         [配置]
+	 * @param    {string:*}         options         [配置]
 	 */
-	smoothing:function(vd,options,calls){
+	smoothing:function(vd,opts,calls){
 
 		if(vd._vlist){ // vdom list
 			for (var i = 0; i < vd.list.length; i++){ Aps.gui.smoothing(vd.list[i],options);} return;
@@ -2109,7 +2134,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 			return {x:parseInt(translate[0].replace('px','')),y:parseInt(translate[1].replace('px',''))};
 		}
 
-		var options = options || {blur:1,lockX:0,lockY:0,backup:1,ending:0};
+		var options = opts || {blur:1,lockX:0,lockY:0,backup:1,ending:0};
 		var lockX   = options.lockX || 0;
 		var lockY   = options.lockY || 0;
 		var backup  = options.backup|| 0;
@@ -2144,14 +2169,14 @@ Aps.gui        = { // ! 界面交互  # basic gui
 			_vd.styles({
 				"transition":"all 0.2s ease-out 0ms",
 				"filter":"blur(0px)",
-				"transform":"translate(0px,0px)",
+				"transform":"translate(0px,0px)"
 			});
 		});
 		vd.onTouch('left',function(_vd){
 			ending && _vd.styles({
 				"transition":"all 0.2s ease-out 0ms",
 				"filter":"blur(0px)",
-				"transform":"translate("+ending.x+","+ending.y+")",
+				"transform":"translate("+ending.x+","+ending.y+")"
 			});
 		});
 		vd.onTouch('end',function(_vd){
@@ -2169,7 +2194,7 @@ Aps.gui        = { // ! 界面交互  # basic gui
 				_vd.styles({
 					"transition":"",
 					"filter":"",
-					"transform":"",
+					"transform":""
 				})
 			},300);
 			// _vd.onBlur("0px");
@@ -2192,11 +2217,11 @@ Aps.gui        = { // ! 界面交互  # basic gui
 
 	onBlur:function( selector ){
 		var _vd = VD(selector);
-		_vd = _vd.hasClass('noBlur m') ? _vd.toggleClass('onBlur').toggleClass('noBlur') : _vd.addClass('onBlur m');
+		_vd.hasClass('noBlur m') ? _vd.toggleClass('onBlur').toggleClass('noBlur') : _vd.addClass('onBlur m');
 	},
 	noBlur:function( selector ){
 		var _vd = VD(selector);
-		_vd = _vd.removeClass('onBlur').removeClass('noBlur');
+		_vd.removeClass('onBlur').removeClass('noBlur');
 	},
 
 	menu:function(title,menus,cancelTitle,cancelCall){ // menus [{'title','call':function(){}}]
@@ -2281,13 +2306,13 @@ Aps.router     = Aps.fn({ // ! 路由控制  # router
 	switch:function(link,i18n) {  // i18n 
 		// wx.switchTab
 
-		location.href = i18n==-1 ? link : (i18n&&Aps.router.i18n) ? ( link.indexOf('/')<2 && link.indexOf('./')>=0 ? link.replace('/','/'+Aps.setting.language+'_') : Aps.setting.language+'_'+link ) : link;
+		location.href = i18n===-1 ? link : (i18n&&Aps.router.i18n) ? ( link.indexOf('/')<2 && link.indexOf('./')>=0 ? link.replace('/','/'+Aps.setting.language+'_') : Aps.setting.language+'_'+link ) : link;
 
 	},
 
-	back: function(step, delay) {
+	back: function(steps, delay) {
 
-		var step = step || -1;
+		var step = steps || -1;
 
 		setTimeout(function() {
 			history.go(step);
@@ -2297,15 +2322,15 @@ Aps.router     = Aps.fn({ // ! 路由控制  # router
 
 	view: function( page, params, call ){
 
-		var viewid = 'v_'+(new Date().getTime());
+		var viewId = 'v_'+(new Date().getTime());
 
 		this.params = params||{};
-		this.params.viewid = viewid;
+		this.params.viewid = viewId;
 
 		if ( typeof page!='object' && !page.url ) {
-			VD(Aps.mixer.mix(ApsMd.gui.view,this.params),viewid);
-			VD('html','HTML').append(VD[viewid].html(Aps.mixer.mix(page,this.params)));
-			VD[viewid].animate(ApsMd.animate.slideInRight,250);
+			VD(Aps.mixer.mix(ApsMd.gui.view,this.params),viewId);
+			VD('html','HTML').append(VD[viewId].html(Aps.mixer.mix(page,this.params)));
+			VD[viewId].animate(ApsMd.animate.slideInRight,250);
 		}else{
 			this.get(page.url,{success:function(data){Aps.router.viewCall(data).then(call,data);},error:function(status){Aps.gui.toast('Network Error:'+status);}},params,{expire:0});
 		}
@@ -2336,10 +2361,10 @@ Aps.router     = Aps.fn({ // ! 路由控制  # router
 	
     // 新窗口打开
     // 由于openWindow不允许发送Post参数 所以可以在内容小时发送Get 或者通过JS在浏览器通讯发送数据
-    newWindow:function( url, params, options, responseCall ){
+    newWindow:function( url, params, opts, responseCall ){
         // use JS API postMessage
 
-        var options= options || {};
+        var options= opts || {};
         var width  = options.width||375; //弹出窗口的宽度;
         var height = options.height||667; //弹出窗口的高度;
         var top    = options.top ||( window.screen.availHeight-30-height )/2; //获得窗口的垂直位置;
@@ -2396,115 +2421,8 @@ Aps.router     = Aps.fn({ // ! 路由控制  # router
 
 		location.reload();
 
-	},
+	}
 });
-
-Aps.queue      = { // ? 队列(同步阻塞/异步非阻塞) # queue(B/NB)  默认同步
-	/*
-		队列主要用于多步关联函数的自动执行处理
-		队列间可以共用和修改关联数据 this.params
-		非阻塞队列主要用于 事件通知回调,便于模块化开发 防止过度封装代码冗余
-	*/
-	list:[],
-	nlist:{},
-	len:0,
-	cur:0,
-	params:0,
-	init:function(list,params,non){
-		var self   = this || Aps.queue;
-		var non    = non  || 0;
-		self.params = params || 0;
-		if (typeof list =='string') {
-			self.in(list,non);
-			self.run();
-		}else if(typeof list=='object'){
-			for(var k in list){
-				self.in(list[k],none);
-			}
-			self.run();
-		}else{
-			console.error('Unvalid list');
-			console.log("String for single Function, eg: Aps.queue.init('Aps.swip.init');");
-			console.log("Object for Functions, eg: Aps.queue.init(['Aps.swip.init','Aps.switcher.init']);");
-		}
-	},
-	in:function(name) {
-		this.len++;
-		this.list.push(name);
-	},
-	out:function() {
-		this.cur++;
-		this.len--;
-		this.list.splice(1);
-	},
-	run:function(){
-		if(this.list.length===0) return;
-		this.params = this.list[0](this.params) || 0;
-	},
-	next:function(){
-
-	},
-	skip:function(){
-		this.out();
-	},
-	skipTo:function(idx){
-		this.stop();
-	},
-	stop:function(name) {
-
-	},
-};
-
-Aps.metting = { // 会议系统 用于多个页面共存时共享事件和数据 主要混合开发
-
-	timeInterval:1000,
-	private_requests:{},
-	private_messages:{},
-	public_requests:{},
-	public_messages:{},
-
-	INTERVAL:0,
-
-	init:function(id){
-		this.privateId = id;
-		this.INTERVAL = setInterval(function(){
-			Aps.metting.progress(id);
-		},this.timeInterval);
-	},
-	progress:function(id){
-		this.private_requests = Aps.local.get(id+'_requests');
-		// this.private_messages = Aps.local.get(id+'_messages');
-		// this.public_requests  = Aps.local.get('public_requests');
-		// this.public_messages  = Aps.local.get('public_messages');
-
-		if(this.private_requests){ this.accept(this.private_requests); }
-
-	},
-	run:function(event){
-		console.log(typeof event, event);
-		// var program = 'function('+params+'){'+event+'('+params+')}';
-		eval(event);
-		// function(event+()+params)
-	},
-	accept:function(requests,origin){
-		for (var i = 0; i < requests.length; i++) {
-			this.run(requests[i]);
-		}
-		this.done(origin);
-	},
-	done:function(origin){
-		var origin = origin || this.privateId;
-		Aps.local.set(origin+'_requests',0);
-	},
-	request:function(target,event){
-		var requests = Aps.local.get(target+'_requests') || [];
-			requests.push(event);
-		Aps.local.set(target+'_requests',requests);
-	},
-	exit:function(){
-		clearInterval(Aps.metting.INTERVAL);
-	},
-};
 
 /* 基础组件 */
 Aps.filters    = { // 请求过滤器
@@ -2522,13 +2440,12 @@ Aps.filters    = { // 请求过滤器
 
 	},
 
-	setParams:function(params){
+	setParams:function(parameters){
 
-		var params = typeof params=='string' ? this.parse(params) : params; 
+		var params = typeof parameters==='string' ? this.parse(params) : params;
 
 		for( var k in params ){
-
-			this.params[k] = params[k];
+			if ( params.hasOwnProperty(k) ) this.params[k] = params[k];
 		}
 	},
 
@@ -2545,13 +2462,12 @@ Aps.filters    = { // 请求过滤器
 
 	},
 
-	setOptions:function(options){
+	setOptions:function(opts){
 
-		var options = typeof options=='string' ? this.parse(options) : options; 
+		var options = typeof opts=='string' ? this.parse(options) : options;
 
 		for( var k in options ){
-
-			this.options[k] = options[k];
+			if( options.hasOwnProperty(k) ) this.options[k] = options[k];
 		}
 	},
 
@@ -2582,13 +2498,13 @@ Aps.filters    = { // 请求过滤器
 
 	},
 
-	initQueryFilter:function(selector){
-		var selector = selector || '.filterController';
+	initQueryFilter:function(selectorSpecified){
+		var selector = selectorSpecified || '.filterController';
 		VL(selector).each(function(singleController){
 			var filterKey = singleController.attr('filterkey');
 			var filterValue = singleController.attr('filtervalue');
 
-			var selectionMode = singleController.find('select') ? true : false;
+			var selectionMode = !!singleController.find('select');
 
 			if (selectionMode){
 
@@ -2613,7 +2529,7 @@ Aps.filters    = { // 请求过滤器
 				singleController.finds('.filterButton').each(function(filterButton){
 
 					var currentValue = filterButton.attr('filtervalue');
-					if( currentValue == filterValue ){
+					if( currentValue === filterValue ){
 						filterButton.addClass('active');
 					}
 
@@ -2636,13 +2552,13 @@ Aps.p3d = { // 伪3d dom元素
 
 	fns:{
 
-		move:function(x,y,z,t,c){
+		move:function(x,y,z,time,curve){
 		
 			// var x = typeof x =='number' ?  : null;
 			// var y = typeof y =='number' ?  : null;
 			// var z = typeof z =='number' ?  : null;
-			var t = t || 500;
-			var c = c || 'ease-out';
+			var t = time || 500;
+			var c = curve || 'ease-out';
 
 			var ts = "transform "+t+"ms "+c;
 
@@ -2656,13 +2572,13 @@ Aps.p3d = { // 伪3d dom元素
 			return this;
 		},
 
-		rotate:function(x,y,z,t,c){
+		rotate:function(x,y,z,time,curve){
 		
 			// var x = x || 0;
 			// var y = y || 0;
 			// var z = z || 0;
-			var t = t || 500;
-			var c = c || 'ease-out';
+			var t = time || 500;
+			var c = curve || 'ease-out';
 
 			var ts = "transform "+t+"ms "+c;
 
@@ -2676,10 +2592,10 @@ Aps.p3d = { // 伪3d dom元素
 			return this;
 		},
 
-		scale:function(x,y,z,t,c){
+		scale:function(x,y,z,time,curve){
 
-			var t = t || 500;
-			var c = c || 'ease-out';
+			var t = time || 500;
+			var c = curve || 'ease-out';
 
 			var ts = "transform "+t+"ms "+c;
 
@@ -2693,10 +2609,10 @@ Aps.p3d = { // 伪3d dom元素
 			return this;
 		},
 
-		transform:function(translate,rotate,scale,t,c){
+		transform:function(translate,rotate,scale,time,curve){
 
-			var t = t || 500;
-			var c = c || 'ease-out';
+			var t = time || 500;
+			var c = curve || 'ease-out';
 
 			var ts = "transform "+t+"ms "+c;
 
@@ -2738,7 +2654,7 @@ Aps.p3d = { // 伪3d dom元素
 
 			}
 			return transform;
-		},
+		}
 
 	},
 
@@ -2750,15 +2666,15 @@ Aps.p3d = { // 伪3d dom元素
 
 	},
 
-	new:function(x,y,z,r,g,b,a){
+	new:function(X,Y,Z,R,G,B,A){
 
-		var x = x || 400;
-		var y = y || 244;
-		var z = z || 300;
-		var r = r || 100;
-		var g = g || 220;
-		var b = b || 220;
-		var a = a || 1;
+		var x = X || 400;
+		var y = Y || 244;
+		var z = Z || 300;
+		var r = R || 100;
+		var g = G || 220;
+		var b = B || 220;
+		var a = A || 1;
 
 		var p3d = VD('<div class="p3d" style="width: '+x+'px;height: '+y+'px; transform: rotateX(-120deg) rotateY(0deg) rotateZ(45deg);"></div>');
 
@@ -2776,7 +2692,7 @@ Aps.p3d = { // 伪3d dom元素
 						"transform: rotateZ(180deg) rotateX(90deg) translateX(0px) translateZ("+(y-(z/2))+"px);";
 			sides.f4 = "position:absolute;background:rgba("+(r-40)+","+(g-40)+","+(b-40)+","+a+");width: "+y+"px;height: "+z+"px;"+
 						"transform: rotateZ(90deg) rotateX(90deg) translateX(-"+((z-y)/2)+"px) translateZ("+(x-(y/2))+"px);";
-			sides.fb = "position:absolute;background:rgba("+(r-0 )+","+(g-0 )+","+(b-0 )+","+a+");width: "+x+"px; height: "+y+"px;"+
+			sides.fb = "position:absolute;background:rgba("+(r )+","+(g )+","+(b )+","+a+");width: "+x+"px; height: "+y+"px;"+
 						"transform: rotateX(180deg) translateZ( "+(z/2)+"px );";
 
 		for(var side in sides ){
@@ -2789,24 +2705,9 @@ Aps.p3d = { // 伪3d dom元素
 
 		p3d.parse3d();
 		return p3d;
-	},
+	}
 
 };
-
-Aps.canvas  = Aps.fn({ // CANVAS 绘制
-
-	new:function(w,h,type){
-
-		var _vd = VD('<canvas>This is a canvas Dom. Check your broswer Version.</canvas>');
-		_vd.canvas = _vd.el.getContext(type||'2d');
-		_vd.property('width' , w);
-		_vd.property('height' ,h);
-
-		return _vd;
-
-	},
-
-});
 
 
 Aps.switcher   = Aps.fn({ // 列表切换  # switcher 
@@ -2814,11 +2715,11 @@ Aps.switcher   = Aps.fn({ // 列表切换  # switcher
 	size:CONFIGS.listSize || 6,
 	originTop:0,
 
-	init:function(selector,scroller,stationay){
+	init:function(Selector,Scroller,Stationay){
 
-		var selector   = selector  || '.ApsSwitch';
-		var scroller   = scroller  || 'window';
-		var stationay  = stationay || 0;
+		var selector   = Selector  || '.ApsSwitch';
+		var scroller   = Scroller  || 'window';
+		var stationay  = Stationay || 0;
 		var _switcher  = VD(selector); if (!_switcher) return;
 		var _container = _switcher.find('.container'); if (!_container) return;
 
@@ -2883,7 +2784,7 @@ Aps.switcher   = Aps.fn({ // 列表切换  # switcher
 
 		switcher.finds('.mains').each(function(_vd){
 
-			if (_vd.attr('tag')==switcher.currentTag) {
+			if (_vd.attr('tag')===switcher.currentTag) {
 				_vd.addClass('current');
 				if(_vd.hasClass('inited')) return;
 				
@@ -2945,10 +2846,10 @@ Aps.switcher   = Aps.fn({ // 列表切换  # switcher
 
 		if(!data) return;
 		VD('.ApsSwitchMain').remove();
-		VD('.ApsSwitchWapper').html(Aps.switcher.generateTags(Aps.cajax.getData(data)));
-		VD('.content.container').append(Aps.switcher.generateSwithMain(Aps.cajax.getData(data)));
+		VD('.ApsSwitchWapper').html(Aps.switcher.generateTags(data.content));
+		VD('.content.container').append(Aps.switcher.generateSwithMain(data.content));
 
-		Aps.switcher.setTagDict(Aps.cajax.getData(data));
+		Aps.switcher.setTagDict(data.content);
 
 		Aps.scrollView.init();
 	},
@@ -2957,7 +2858,7 @@ Aps.switcher   = Aps.fn({ // 列表切换  # switcher
 
 		var dict = {};
 
-		for( var k in list ){ dict[list[k].id] = list[k].name;	}
+		for( var k in list ){ if (list.hasOwnProperty(k)) dict[list[k].id] = list[k].name;	}
 
 		Aps.local.set('tagDict',dict);
 	},
@@ -2966,7 +2867,7 @@ Aps.switcher   = Aps.fn({ // 列表切换  # switcher
 
 		var tags = '';
 
-		for( var k in list ){ tags += "<div onclick=\"Aps.switcher.change(this);\" tag=\"tag"+list[k].id+"\" class=\"ApsSwitchs "+(k>0?'':'current')+"\">"+list[k].name+"</div>" ; }
+		for( var k in list ){ if (list.hasOwnProperty(k)) { tags += "<div onclick=\"Aps.switcher.change(this);\" tag=\"tag"+list[k].id+"\" class=\"ApsSwitchs "+(k>0?'':'current')+"\">"+list[k].name+"</div>" ;} }
 
 		return tags;
 	},
@@ -2982,23 +2883,22 @@ Aps.switcher   = Aps.fn({ // 列表切换  # switcher
 		var switchMains = '';
 
 		for( var k in list ){
-
-			switchMains 
-			+= "<div tag=\"tag"
-			+  list[k].id+"\" class=\"ApsSwitchMain ApsScrollView "+(k>0?'':'current')+"\" "
-			+  "target=\""+api+"\" "
-			+  "size=\""+Aps.switcher.size+"\" "
-			+  "call=\""+call+"\" "
-			+  "append=\""+append+"\" "
-			+  "filters=\""+(filters ? filters+",":"")+"type:"+list[k].id+"\""
-			+  ">"
-			+  ApsMd.gui.loading.local
-			+  "</div>" ;
-
+			if (list.hasOwnProperty(k)) {
+				switchMains
+					+= "<div tag=\"tag"
+					+ list[k].id + "\" class=\"ApsSwitchMain ApsScrollView " + (k > 0 ? '' : 'current') + "\" "
+					+ "target=\"" + api + "\" "
+					+ "size=\"" + Aps.switcher.size + "\" "
+					+ "call=\"" + call + "\" "
+					+ "append=\"" + append + "\" "
+					+ "filters=\"" + (filters ? filters + "," : "") + "type:" + list[k].id + "\""
+					+ ">"
+					+ ApsMd.gui.loading.local
+					+ "</div>";
+			}
 		}
-
 		return switchMains;
-	},
+	}
 
 });
 
@@ -3019,14 +2919,14 @@ Aps.scrollView = Aps.fn({ // 滚动视图  # scrollView
 		Aps.scrollView[id?'loading_'+id:'loading']=0;
 	},
 
-	refresh:function(selector,update,silence){
+	refresh:function(Selector,Update,Silence){
 		// 存在滚动列表时 添加滚动事件
 
-		var selector = selector || '.ApsScrollView';
+		var selector = Selector || '.ApsScrollView';
 		if(!VD(selector)) return;
 
-		var update   = update   || 0;
-		var silence  = silence  || 0;
+		var update   = Update   || 0;
+		var silence  = Silence  || 0;
 		var list     = VD(selector+'.current') || VD(selector);
 
 		list.removeAttr('inited');
@@ -3047,20 +2947,20 @@ Aps.scrollView = Aps.fn({ // 滚动视图  # scrollView
 		if (filters) { Aps.filters.setParams(filters); }
 		if (options) { Aps.filters.setOptions(options); if(update){ Aps.filters.options.update=1; }   }
 
-		Aps.gui.localLoad.start(selector,1);
+		Aps.gui.loading.start(selector,1);
 		Aps.scrollView.startLoading();
 		Aps.scrollView.post(target,silence?null:Aps.contents[call],Aps.filters.params,Aps.filters.options);
 
 	},
 
-	init:function(selector,container){
+	init:function(Selector,Container){
 
 		var windowMode = container ? 0 :1;
 
 		Aps.scrollView.refresh(selector);
 
-		var container= VD(container || window);
-		var selector = selector || '.ApsScrollView';
+		var container= VD(Container || window);
+		var selector = Selector || '.ApsScrollView';
 		if(!VD(selector)) return;
 
 		var list = VD(selector+'.current') || VD(selector);
@@ -3074,7 +2974,7 @@ Aps.scrollView = Aps.fn({ // 滚动视图  # scrollView
 			if( Aps.scrollView.isLoading(selector) || scrollTop<Aps.scrollView.last || list.hasClass('loaded')){ 
 				Aps.scrollView.last = scrollTop;
 				return;
-			};
+			}
 
 			if(scrollTop+containerH+10 >= document.documentElement.scrollHeight && scrollTop > 25){
 				Aps.scrollView.startLoading(selector);
@@ -3082,9 +2982,9 @@ Aps.scrollView = Aps.fn({ // 滚动视图  # scrollView
 			}
 		};
 	},
-	next:function(selector){
+	next:function(Selector){
 
-		var selector = selector || '.ApsScrollView';
+		var selector = Selector || '.ApsScrollView';
 		if(!VD(selector)) return;
 		var list = VD(selector+'.current') || VD(selector);
 
@@ -3106,7 +3006,7 @@ Aps.scrollView = Aps.fn({ // 滚动视图  # scrollView
 
 		if(page<max){
 
-			Aps.gui.localLoad.start(selector,1);
+			Aps.gui.loading.start(selector,1);
 			Aps.scrollView.post(target,Aps.contents[append],Aps.filters.params,Aps.filters.options);
 
 		}else{
@@ -3115,7 +3015,7 @@ Aps.scrollView = Aps.fn({ // 滚动视图  # scrollView
 			// Aps.gui.localLoad.success(selector);
 		}
 
-	},
+	}
 
 });
 Aps.checker    = { // 检查器   # core 
@@ -3135,7 +3035,7 @@ Aps.checker    = { // 检查器   # core
 
 			Aps.router.open(location.origin+location.pathname+Aps.query.toString(),'new');
 
-		};
+		}
 	},
 
 	checkOpenId : function(){
@@ -3144,7 +3044,7 @@ Aps.checker    = { // 检查器   # core
 			Aps.user.setProperty('openid',Aps.query.get('wxOpenid'));
 			Aps.user.init();
 			Aps.query.remove(['wxOpenid']);
-		};
+		}
 	},
 
 	checkPromoter : function(){
@@ -3157,7 +3057,7 @@ Aps.checker    = { // 检查器   # core
 			Aps.promotion.init();
 
 			Aps.query.remove(['promoterid','promoteduration']);
-		};
+		}
 	},
 
 	checkBroswer : function(){
@@ -3177,7 +3077,7 @@ Aps.checker    = { // 检查器   # core
 		Aps.setting.broswer = broswer;
 		VD('body').addClass(broswer);
 
-	},
+	}
 };
 Aps.counter    = { // 计数器   # counter 
 
@@ -3246,20 +3146,20 @@ Aps.counter    = { // 计数器   # counter
 		var timer = setInterval(function(){
 			if(i=== 0){
 				clearInterval(timer);
-				vd('#'+id).removeClass('waited').enable().value(txt);
+				VD('#'+id).removeClass('waited').enable().value(txt);
 
 			}else{
-				vd('#'+id).value(i);
+				VD('#'+id).value(i);
 				--i;
 			}
 		},1000);
 
 	},
 
-	countRemaining:function(counterSelector,timeMarker,doneCall){
+	countRemaining:function(CounterSelector,TimeMarker,doneCall){
 
-		var counterSelector = counterSelector || '.remaining';
-		var timeMarker = timeMarker || 'endtime';
+		var counterSelector = CounterSelector || '.remaining';
+		var timeMarker = TimeMarker || 'endtime';
 
 		if(Aps.counter.isCountRemaining){
 			clearInterval(Aps.counter.remainingTimer);
@@ -3310,52 +3210,17 @@ Aps.counter    = { // 计数器   # counter
 
 	}
 };
-Aps.converter  = { // 转换器   # conver status code to description 
 
-	lang:CONFIGS.lang||'ZHCN',
-	setLang      :function( lang ){ this.lang=lang; },
-	translate:function( code ){
-		return ApsMd.locate[this.lang][code];
-	},
-	exchange:function( cate,code ){
-		return ApsMd.dict[cate][code];
-	} 
-};
-
-Aps.record     = Aps.fn({ // ? 统计 
-
-	click  :function(type,id){ this.submit(type,id,'click'); },
-	play   :function(type,id){ this.submit(type,id,'play'); },
-	view   :function(type,id){ this.submit(type,id,'view'); },
-	display:function(type,id){ this.submit(type,id,'display'); },
-
-	submit:function(itemtype,itemid,action,callback){
-
-		this.resetOptions();
-		this.setAction(action||'click');
-		this.setParams({
-			itemtype:itemtype,
-			itemid:itemid,
-			userid:Aps.user.userid||'guest'
-		});
-
-		if (callback){ this.setCallback(callback); }
-
-		Aps.cajax.request(this.options);
-
-	},
-
-});
 
 Aps.former     = Aps.fn({ // ? 表单 
 
 	form:{  },
 
 	generateForm   :function(obj){ // 创建表单
-		var formid = obj.name||'unNameForm';
-		Aps.dom.create('div',formid,['setting','form']);
-		for ( var k in obj ){ if (k !== 'name'){ vdom[formid].append(Aps.former.generateField(obj[k])); }}
-		return vdom[formid]; 
+		var formID = obj.name||'unNameForm';
+		Aps.dom.create('div',formID,['setting','form']);
+		for ( var k in obj ){ if (k !== 'name'){ if(obj.hasOwnProperty(k)) vdom[formID].append(Aps.former.generateField(obj[k])); }}
+		return vdom[formID];
 	},
 	
 	/*
@@ -3385,7 +3250,7 @@ Aps.former     = Aps.fn({ // ? 表单
 		if( fieldOrSelector._vlist ){
 
 			for( var k in fieldOrSelector.list ){
-				Aps.former.enableClear( fieldOrSelector.list[k] );
+				if(fieldOrSelector.list.hasOwnProperty(k))	Aps.former.enableClear( fieldOrSelector.list[k] );
 			}
 			return;
 		}
@@ -3403,9 +3268,9 @@ Aps.former     = Aps.fn({ // ? 表单
 		var valid         = opt.valid   ? 'valid' : 'invalid' ; // ! 有效      # is valid  field
 		var length   	  = opt.length        || 255 ;          // ! 限制字长   # max length      
 		var fieldname     = opt.name          || 0 ;            // ! 字段名称   # field title
-		var fieldtype     = opt.fieldtype     || 0 ;            // ! 字段类型   # fieldtype 
-		var inputtype     = opt.inputtype     || '';            // ? 字段类型   #       
-		var checktype     = opt.checktype     || '';            // ? 检查类型   #  
+		var fieldtype     = opt.fieldType     || 0 ;            // ! 字段类型   # fieldType
+		var inputtype     = opt.inputType     || '';            // ? 字段类型   #
+		var checktype     = opt.checkType     || '';            // ? 检查类型   #
 		var hide          = opt.hide          || 0 ;            // ? 隐藏      # is hidden field
 		var label         = opt.label         || 0 ;            // ? 提示标签   # label
 		var formname      = opt.formname      || '';            // ? 表名称     #  
@@ -3416,6 +3281,7 @@ Aps.former     = Aps.fn({ // ? 表单
 		var value         = opt.value   || opt.default || '';   // ? 字段值    # value or default 
 
 		var fieldid  = 'f_'+fieldname;
+		var checked  = "";
 
 		Aps.dom.create('div',fieldid,[require,valid,'field'],{
 				'a-field-type':fieldtype,
@@ -3423,7 +3289,7 @@ Aps.former     = Aps.fn({ // ? 表单
 				'a-field-check':checktype,
 				'a-field-length':length,
 				'a-form':formname,
-				'style':hide?'display:none;':'',
+				'style':hide?'display:none;':''
 			}
 		);
 
@@ -3438,6 +3304,7 @@ Aps.former     = Aps.fn({ // ? 表单
 			vdom[fieldid].append(
 				Aps.dom.create('span','m_'+formname+fieldname,['a-field-main',fieldname])
 			);
+			return;
 			case 'input':
 			case 'button':
 			case 'textarea':
@@ -3446,16 +3313,17 @@ Aps.former     = Aps.fn({ // ? 表单
 				Aps.dom.create(fieldtype,'m_'+formname+fieldname,['a-field-main',fieldname],{
 					placeholder:placeholder,
 					value:value,
-					type:inputtype,
+					type:inputtype
 				})
 			);
 			break;
 
 			case 'radio':
-			var checked     = Object.keys(options).length ===1 ? 'checked' : '';
+			checked     = Object.keys(options).length ===1 ? 'checked' : '';
+			return;
 			case 'checkbox':
 			for (var key in options){
-
+				if( !options.hasOwnProperty(key) ) continue;
 				vdom[fieldid].append(
 					Aps.dom.create('label','l_'+formname+fieldname+key,fieldtype+'label',{
 						for:'o_'+formname+fieldname+key
@@ -3483,18 +3351,18 @@ Aps.former     = Aps.fn({ // ? 表单
 			vdom['m_'+formname+fieldname].append(
 				Aps.dom.create('option','o_default','',{
 					disabled:'disabled',
-					selected:'selected',
+					selected:'selected'
 				})
 			);
-			for (var key in options){
-				var selected = value && value===key ? 'selected' : '';
+			for (var k in options){
+				var selected = value && value===k ? 'selected' : '';
 				vdom['m_'+formname+fieldname].append(
-					Aps.dom.create('option','o_'+formname+fieldname+key,fieldtype+'option',{
+					Aps.dom.create('option','o_'+formname+fieldname+k,fieldtype+'option',{
 							name:fieldname,
-							value:key,
+							value:k,
 							selected:selected
 						}).append(
-						options[key].label
+						options[k].label
 					)
 				);
 			}
@@ -3520,7 +3388,7 @@ Aps.former     = Aps.fn({ // ? 表单
 
 			vd.on('change',function(vd,e){
 
-				if( Aps.former.tmp[vd.attr('a-field-name')] == Aps.former.getFieldValue(vd) ){
+				if( Aps.former.tmp[vd.attr('a-field-name')] === Aps.former.getFieldValue(vd) ){
 					vd.removeClass('valid');
 				}else{
 					vd.addClass('valid');
@@ -3560,17 +3428,17 @@ Aps.former     = Aps.fn({ // ? 表单
 
 		var type = notice.type;
 
-		return type=='propup' ? "<span class='important' onclick="+'"'+"Aps.gui.propup('"+notice.title+"','"+notice.content+"')"+'"'+">"+notice.label+"</span>" : "<p>"+notice.content+"</p>"; 
+		return type==='propup' ? "<span class='important' onclick="+'"'+"Aps.gui.propup('"+notice.title+"','"+notice.content+"')"+'"'+">"+notice.label+"</span>" : "<p>"+notice.content+"</p>";
 	},
 
-	checkForm      :function(list,passRequire){           // 检查表单 
+	checkForm      :function( formList ,passRequire){           // 检查表单
 
-		var isVlist = list._vlist || 0;
-		var list = isVlist ? list.list : list || 0;
-		if(!list) throw TypeError(list);
+		var isVL = formList._vlist || 0;
+		var list = isVL ? formList.list : formList || 0;
+		if(!list) {return 0;}
 
-		var len  = list.length;
-		var ok   = 0;
+		var len = list.length;
+		var ok = 0;
 		this.form = {};
 		for (var i = 0; i < list.length; i++) {
 			if(this.checkField(list[i],passRequire||0)){
@@ -3580,15 +3448,15 @@ Aps.former     = Aps.fn({ // ? 表单
 			}
 		}
 
-		return ok==len ? this.form : 0;
+		return ok===len ? this.form : 0;
 
 	},
 
 	getFieldValue:function(field){
 
-		var type     = field.attr('a-field-type');
-		var	name     = field.attr('a-field-name');
-		var convert  = field.attr('a-field-convert');
+		var type = field.attr('a-field-type');
+		var name = field.attr('a-field-name');
+		var convert = field.attr('a-field-convert');
 		var value = null;
 
 		switch (type){
@@ -3608,7 +3476,7 @@ Aps.former     = Aps.fn({ // ? 表单
 				break;
 
 			case 'switch':
-				value = field.find('input.a-field-main').property('checked')?1:0;
+				value = field.find('input.a-field-main').value()?1:0;
 				break;
 
 			case 'checkbox':
@@ -3642,11 +3510,13 @@ Aps.former     = Aps.fn({ // ? 表单
 				var optionsVL = field.finds('.a-field-main option');
 				var options = [];
 				for( var i in optionsVL.list ){
+					if( !optionsVL.list.hasOwnProperty(i) ) continue;
 					options[ optionsVL.list[i].text() ] = optionsVL.list[i].value();
 				}
-				for( var i in selections.list){
-					var v = options[selections.list[i].attr('title')];
-					if( v ){ value.push(v); }
+				for( var k in selections.list){
+					if( !selections.list.hasOwnProperty(k) ) continue;
+					var V = options[selections.list[k].attr('title')];
+					if( V ){ value.push(V); }
 				}
 			}
 			break;
@@ -3669,9 +3539,82 @@ Aps.former     = Aps.fn({ // ? 表单
 		return value;
 	},
 
-	checkField     :function(field,passRequire){          // 检查字段 
+	setValue:function(fieldVdom, value){
+
+		var type = fieldVdom.attr('a-field-type');
+
+
+		switch (type){
+			case 'input':
+			case 'number':
+			case 'select':
+			case 'textarea':
+				fieldVdom.find('.a-field-main').value(value);
+				break;
+
+			case 'radio':
+				fieldVdom.finds('input.a-field-main').each(function(vd){
+					if( vd.value()==value ){
+						vd.attr('checked','checked');
+					}else{
+						vd.removeAttr('checked');
+					}
+				});
+				break;
+
+			case 'switch':
+				fieldVdom.find('input.a-field-main').value(value?1:0);
+				break;
+
+			case 'checkbox':
+				if(field.finds('input:checked')){
+					var v = [];
+					field.finds('input:checked').each(function(target){
+						if( target.property('checked') ){
+							v.push(target.value());
+						}
+					});
+					// value = JSON.stringify(v);
+					value = v;
+				}else{
+					value = null;
+				}
+				break;
+
+			case 'text':
+				value = field.find('span.a-field-main').text() || null;
+				break;
+
+			case 'summernote':
+				value = field.find('.note-editable.panel-body').html();
+				break;
+
+			// Select2 Multiple selections
+			case 'muselect':
+				var selections = field.finds('.select2-selection__choice');
+				if( selections ){
+					value = [];
+					var optionsVL = field.finds('.a-field-main option');
+					var options = [];
+					for( var i in optionsVL.list ){
+						if( !optionsVL.list.hasOwnProperty(i) ) continue;
+						options[ optionsVL.list[i].text() ] = optionsVL.list[i].value();
+					}
+					for( var k in selections.list){
+						if( !selections.list.hasOwnProperty(k) ) continue;
+						var V = options[selections.list[k].attr('title')];
+						if( V ){ value.push(V); }
+					}
+				}
+				break;
+		}
+
+
+	},
+
+	checkField     :function(field,PassRequireCheck){          // 检查字段
 		
-		var passRequire  = passRequire || 0;
+		var passRequire  = PassRequireCheck || 0;
 		var required     = field.hasClass('require') && field.hasClass('valid');
 		var type         = field.attr('a-field-type');
 		var	name         = field.attr('a-field-name');
@@ -3681,7 +3624,7 @@ Aps.former     = Aps.fn({ // ? 表单
 		var length       = parseInt(field.attr('a-field-length'));
 		var placeholder  = field.find('.a-field-main').attr('placeholder') || '' ;
 
-		var valid        = field.hasClass('valid') ? true : false;
+		var valid        = !!field.hasClass('valid');
 
 		var value = Aps.former.getFieldValue(field);
 
@@ -3717,7 +3660,7 @@ Aps.former     = Aps.fn({ // ? 表单
 
 			if(this.checkType(value,checktype,field.find(type))){
 				if (defined(value)) {
-					if( type == 'number' ){ value = parseFloat(value); }
+					if( type === 'number' ){ value = parseFloat(value); }
 					if (name.indexOf('.')>0) {
 						this.form = Aps.mixer.setChildValue(this.form,name,value);
 					}else{
@@ -3734,7 +3677,7 @@ Aps.former     = Aps.fn({ // ? 表单
 	},
 	check_mobile    :function(value,el){       // 手机号 验证 
 		var  mobilePreg = /^1[3|4|5|6|7|8][0-9]\d{8}$/i;
-		if (value == "" || !mobilePreg.test(value)){
+		if (value === "" || !mobilePreg.test(value)){
 			Aps.gui.alert(i18n('WRONG_MOBILE'),i18n('WRONG_MOBILE_MSG'),{
 				onOk:function(v){
 					VD(el).animateCss('errorFocus slow').focus();
@@ -3747,7 +3690,7 @@ Aps.former     = Aps.fn({ // ? 表单
 	check_code      :function(value,el){       // 验证码 验证 
 
 		var codePreg = /^\d{4,}$/;
-		if ( value == "" || !codePreg.test(value)){
+		if ( value === "" || !codePreg.test(value)){
 			Aps.gui.alert(i18n('WRONG_VCODE'),i18n('WRONG_VCODE_MSG'),{
 				onOk:function(v){
 					VD(el).focus();
@@ -3759,7 +3702,7 @@ Aps.former     = Aps.fn({ // ? 表单
 		} },
 	check_password  :function(value,el){       // 验证码 验证 
 
-		if ( value == "" || value.length<6){
+		if ( value === "" || value.length<6){
 			Aps.gui.alert(i18n('WRONG_PASS'),i18n('WRONG_PASS_MSG'),{
 				onOk:function(v){
 					VD(el).focus();
@@ -3773,7 +3716,7 @@ Aps.former     = Aps.fn({ // ? 表单
 
 		var idPreg = /^\d{15}(\d{2}[A-Za-z0-9])?$/;
 
-		if ( value == "" || !idPreg.test(value) ){
+		if ( value === "" || !idPreg.test(value) ){
 			Aps.gui.alert(i18n('WRONG_IDNUMBER'),i18n('WRONG_IDNUMBER_MSG'),{
 				onOk:function(v){
 					VD(el).focus();
@@ -3787,7 +3730,7 @@ Aps.former     = Aps.fn({ // ? 表单
 
 		var mailPreg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 
-		if ( value == "" || !mailPreg.test(value) ){
+		if ( value === "" || !mailPreg.test(value) ){
 			Aps.gui.alert(i18n('WRONG_EMAIL'),i18n('WRONG_EMAIL_MSG'),{
 				onOk:function(v){
 					VD(el).focus();
@@ -3801,7 +3744,7 @@ Aps.former     = Aps.fn({ // ? 表单
 
 		var preg = /^[\u8e00-\u9fa5A-Za-z0-9-_]*$/;
 
-		if ( value == "" || !preg.test(value) ){
+		if ( value === "" || !preg.test(value) ){
 			Aps.gui.alert(i18n('WRONG_NICKNAME'),i18n('WRONG_NICKNAME_MSG'),{
 				onOk:function(v){
 					VD(el).focus();
@@ -3845,7 +3788,7 @@ Aps.former     = Aps.fn({ // ? 表单
 				}
 
 			},delay||2000);
-		} }, });
+		} } });
 
 
 
@@ -3861,10 +3804,10 @@ Aps.user       = Aps.fn({ // ! 用户对象
 	tokenexpire:  parseInt(Aps.local.get('tokenexpire')) ,
 	quickLoginOn: 1,
 	quickLoginMode:{
-		emailLogin:    Aps.setting.language=='en-WW' || CONFIGS.emailLogin || 0,
-		mobileLogin:   Aps.setting.language=='zh-CN' || CONFIGS.mobileLogin || 0,
+		emailLogin:    Aps.setting.language==='en-WW' || CONFIGS.emailLogin || 0,
+		mobileLogin:   Aps.setting.language==='zh-CN' || CONFIGS.mobileLogin || 0,
 		wechatLogin:   CONFIGS.wechatLogin || 0,
-		facebookLogin: CONFIGS.facebookLogin || 0,
+		facebookLogin: CONFIGS.facebookLogin || 0
 	},
 
 	init:function(){
@@ -3883,14 +3826,30 @@ Aps.user       = Aps.fn({ // ! 用户对象
 	checkOpenId      :function(){ return this.openid || this.getOpenid(); },
 	isTokenExpired   :function(){
 
-		var now    = parseInt((new Date()).getTime()/1000);	
+		var now    = Math.round((new Date()).getTime()/1000);
 		var expire = this.tokenexpire ? this.tokenexpire : 0;
-		return now>this.tokenexpire;
+		return now>expire;
+	},
+
+	forcedLogin:function( showModal ){
+		if( !this.userid ){
+
+			if( showModal ){
+
+				Aps.gui.confirm(i18n('NEED_LOGIN'),i18n('USER_NOT_LOGIN'),{
+					confirmTxt:i18n("Login")
+				});
+			}
+
+			return false;
+		}else{
+			return true;
+		}
 	},
 
 	isTokenAlmostExpired:function(){
 
-		var now = parseInt((new Date()).getTime()/1000);	
+		var now = Math.round((new Date()).getTime()/1000);
 		var almost = (this.tokenexpire-now)<=CONFIGS.tokenRefreshCycle;
 		return almost<0;
 	},
@@ -3919,7 +3878,7 @@ Aps.user       = Aps.fn({ // ! 用户对象
 
 	getUserid:function(){
 
-		if ( this.userid==false || !defined(this.userid) ) {
+		if ( !this.userid || !defined(this.userid) ) {
 
 			this.quickLoginOn && Aps.user.quickLogin('.app');
 			return false;
@@ -3929,7 +3888,7 @@ Aps.user       = Aps.fn({ // ! 用户对象
 
 	getToken:function(){
 
-		if (this.token==false || !defined(this.token)) {
+		if ( !this.token || !defined(this.token)) {
 
 			Aps.user.quickLogin('.app');
 			return false;
@@ -3982,23 +3941,23 @@ Aps.user       = Aps.fn({ // ! 用户对象
 		}
 	},
 
-	readNotification:function(all,notificationid){
+	readNotification:function(All,NotificationId){
 
 		Aps.user.forcedLogin();
 
-		var all = all || 0;
-		var notificationid = notificationid || 0;
+		var all = All || 0;
+		var notificationId = NotificationId || 0;
 
 		var params = {
 			'userid':Aps.user.userid,
-			'token':Aps.user.token,
+			'token':Aps.user.token
 		}
 
-		if (notificationid) {
-			var notification = vdom('#'+notificationid+' .notice');
+		if (notificationId) {
+			var notification = vdom('#'+notificationId+' .notice');
 			if (notification) {
-				params.notificationid = notificationid;
-				notification.animateCss('pullOutUp fastest',function(){ notification.remove();}); ;
+				params.notificationid = notificationId;
+				notification.animateCss('pullOutUp fastest',function(){ notification.remove();});
 			}
 		}
 
@@ -4019,74 +3978,52 @@ Aps.user       = Aps.fn({ // ! 用户对象
 
 	},
 
-	updateTokenCallback:function(data,status){
+	updateTokenCallback:function(result){
 
-		if(Aps.cajax.successful(data)){
+		if(result.status===0){
 
 			var params = {
-				'userid':data.content.userid,
-				'token' :data.content.token,
-				'scope' :data.content.scope,
-				'expire':data.content.expire,
+				'userid':result.content.userid,
+				'token' :result.content.token,
+				'scope' :result.content.scope,
+				'expire':result.content.expire
 			};
 
 			Aps.user.setProperty('userid',params.userid);
 			Aps.user.setProperty('token',params.token);
 			Aps.user.setProperty('scope',params.scope);
 			Aps.user.setProperty('tokenexpire',params.expire);
-
 		}
-
 	},
 
-	readNotificationConfirm:function(data){
-
-		Aps.debugger.add('ok');
-
-	},
-
-	readAllNotificationConfirm:function(data){
-
-		if (Aps.cajax.successful(data)) {
-
-			Aps.gui.toast('Read all success.');
-			Aps.contents.listMessage(1,15,'messageList',1);
-		
-		}else{
-
-			Aps.gui.toast(Aps.cajax.getMessage(data));
-
-		}
-
-	},
 
 	logout:function(){
 
-		if(!Aps.user.userid){ Aps.gui.toast(i18n('NEED_LOGIN'),0,i18n('WARNING'));return; };
+		if(!Aps.user.userid){ Aps.gui.toast(i18n('NEED_LOGIN'),0,i18n('WARNING'));return; }
 
 		Aps.gui.confirm(i18n('SIGN_OUT'),i18n('CONFIRM_OUT'),{
 			onOk:function(){
 				Aps.user.clearUser();
 				Aps.router.close();
-			},
+			}
 		});
 
 	},
 
-	statusConfirm:function(data,status){
+	statusConfirm:function(result){
 
-		if (data.status!==0){ // 状态检测失败
+		if (result.status!==0){ // 状态检测失败
 
 			Aps.user.clearUser();
 			Aps.user.quickLogin('.app');
-			Aps.gui.toast(Aps.cajax.getMessage(data));
+			Aps.gui.toast(result.message);
 
 		}
 	},
 
 	notificationConfirm:function(data){
 
-		if (Aps.cajax.successful(data)){ // 有新消息
+		if (data.status===0){ // 有新消息
 
 			if (vdom('.tabBar')) {
 				vdom('.tabBar .tabs.my').append(ApsMd.gui.notice.point);
@@ -4118,10 +4055,10 @@ Aps.user       = Aps.fn({ // ! 用户对象
 
 	personalCenterCall:function( data ) {
 
-		if(Aps.cajax.successful(data)){
+		if(data.status===0){
 
 			var personal = vdom('.personal');
-			var user = Aps.cajax.getData(data);
+			var user = data.content;
 
 			personal.find('.avatar img').attr('src',(user.avatar?user.avatar+'!avatar':CONFIGS.defaultAvatar));
 			personal.find('.nickname').text(user.nickname||i18n('DEFAULT_NAME'));
@@ -4143,17 +4080,17 @@ Aps.user       = Aps.fn({ // ! 用户对象
 
 		if(!this.forcedLogin()) return;
 		var form = Aps.former.checkForm(vlist('.field.valid'));
-		if (!form){ return; };
+		if (!form) return;
 		this.post('updateUserInfo',this.updateInfoCall,form,{needLogin:1,update:1});
 
 	},
 
 	updateInfoCall:function(data){
 
-		if (!Aps.cajax.successful(data)){
-			Aps.gui.toast(data.message||'Network Error!',3000,data.status?'success':'warning'); 
-		}else{
+		if (data.status===0){
 			Aps.gui.toast(data.message||'Saved!',300,'success');
+		}else{
+			Aps.gui.toast(data.message||'Network Error!',3000,data.status?'success':'warning');
 		}
 	},
 
@@ -4165,7 +4102,7 @@ Aps.user       = Aps.fn({ // ! 用户对象
 
 	personalInfoCall:function(data){
 
-		if (!Aps.cajax.successful(data)){
+		if (data.status!==0){
 			if (data.status===9999) { Aps.user.quickLogin(); }else{ Aps.gui.toast(data.message||'Network Error!',5000,data.status?'success':'warning'); }
 			return;
 		}
@@ -4270,55 +4207,30 @@ Aps.user       = Aps.fn({ // ! 用户对象
 		location.href = CONFIGS.wxhost+'?device='+device+'&callbackurl='+callbackUrl;
 	},
 
-	quickLogin:function(selector,mode){
+	sendCallback:function(Result){
 
-		var selector = selector || 'body';
-		var mode     = mode     || 'full';
+		if(Result.status===0){
 
-		if(!vdom('.ApsLogin')){
-
-			vdom(selector).append(vdom.vm_quickLogin||VD(Aps.mixer.mix(ApsMd.gui.quickLogin[mode],Aps.user.quickLoginMode),'vm_quickLogin'));
-			var login = vdom('.ApsLogin');
-
-			Aps.gui.animateOn
-			? login.find('.prop').animateCss('fadeInRight fast').show()
-			: login.fadeIn(500);
-		}
-	},
-
-	quickLoginClose:function(exit){ 
-
-		var login = vdom('.ApsLogin');
-
-		Aps.gui.animateOn
-		? login.find('.prop').animateCss('fadeOutLeft faster',function(){ login.fadeOut(); })
-		: login.fadeOut();
-	},
-
-	sendCallback:function(data,status){
-
-		if(Aps.cajax.successful(data)){
-
-			Aps.gui.toast(Aps.cajax.getMessage(data));
+			Aps.gui.toast(Result.message);
 			Aps.counter.countdown('ApsRequestCode',60);
 			VD('#ApsVerifyCode').focus();
 
 		}else{
 
-			Aps.gui.toast(Aps.cajax.getMessage(data));
+			Aps.gui.toast(Result.message);
 		}
 	},
 
-	loginCallback:function(data,status){
+	loginCallback:function(Result){
 
-		if(Aps.cajax.successful(data)){
+		if(Result.status===0){
 
-			var data = Aps.cajax.getData(data); 
+			var data = Result.content;
 			var params = {
 				'userid':data.userid || data.id,
 				'token':data.token   || data.token,
 				'scope':data.scope   || data.scope,
-				'expire':data.expire || data.expire,
+				'expire':data.expire || data.expire
 			};
 
 			Aps.gui.toast(i18n('LOGIN_SUC'));
@@ -4343,43 +4255,9 @@ Aps.user       = Aps.fn({ // ! 用户对象
 			},1500);
 
 		}else{
-			Aps.gui.alert(i18n('LOGIN_FAL'),Aps.cajax.getMessage(data));
+			Aps.gui.alert(i18n('LOGIN_FAL'),Result.message);
 		}
-	},
-
-	forcedLogin:function(back){
-
-		var back = back || 0;
-
-		if( !Aps.user.islogin() ){
-
-			Aps.gui.confirm(i18n('AUTHORATION'),i18n('NEED_LOGIN'),{
-				onOk:function(){
-					vdom('.Apsmodal').remove();
-					Aps.user.quickLoginOn ? Aps.user.quickLogin() : Aps.router.open('login.html');
-				},
-				onCancel:function(){
-					return back && Aps.router.back() || 1;
-				},
-			});
-			return 0;
-		}else{
-			return 1;
-		}
-	},
-
-	suggest:function(){
-
-		var suggestion = Aps.former.checkForm(vlist('.form .field.valid'));
-
-		if (!suggestion){
-			// console.log(suggestion);
-			return;
-		}
-
-		Aps.contents.send(suggestion,'sendSuggest',Aps.contents.suggestCall,{needLogin:1});
-
-	},
+	}
 
 });
 Aps.promotion  = Aps.fn({ // ? 推广中心  
@@ -4404,7 +4282,7 @@ Aps.promotion  = Aps.fn({ // ? 推广中心
 	set:function(id,type,duration){
 
 		this.setProperty('promoterid',id);
-		this.setProperty('promoteexpire',parseInt((new Date()).getTime()/1000)+parseInt(duration));
+		this.setProperty('promoteexpire',Math.round((new Date()).getTime()/1000)+Math.round(duration));
 
 	},
 
@@ -4413,13 +4291,13 @@ Aps.promotion  = Aps.fn({ // ? 推广中心
 		this.init();
 		if ( !defined(this.promoterid) || this.promoterid==='' ) return false; // 是否有id
 
-		if ( this.promoteexpire < parseInt((new Date()).getTime()/1000) ){
+		if ( this.promoteexpire < Math.round((new Date()).getTime()/1000) ){
 
 			this.clear();
 			return false;
 		} // 是否过期 过期清除当前推广人信息
 
-		if ( this.promoterid === USER.userid ) {
+		if ( this.promoterid === Aps.user.userid ) {
 
 			this.clear();
 			return false;
@@ -4432,10 +4310,10 @@ Aps.promotion  = Aps.fn({ // ? 推广中心
 
 	createDownloadImage:function(element){
 
-		html2canvas(document.getElementById('post'),{scale:1,useCORS:true,}).then(function(canvas){
+		html2canvas(document.getElementById('post'),{scale:1,useCORS:true}).then(function(canvas){
 
 			var data = canvas.toDataURL("image/jpg");
-			VD(element).html("<img src="+data+">");
+			VD(element).html("<img alt='post' src="+data+">");
 
 			Aps.gui.submitted('生成成功,请长按图片保存到手机 或 直接分享给朋友!');
 
@@ -4448,37 +4326,37 @@ Aps.promotion  = Aps.fn({ // ? 推广中心
 		this.post('getCommission',this.initCommission,{id:id,type:type},{expire:60});
 	},
 
-	initCommission:function(data,status){
+	initCommission:function(Result){
 
-		if (data.status===0) {
+		if (Result.status===0) {
 
-			VD('.commission').text(data.content);
+			VD('.commission').text(Result.content);
 			VD('.promotePatch').show();	
 
 		}
 
-	}, 
+	}
 });
 
-Aps.order      = Aps.fn({ // ? 订单  
+Aps.order      = Aps.fn({ // ? 订单
 
-	newOrder:function(orderInfo,callback){
+	newOrder:function(OrderInfo,callback){
 
 		this.resetOptions();
 
-		var orderInfo =  orderInfo || {itemid:itemid,itemtype:itemtype};
+		var orderInfo =  OrderInfo || {itemid:"",itemtype:""};
 
 		this.setParams(orderInfo);
 
 		if (Aps.promotion.check()) {
 
 			this.addParams('promoterid',Aps.promotion.promoterid);
-		
+
 		}
 
 		this.post('newOrder',(callback ||Aps.pay.wxJsApiPay),this.options.parameters.parameters,{expire:1,needLogin:1});
 
-	},
+	}
 });
 
 Aps.pay        = Aps.fn({ // ? 支付  
@@ -4487,49 +4365,20 @@ Aps.pay        = Aps.fn({ // ? 支付
 	iapChannel:0,
 	IAPOrders:[],
 
-	pointPay:function(data){
-
-		console.log('pointPay');
-
-	},
-
-	IAP:function(){
-
-		if(!plus) return;
-		plus.payment.getChannels(function(channels){
-			for( var k in channels){
-				if (channel[i].id === 'appleiap') {
-					var iapChannel = channel[i];
-					iapChannel.requestOrder(IAPOrders, function(event) {
-						for (var index in event) {
-							var OrderItem = event[index];
-							outLine("Title:" + OrderItem.title + "Price:" + OrderItem.price + "Description:" + OrderItem.description + "ProductID:" + OrderItem.productid);
-						}
-					}, function(errormsg) {
-						outLine("获取支付通道失败：" + errormsg.message);
-					});
-				}
-			}
-		});
-		// this.
-		// 1443042313
-
-	},
-
-	wxJsApiPay:function(data){
+	wxJsApiPay:function(Result){
 
 		VD('button').attr('disabled','disabled');
 
-		if (Aps.user.openid==false) {
+		if (!Aps.user.openid) {
 			Aps.user.getOpenid();
 		}
 
-		if (Aps.cajax.successful(data)) {
+		if (Result.status===0) {
 
 			Aps.pay.resetOptions();
 			Aps.pay.setParams({
-				'orderid':data.content,
-				'openid':Aps.user.openid,
+				'orderid':Result.content,
+				'openid':Aps.user.openid
 			});
 			Aps.pay.setAction('wxJsapiPay');
 			Aps.pay.setCallback( Aps.pay.wxJsApiPayCall );
@@ -4539,10 +4388,9 @@ Aps.pay        = Aps.fn({ // ? 支付
 
 		}else{
 
-			// Aps.user.quickLogin('.app');
-			Aps.gui.toast(Aps.cajax.getMessage(data));
+			Aps.gui.toast(Aps.cajax.getMessage(Result));
 
-			if(data.status==9999){
+			if(Result.status===9999){
 				Aps.gui.confirm('登录失效','是否重新登录',{onOk:function(){
 					Aps.user.wechatLogin();
 				}});
@@ -4555,7 +4403,7 @@ Aps.pay        = Aps.fn({ // ? 支付
 
 		Aps.debugger.add('微信支付回调:');
 
-		if (Aps.cajax.successful(data)) {
+		if (data.status===0) {
 
 			var payment = data.content;
 
@@ -4570,7 +4418,7 @@ Aps.pay        = Aps.fn({ // ? 支付
 				},
 				function(res){
 
-					if(res.err_msg == "get_brand_wcpay_request:ok" ){ // 支付成功
+					if(res.err_msg === "get_brand_wcpay_request:ok" ){ // 支付成功
 
 						Aps.gui.confirm('支付成功','是否跳转到订单页',{
 							onOk:function(){
@@ -4589,7 +4437,7 @@ Aps.pay        = Aps.fn({ // ? 支付
 						// 关闭支付窗口
 						Aps.gui.alert('支付失败','请重新支付.');
 
-						VD('button').removeAttr("disabled");;
+						VD('button').removeAttr("disabled");
 					 
 					}
 
@@ -4599,10 +4447,11 @@ Aps.pay        = Aps.fn({ // ? 支付
 		}else{
 
 			Aps.gui.toast(Aps.cajax.getMessage(data));
-			VD('button').removeAttr("disabled");;
+			VD('button').removeAttr("disabled");
 		
 		}
-	}, });
+	}
+});
 Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core 
 
 	mode:'oss',
@@ -4626,9 +4475,9 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 	videosMd:"\
 		<div class='banners swipe-slide uploaderGallery uploaderVideo_{{idx}}'>\
 		<video controls width='100%' src=\"{{url}}\">浏览器不支持视频标签，请使用现代浏览器如：Chrome,360极速,Safari,Firefox...</video>\
-		<div onclick=\"Aps.uploader.upFile({{idx}},'videos');\" class='uploaderControl up'><i class='a-icon I-up'></i> 上移</div>\
-		<div onclick=\"Aps.uploader.downFile({{idx}},'videos');\" class='uploaderControl down'><i class='a-icon I-down'></i> 下移</div>\
-		<div onclick=\"Aps.uploader.removeFile({{idx}},'videos');\" class='uploaderControl remove'><i class='a-icon I-close'></i> 删除</div>\
+		<div onclick=\"Aps.uploader.upFile({{idx}},'videos')\" class='uploaderControl up'><i class='a-icon I-up'></i> 上移</div>\
+		<div onclick=\"Aps.uploader.downFile({{idx}},'videos')\" class='uploaderControl down'><i class='a-icon I-down'></i> 下移</div>\
+		<div onclick=\"Aps.uploader.removeFile({{idx}},'videos')\" class='uploaderControl remove'><i class='a-icon I-close'></i> 删除</div>\
 		</div>\
 		",
 	optionsMd:"\
@@ -4637,18 +4486,18 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 		  <div class='col'>\
 			<h4 class='mb-1 name'>{{title}}</h4>\
 		  </div>\
-		  <a onclick='Aps.uploader.upFile({{idx}},\"options\");'  class='btn btn-sm btn-white fe fe-arrow-up mr-2'></a>\
-		  <a onclick='Aps.uploader.downFile({{idx}},\"options\");' class='btn btn-sm btn-white fe fe-arrow-down mr-2'></a>\
-		  <a onclick='Aps.uploader.removeFile({{idx}},\"options\");' class='btn btn-sm btn-white fe fe-delete text-danger mr-3'></a>\
+		  <a onclick='Aps.uploader.upFile({{idx}},\"options\")'  class='btn btn-sm btn-white fe fe-arrow-up mr-2'></a>\
+		  <a onclick='Aps.uploader.downFile({{idx}},\"options\")' class='btn btn-sm btn-white fe fe-arrow-down mr-2'></a>\
+		  <a onclick='Aps.uploader.removeFile({{idx}},\"options\")' class='btn btn-sm btn-white fe fe-delete text-danger mr-3'></a>\
 		</div>\
 		</li>\
 		",	
 	textsMd:"\
 		<div class='banners swipe-slide uploaderOptions uploaderOptions_{{idx}}'>\
 		<p>{{v}}</p>\
-		<div onclick=\"Aps.uploader.upFile({{idx}},'options');\" class='uploaderControl up'><i class='a-icon I-up'></i> 上移</div>\
-		<div onclick=\"Aps.uploader.downFile({{idx}},'options');\" class='uploaderControl down'><i class='a-icon I-down'></i> 下移</div>\
-		<div onclick=\"Aps.uploader.removeFile({{idx}},'options');\" class='uploaderControl remove'><i class='a-icon I-close'></i> 删除</div>\
+		<div onclick=\"Aps.uploader.upFile({{idx}},'options')\" class='uploaderControl up'><i class='a-icon I-up'></i> 上移</div>\
+		<div onclick=\"Aps.uploader.downFile({{idx}},'options')\" class='uploaderControl down'><i class='a-icon I-down'></i> 下移</div>\
+		<div onclick=\"Aps.uploader.removeFile({{idx}},'options')\" class='uploaderControl remove'><i class='a-icon I-close'></i> 删除</div>\
 		</div>\
 	",	
 	gallery:[],
@@ -4665,22 +4514,22 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 		image:{
 			title:'image',
 			extensions: "jpg,gif,png,bmp,jpeg",
-			max: '10mb',
+			max: '10mb'
 		},
 		video:{
 			title:'video',
 			extensions: "mp4,mov,mpg",
-			max: '500mb',
+			max: '500mb'
 		},
 		audio:{
 			title:'audio',
 			extensions: "mp3,ogg,wav",
-			max: '100mb',
+			max: '100mb'
 		},
 		document:{
 			title : "document",
 			extensions : "pdf,pptx,xlsx,numbers,key,pages,docx,doc,xls",
-			max: '100mb',
+			max: '100mb'
 		}
 	},
 
@@ -4720,7 +4569,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 		Aps.uploader.options = Aps.uploader.options || [];
 		Aps.uploader.options.push({
-			title:data.title,
+			title:data.title
 		});
 
 		var optionsList = vdom('#options').value();
@@ -4776,9 +4625,9 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 	},
 
-	optionsInit:function(selector){
+	optionsInit:function(Selector){
 
-		var selector = selector || '#options';
+		var selector = Selector || '#options';
 		var options = vdom(selector).value() ? JSON.parse(vdom(selector).value()) : 0;
 		if(!options){return;}
 		Aps.uploader.optionsList = options;
@@ -4822,11 +4671,11 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 		vdom('#options').value(JSON.stringify(Aps.uploader.optionsList));
 	},
 
-	upFile:function(idx,type){
+	upFile:function(idx,Type){
 
-		var type = type || 'gallery';
+		var type = Type || 'gallery';
 
-		if (idx==0) { return;}
+		if (idx===0) { return;}
 
 		var before = Aps.uploader[type][idx-1];
 		var beforeL = Aps.uploader[type+'List'][idx-1];
@@ -4845,14 +4694,14 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 			break;
 			case 'options':
 			Aps.uploader.refreshOptionsPreview();
-		};
+		}
 	},
 
-	downFile:function(idx,type){
+	downFile:function(idx,Type){
 
-		var type = type || 'gallery';
+		var type = Type || 'gallery';
 
-		if (idx==Aps.uploader[type].length-1) { return;}
+		if (idx===Aps.uploader[type].length-1) { return;}
 
 		var after = Aps.uploader[type][idx+1];
 		var afterL = Aps.uploader[type+'List'][idx+1];
@@ -4871,12 +4720,12 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 			break;
 			case 'options':
 			Aps.uploader.refreshOptionsPreview();
-		};
+		}
 	},
 
-	removeFile:function(idx,type){
+	removeFile:function(idx,Type){
 
-		var type = type || 'gallery';
+		var type = Type || 'gallery';
 
 		vdom('#'+ type +'List :nth-child('+(idx+1)+')').remove();
 
@@ -4892,13 +4741,14 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 				break;
 				case 'options':
 				Aps.uploader.refreshOptionsPreview(1);
-			};
+			}
 			return; 
 		}
 		var g  = [];
 		var gl = [];
 		for(var k in Aps.uploader[type]){
-			if (k!=parseInt(idx)) {
+			if( !Aps.uploader[type].hasOwnProperty(k) ) continue;
+			if (parseInt(k)!==parseInt(idx)) {
 				g.push(Aps.uploader[type][k]);
 				// g.push({url:Aps.uploader[type][k].url});
 				gl.push(Aps.uploader[type+'List'][k]);
@@ -4916,47 +4766,48 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 			break;
 			case 'options':
 			Aps.uploader.refreshOptionsPreview();
-		};
+		}
 	},
 
 	/**
-	 * @param type               # 上传方式 
-	 * @param options.mode       # 默认为阿里oss
-	 * @param options.type       # upload file type 上传文件类型
-	 * @param options.container  # 上传组件的容器id
-	 * @param options.selector   # 浏览文件触发选择器 无则不显示
-	 * @param options.fileList   # 上传文件列表选择器 无则不显示
-	 * @param options.image      # 上传图片的预览选择器 无则不显示
-	 * @param options.audio      # 上传音频的预览选择器 无则不显示
-	 * @param options.video      # 上传视频的预览选择器 无则不显示
-	 * @param options.gallery    # 上传相册的相册预览 选择器 无则不显示
-
+	 * @param type               # 上传方式
+	 * @param opts
+	 *    options.mode       # 默认为阿里oss
+	 *    options.type       # upload file type 上传文件类型
+	 *    options.container  # 上传组件的容器id
+	 *    options.selector   # 浏览文件触发选择器 无则不显示
+	 *    options.fileList   # 上传文件列表选择器 无则不显示
+	 *    options.image      # 上传图片的预览选择器 无则不显示
+	 *    options.audio      # 上传音频的预览选择器 无则不显示
+	 *    options.video      # 上传视频的预览选择器 无则不显示
+	 *    options.gallery    # 上传相册的相册预览 选择器 无则不显示
 	 Calls
-	 * @param options.Postinit   
-	 * @param options.FilesAdded 
-	 * @param options.BeforeUpload
-	 * @param options.UploadProgress 
-	 * @param options.FileUploaded    
-	 * @param options.Error  
+	 * @param callParams
+	 *    options.Postinit
+	 *    options.FilesAdded
+	 *    options.BeforeUpload
+	 *    options.UploadProgress
+	 *    options.FileUploaded
+	 *    options.Error
 
-	 * @param callParams         # 上传回调需要传递的参数
+	 *    callParams         # 上传回调需要传递的参数
 	 */
 
-	init:function(type,options,callParams){
+	init:function(type,opts,callParams){
 
 		Aps.uploader.mode = options.mode || 'oss';
-		var options = options || {
+		var options = opts || {
 			type:'image',
 			selector:'brosweFile',
 			container:'uploadContainer',
-			gallery:0,
+			gallery:0
 		};
 
 		var uploader = new plupload.Uploader({
 			browse_button :        options.selector, // 上传按钮id
 			container :            document.getElementById(options.container), // 上传容器
 			runtimes :            'html5,flash,silverlight,html4', // 上传环境
-			multi_selection :      options.multi ? true : false, // 是否支持批量上传
+			multi_selection :      !!options.multi, // 是否支持批量上传
 			unique_names :         true, // 是否自动生成唯一文件名
 			url :  Aps.uploader.mode === 'oss' ? CONFIGS.apihost : APILIST.getApiUrl('uploadServer'), // 上传地址
 
@@ -4964,10 +4815,10 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 			  mime_types : [ // 支持的文件类型
 			  { 
 				title :       Aps.uploader.types[options.type].title,
-				extensions :  Aps.uploader.types[options.type].extensions }, 
+				extensions :  Aps.uploader.types[options.type].extensions }
 			  ],
 			  max_file_size : Aps.uploader.types[options.type].max, //最大只能上传10mb的文件
-			  prevent_duplicates : false, //不允许选取重复文件
+			  prevent_duplicates : false //不允许选取重复文件
 			},
 
 			init: {
@@ -4999,7 +4850,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 				BeforeUpload: function(up, file) {
 
 					Aps.gui.submitting('开始上传...');
-					if (Aps.uploader.mode==='oss'){ OSS.set_upload_param(up, file.name, true, options.type);};
+					if (Aps.uploader.mode==='oss'){ OSS.set_upload_param(up, file.name, true, options.type);}
 					if (typeof options.BeforeUpload == 'function'){ options.BeforeUpload(uploader); }
 				},
 
@@ -5109,7 +4960,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 					  var res = JSON.parse(info.response);  // 将回调返回的数据转换成json对象
 
-					  if(typeof uploadedCall=='function'){uploadedCall(res,callParams||0);};
+					  if(typeof uploadedCall=='function'){uploadedCall(res,callParams||0);}
 
 				  }
 				  else if (info.status === 203){
@@ -5149,19 +5000,19 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 				id:'summerNoteImageBtn',
 				type:'image',
 				mime: { title : "image",    extensions : "jpg,gif,png,bmp,jpeg" },
-				limit: '10mb',
+				limit: '10mb'
 			},
 			uploadAudio:{
 				id:'summerNoteAudioBtn',
 				type:'audio',
 				mime: { title : "audio",    extensions : "mp3,ogg,wav" },
-				limit: '100mb',
+				limit: '100mb'
 			},
 			uploadVideo:{
 				id:'summerNoteVideoBtn',
 				type:'video',
 				mime: { title : "video",    extensions : "mp4,mov,mpg" },
-				limit: '500mb',
+				limit: '500mb'
 			}
 		};
 
@@ -5240,6 +5091,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 							var Editor = jQuery.summernote.eventHandler.modules.editor;
 							var editable = jQuery('.note-editable.panel-body');
+							var htmlString = '';
 
 							if(options.type==='image'){
 
@@ -5247,12 +5099,12 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 							}else if( options.type==='audio'){
 
-								var htmlString = '<div class=uploadMedia><audio data-filename="'+res.content.url+'"  src="'+res.content.url+'" controls="controls" autoplay="false">您的浏览器不支持 audio 标签。</audio></div>';
+								htmlString = '<div class=uploadMedia><audio data-filename="'+res.content.url+'"  src="'+res.content.url+'" controls="controls" autoplay="false">您的浏览器不支持 audio 标签。</audio></div>';
 								Editor.pasteHTML(editable, htmlString, res.content.name );
 
 							}else if( options.type==='video'){
 
-								var htmlString = '<div class=uploadMedia><video data-filename="'+res.content.url+'"  src="'+res.content.url+'" controls="controls" autoplay="false">您的浏览器不支持 video 标签。</video></div>';
+								htmlString = '<div class=uploadMedia><video data-filename="'+res.content.url+'"  src="'+res.content.url+'" controls="controls" autoplay="false">您的浏览器不支持 video 标签。</video></div>';
 								Editor.pasteHTML(editable, htmlString, res.content.name);
 
 							}
@@ -5302,7 +5154,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 		}, 100);
 
 
-	},
+	}
 
 });
 Aps.jssdk      = Aps.fn({ // ? 微信jssdk  
@@ -5316,7 +5168,7 @@ Aps.jssdk      = Aps.fn({ // ? 微信jssdk
 		'hideOptionMenu', 'showOptionMenu', 'hideMenuItems', 'showMenuItems', 'hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem',
 		'startScanWXDevice', 'stopScanWXDevice', 'onWXDeviceBindStateChange', 'onScanWXDeviceResult', 'onReceiveDataFromWXDevice',
 		'startRecord', 'stopRecord', 'onVoiceRecordEnd', 'playVoice', 'pauseVoice', 'stopVoice', 'onVoicePlayEnd', 'uploadVoice', 'downloadVoice',
-		'openWXDeviceLib', 'closeWXDeviceLib', 'getWXDeviceInfos', 'sendDataToWXDevice', 'disconnectWXDevice', 'getWXDeviceTicket', 'connectWXDevice',
+		'openWXDeviceLib', 'closeWXDeviceLib', 'getWXDeviceInfos', 'sendDataToWXDevice', 'disconnectWXDevice', 'getWXDeviceTicket', 'connectWXDevice'
 	],
 
 	getConf:function(data,apiList){
@@ -5327,17 +5179,17 @@ Aps.jssdk      = Aps.fn({ // ? 微信jssdk
 			"timestamp":String(data.content.timestamp),
 			"nonceStr" :String(data.content.nonceStr),
 			"signature":String(data.content.signature),
-			"jsApiList":apiList ||Aps.jssdk.apiList,
+			"jsApiList":apiList ||Aps.jssdk.apiList
 		};
 
 	},
 
 	init:function(callback){
 
-		if (Aps.setting.device=='wx') {
+		if (Aps.setting.device==='wx') {
 
 			this.setParams({
-				url:location.href,
+				url:location.href
 			});
 			this.setAction('getJssdkConfig');
 			this.setCallback(Aps.jssdk[callback]);
@@ -5347,7 +5199,7 @@ Aps.jssdk      = Aps.fn({ // ? 微信jssdk
 		}
 	},
 
-	share:function(data,status){
+	share:function(data){
 
 		var conf = Aps.jssdk.getConf(data,['updateAppMessageShareData','updateTimelineShareData']);
 
@@ -5362,7 +5214,7 @@ Aps.jssdk      = Aps.fn({ // ? 微信jssdk
 
 	},
 
-	hideOption:function(data,status){
+	hideOption:function(data){
 	 
 		var conf = Aps.jssdk.getConf(data,['hideOptionMenu']);
 
@@ -5384,16 +5236,15 @@ Aps.share      = Aps.fn({ // ? 分享( 二维码分享需要jQ Qrcode )  #share
 			title:title||CONFIGS.appname,
 			desc:description||CONFIGS.slogan,
 			link:link,
-			imgUrl:image,
+			imgUrl:image
 		});
 
 		return this.options.parameters.parameters;
 	},
 
-	getParams:function(mode){
+	getParams:function(){
 
 		return this.options.parameters.parameters;
-
 	},
 
 	generateLink:function() {
@@ -5415,27 +5266,27 @@ Aps.share      = Aps.fn({ // ? 分享( 二维码分享需要jQ Qrcode )  #share
 		}
 	},
 
-	generateQrcode:function(url){
+	generateQrcode:function(Url){
 
-		var url = url || Aps.share.generateLink(); 
+		var url = Url || Aps.share.generateLink();
 
 		return Aps.qrcode.toImage(url);
 
 	},
 
-	qrShare:function(title,url){
+	qrShare:function(title,Url){
 
-		var url = url || Aps.share.generateLink(); 
+		var url = Url || Aps.share.generateLink();
 
 		Aps.gui.popup(title||'长按保存二维码分享',Aps.share.generateQrcode(url));
 
 	},
 
-	popupShare:function(url,post){
+	popupShare:function(Url,Post){
 
-		var url = url || Aps.share.generateLink(); 
+		var url = Url || Aps.share.generateLink();
 
-		if( !defined(post) ){
+		if( !defined(Post) ){
 			var post = VD('#a-post-container') || VD('<div></div>').attr('id','a-post-container').hide();		
 			VD('html','HTML').append(post);
 			post.append(
@@ -5452,14 +5303,13 @@ Aps.share      = Aps.fn({ // ? 分享( 二维码分享需要jQ Qrcode )  #share
 		VD('.a-popup-content').html('<div class="a-center"><i class="a-icon a-color-blue I-loading rotation"></i>正在生成海报</div>');
 		post.show();
 
-		html2canvas(post.el,{scale:2,useCORS:true,}).then(function(canvas){
+		html2canvas(post.el,{scale:2,useCORS:true}).then(function(canvas){
 			var data = canvas.toDataURL("image/jpg"); var img = new Image();
 			img.src = data;
 			// img.className = 'post';
 			VD('.a-popup').addClass('postShare');
 			VD('.a-popup-content').html(img);
 			post.hide();
-// 			VD('#postContainer').remove();
 		});
 	} 
 });
@@ -5507,7 +5357,8 @@ Aps.player     = Aps.fn({ // ? 播放器 基于mediaelement
 
 	getQueryStringValue:function(key) {
 		return decodeURIComponent(location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
-	}, });
+	}
+});
 Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk  
 
 	options:{
@@ -5517,17 +5368,17 @@ Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk
 		pitch: 60, // 角度
 		viewMode: '3D', // 3d模式
 		mapStyle: 'amap://styles/light', //主题 默认 normal,幻影黑 dark,月光银 light,远山黛 whitesmoke,草色青 fresh,雅士灰 grey,涂鸦 graffiti,马卡龙 macaron,靛青蓝 blue,极夜蓝 darkblue,酱籽 wine
-		expandZoomRange: true, // 开启放大缩小
+		expandZoomRange: true // 开启放大缩小
 	},
 	list:[],
 	current:{},
 	marks:[],
 	map:0,
 
-	init:function(containerId,options){
+	init:function(ContainerId,Options){
 
-		var containerId = containerId || 'MAP';
-		var options = options || this.options;
+		var containerId = ContainerId || 'MAP';
+		var options = Options || this.options;
 		this.map = new AMap.Map(containerId,options);    
 		this.clear();  // 清除地图覆盖物
 
@@ -5548,7 +5399,7 @@ Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk
 			pitch: 60, 			// 角度
 			viewMode: '3D', 	// 3d模式
 			mapStyle: 'amap://styles/light', //主题
-			expandZoomRange: true, // 开启放大缩小
+			expandZoomRange: true // 开启放大缩小
 		});
 
 	    AMapUI.loadUI(['misc/PoiPicker'], function(PoiPicker) {
@@ -5622,7 +5473,7 @@ Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk
 
 			for ( var key in list[i] ){
 
-				indexList[list[i]['id']][key] = key!=='location'?list[i][key]:this.converLocation(list[i][key]);
+				if (list[i].hasOwnProperty(key)) indexList[list[i]['id']][key] = key!=='location'?list[i][key]:this.converLocation(list[i][key]);
 
 			}
 		}
@@ -5642,6 +5493,7 @@ Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk
 		Aps.map.setMarkList(list);
 
 		for(var key in Aps.map.marks ){
+			if (!Aps.map.marks.hasOwnProperty(key)) continue;
 			new AMap.Marker({
 			  map: Aps.map.map,
 			  title:Aps.map.marks[key].id,
@@ -5660,7 +5512,7 @@ Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk
 		var marks = [];
 
 		for( var key in list){
-
+			if (!list.hasOwnProperty(key)) continue;
 			marks.push({
 				id:list[key].id,
 				position:this.converLocation(list[key].location)
@@ -5670,10 +5522,9 @@ Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk
 		this.marks = marks;
 	},
 
-	refreshView:function(index,listmode){
+	refreshView:function(index,listMode){
 
-		var listmode = listmode || 0;
-		var current  = listmode ? this.list[index] : this.current;
+		var current  = listMode ? this.list[index] : this.current;
 
 		VD('.pageInfo .name').html(current.name);
 		VD('.pageInfo .address span').html(current.address);
@@ -5701,19 +5552,15 @@ Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk
 		Aps.map.refreshView(venueid,1);
 	},
 
-	converLocation:function( location, mirror ){
+	converLocation:function( Location, Mirror ){
 
-		var mirror = mirror || 0;
+		var mirror = Mirror || 0;
 		var location = (typeof location =='string') ? location.split(",") : location;
 
 		if (mirror) {
-
-			var mlocation = [locate[1],locate[0]];
-			location = mlocation;
-
+			location = [location[1], location[0]];
 		}
 		return location;
-
 	},
 
 
@@ -5730,7 +5577,6 @@ Aps.map        = Aps.fn({ // ? 地图组件 基于高德jssdk
 		}else{
 			Aps.gui.toast('当前设备不支持定位信息.');
 		}
-		return;
 	},
 
 	getlocationFailed:function(){
@@ -5784,7 +5630,7 @@ Aps.searchbar  = Aps.fn({ // ! 搜索条
 
 	actionDict:{
 		searchAccount:i18n('ACCOUNTS'),
-		searchAttachment:i18n('ATTACHMENTS'),
+		searchAttachment:i18n('ATTACHMENTS')
 	},
 
 	res:{},
@@ -5818,7 +5664,7 @@ Aps.searchbar  = Aps.fn({ // ! 搜索条
 
 	isInputEmpty:function(){
 
-		return vdom('#a-search-input').value().length==0;
+		return vdom('#a-search-input').value().length===0;
 
 	},
 
@@ -5828,7 +5674,7 @@ Aps.searchbar  = Aps.fn({ // ! 搜索条
 
 		if (!vdom('.a-searchbar')) return;
 
-		vdom('.a-searchbar .a-search-input').on('input',function(e){
+		vdom('.a-searchbar .a-search-input').on('input',function(vd){
 			if(Aps.searchbar.isInputDone()){
 				Aps.searchbar.search();
 			}else if(Aps.searchbar.isInputEmpty()){
@@ -5874,19 +5720,19 @@ Aps.searchbar  = Aps.fn({ // ! 搜索条
 		this.setCallback(this.searchCall);
 		this.setExpire(30);
 
-		Aps.gui.localLoad.start('.a-search-result');
+		Aps.gui.loading.start('.a-search-result');
 		Aps.cajax.request(this.options);
 
 	},
 	searchCall:function( data ){
 
 		Aps.contents.listCall(data,'search',0,0,'search');
-		// var list = Aps.cajax.getData(data);
+		// var list = data.content;
 		// vdom((Aps.searchbar.switcher?'.ApsSwitchMain.current':'.searchResult'),'searchList');
 
 		// vdom.searchList.html(Aps.mixer.loop(ApsMd.gui.searchResult,list));
 
-	}, });
+	} });
 
 Aps.qrcode      = {
 
@@ -5899,8 +5745,8 @@ Aps.qrcode      = {
         background      : "#ffffff",
         foreground      : "#000000"
 	},
-	toCanvas:function(text,options){
-		var options = options || this.options;
+	toCanvas:function(text,opts){
+		var options = opts || this.options;
 			options.text = text;
 		var qrcode	= new QRCode(options.typeNumber, options.correctLevel);
 		qrcode.addData(text);
@@ -5955,15 +5801,15 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 	callback @string      # callback function
 	*/
 
-	listCall:function( data, type, append, options, parallel , callback ){
+	listCall:function( data, Type, Append, options, parallel , callback ){
 
 		Aps.scrollView.endLoading(parallel||0);
 
 		var listContainer = 'listContainer'+(parallel?'_'+parallel:'');
 		var selector  = parallel?'.parallel_'+parallel:'.ApsScrollView.current'; 
 
-		if (!Aps.cajax.successful(data)){
-			if (data.status==9999) { 
+		if (data.status!==0){
+			if (data.status===9999) {
 				Aps.user.quickLogin(); 
 			}else{
 				// Aps.gui.toast(data.message||'Network Error!',data.status?'success':'warning');
@@ -5976,7 +5822,7 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 
 		var CONTAINER = VD(selector,listContainer);
 
-		var res       = Aps.cajax.getData(data);
+		var res       = data.content;
 
 		var domList   = '';
 		var list      = res.list;
@@ -5984,14 +5830,14 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 		var page      = res.navi.page || 1;
 		var size      = res.navi.size || 12;
 
-		var append    = append        || 0; 
-		var type      = type          || 'search'; 
+		var append    = Append        || 0;
+		var type      = Type          || 'search';
 		var animate   = options.animate   || 0;
 		var mode      = options.mode      || 'general';
 		var emptyInfo = options.emptyInfo || 'No result.';
 
-		var animateIn = function(idx,animate){ 
-			var animate = animate || 'fadeInRight faster';
+		var animateIn = function(idx,Animate){
+			var animate = Animate || 'fadeInRight faster';
 			CONTAINER.append(VD['list'+idx]); 
 			VD['list'+idx].addClass('animated '+animate);
 		};
@@ -6002,7 +5848,9 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 
 			for (var i in list ) {
 				var idx = (page-1)*(size) + i ;
-				VD(Aps.mixer.mix( ApsMd.list[type][mode] ,list[i]),'list'+idx);
+				if (list.hasOwnProperty(i)) {
+					VD(Aps.mixer.mix(ApsMd.list[type][mode], list[i]), 'list' + idx);
+				}
 
 				animate 
 				? setTimeout(animateIn,(animate.delay||50)*i,idx,animate.animate)
@@ -6030,14 +5878,14 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 	
 	detailCall:function( data, type, callback ){
 
-		if (!Aps.cajax.successful(data)){ 
+		if (data.status!==0){
 			Aps.gui.toast(data.message);
-			if (data.status==9999) {
+			if (data.status===9999) {
 				Aps.user.quickLogin();
 			}
 			return;
 		}
-		var detail  = Aps.cajax.getData(data);
+		var detail  = data.content;
 		detail['_'+Aps.converter.exchange('category',detail['categoryid'])] = 1;
 
 		if (defined(callback)) {
@@ -6048,9 +5896,9 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 
 	},
 
-	send:function( form, target, call, options ){ 
+	send:function( form, target, call, Options ){
 
-		var options = options || {};
+		var options = Options || {};
 
 		if ( typeof(form)=='object') {
 
@@ -6078,7 +5926,7 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 
 	sendCall:function( data, type, txt ){
 
-		if (!Aps.cajax.successful(data)) { Aps.gui.submitted(Aps.cajax.getMessage(data),'failed'); return; }
+		if (data.status!==0) { Aps.gui.submitted(Aps.cajax.getMessage(data),'failed'); return; }
 
 		Aps.gui.submitted(Aps.cajax.getMessage(data),'success',3500);
 
@@ -6086,7 +5934,7 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 
 	suggestCall:function( data ){
 
-		if (!Aps.cajax.successful(data)) { Aps.gui.submitted(Aps.cajax.getMessage(data),'failed'); return; }
+		if (data.status!==0) { Aps.gui.submitted(Aps.cajax.getMessage(data),'failed'); return; }
 
 		Aps.gui.submitted(Aps.cajax.getMessage(data),'success',3500);
 
@@ -6096,9 +5944,9 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 
 	},
 
-	checkCall:function( data,type,txt ){
+	checkCall:function( data,type,Txt ){
 
-		var txt      = txt || '收藏';
+		var txt      = Txt || '收藏';
 		var btn      = VD('#'+type+'Btn');
 		var itemtype = btn.attr('itemtype');
 		var itemid   = btn.attr('itemid');
@@ -6129,7 +5977,7 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 
 	apiTestCall:function(data){
 
-		if (Aps.cajax.successful(data)) {
+		if (data.status===0) {
 			console.log(data);
 		}else{
 			console.log(Aps.cajax.getMessage(data));
@@ -6152,20 +6000,16 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 
 	check:function(mode,type,id){
 
-		if(!Aps.user.forcedLogin()) return;
-		var mode = mode || 'collect';
-		var type = type || 'venue';
-		// var itemtype = type=='active'?1:2;
-		var id   = id   || 1;
+		var _mode = mode || 'collect';
+		var _type = type || 'venue';
+		var _id   = id   || 1;
 
-		VD('#'+mode+'Btn').attr('itemtype',type).attr('itemid',id);
-		this.post(mode+'Check',Aps.contents[mode+'Check'],{itemid:id,itemtype:type,userid:Aps.user.userid},{update:1,needLogin:1});
+		VD('#'+_mode+'Btn').attr('itemtype',_type).attr('itemid',_id);
+		this.post(_mode+'Check',Aps.contents[_mode+'Check'],{itemid:_id,itemtype:_type,userid:Aps.user.userid},{update:1,needLogin:1});
 
 	},
 
 	thumb:function(el,type,id){
-
-		if(!Aps.user.forcedLogin()) return;
 
 		var status = VD(el).hasClass('enabled') ? 1 : 0;
 
@@ -6178,8 +6022,6 @@ Aps.contents    = Aps.fn({ // ! 内容处理
 	},
 
 	share:function(itemtype,itemid){
-
-		if(!Aps.user.forcedLogin()) return;
 
 		this.resetOptions();
 

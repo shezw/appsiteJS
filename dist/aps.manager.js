@@ -88,36 +88,41 @@ var MANAGER = Aps.fn({
 
     add:function(data,itemClass,call){
 
+        var params;
         if(data){
-            data.itemClass = itemClass;
+            params = {data:data};
+            params.itemClass = itemClass;
         }else{
-            var data = Aps.former.checkForm(vlist('.a-field.valid'));
-            if(!data) return;
-            data = {
-                data:data,
+            var _data = Aps.former.checkForm(vlist('.a-field.valid'));
+            if(!_data) return;
+            params = {
+                data:_data,
                 itemClass:itemClass
             };
         }
         Aps.gui.submitting('正在向服务器提交请求...');
-        MANAGER.post('manager/addItem',call||MANAGER.chooseCall,data,{update:1,needLogin:1});
+        MANAGER.post('manager/addItem',call||MANAGER.chooseCall,params,{update:1,needLogin:1});
 
     },
 
     update:function(data,id,itemClass,call){
 
+        var params;
         if(data){
-            data.itemType = itemClass;
-            data.itemId   = id;
+            params = {data:data};
+            params.itemClass = itemClass;
+            params.itemId = id;
         }else{
-            var data = Aps.former.checkForm(vlist('.a-field.valid'));
-            if(!data) return;
-            data = {
-                data:data,
+            var _data = Aps.former.checkForm(vlist('.a-field.valid'));
+            console.log(_data);
+            if(!_data) return;
+            params = {
+                data:_data,
                 itemClass:itemClass,
                 itemId:id
-            }
+            };
         }
-        MANAGER.post('manager/updateItem',call||MANAGER.reloadCall,data,{update:1,needLogin:1});
+        MANAGER.post('manager/updateItem',call||MANAGER.reloadCall,params,{update:1,needLogin:1});
 
     },
 
@@ -131,11 +136,11 @@ var MANAGER = Aps.fn({
 
     postFormToAction:function(action,data,call,noAuth){
 
-        var data = data || Aps.former.checkForm(vlist('.a-field.valid'));
-        if(!data) return;
+        var params = data || Aps.former.checkForm(vlist('.a-field.valid'));
+        if(!params) return;
 
         Aps.gui.submitting('正在向服务器提交请求...');
-        MANAGER.post(action,call||MANAGER.backCallDelay,data,{update:1,needLogin:noAuth?0:1});
+        MANAGER.post(action,call||MANAGER.backCallDelay,params,{update:1,needLogin:noAuth?0:1});
 
     },
 
@@ -238,7 +243,7 @@ var MANAGER = Aps.fn({
     autoCompelete:function( keyList ){
 
         for( var key in keyList ){
-
+            if (!keyList.hasOwnProperty(key)) continue;
             if(vdom('#'+key)){
                 vdom('#'+key).value(keyList[key]);
             }
@@ -297,7 +302,7 @@ var MANAGER = Aps.fn({
             relationid:relationid,
             relationtype:relationtype,
             type:type,
-            rate:rate||3,
+            rate:rate||3
         };
 
         MANAGER.post('bindItems',MANAGER.reloadCall,data,{update:1,needLogin:1});
@@ -306,7 +311,7 @@ var MANAGER = Aps.fn({
     unBindItem:function(combineid){
 
         var data = {
-            combineid:combineid,
+            combineid:combineid
         };
 
         MANAGER.post('unBindItem',MANAGER.reloadCall,data,{update:1,needLogin:1});
@@ -315,7 +320,7 @@ var MANAGER = Aps.fn({
 
     call:function(data,method,t){
 
-        if (!Aps.cajax.successful(data)){
+        if (data.status!==0){
 
             Aps.gui.submitted('提交失败',2500,'failed');
             Aps.gui.alert( data.message );
@@ -345,7 +350,7 @@ var MANAGER = Aps.fn({
                                 Aps.router.back(-1);
                             },
                             okText:'刷新',
-                            cancelText:'返回上一页',
+                            cancelText:'返回上一页'
                         });
                         break;
                     case 'stay':
@@ -369,26 +374,6 @@ var MANAGER = Aps.fn({
     reloadCallDelay:function(data){ MANAGER.call(data,'reload',2000); },
 
 
-    // custom functions
-    setSeatToActiveround:function(seatsid){
-
-        this.post('itemDetail',this.setSeatToActiveroundCall,{itemtype:'seats',itemid:seatsid},{needLogin:1,update:1});
-
-        // Aps.gui.alert('当前版本暂未提供设置座位模版功能','提示');
-
-    },
-
-    setSeatToActiveroundCall:function(data){
-
-        var round = data['content'][0];
-
-        vdom('#seats').value(round.seats);
-        Aps.seats.init(1);
-        Aps.seats.preview();
-        Aps.seats._listen();
-
-    },
-
     // addUser:function(data,type,call){
     //
     //     if(data){
@@ -406,12 +391,12 @@ var MANAGER = Aps.fn({
     updateUser:function(data,userid,call) {
 
         if(!data){
-            var data = Aps.former.checkForm(vlist('.a-field.valid'));
-            if(!data) return;
-            data.userid = userid;
+            var params = Aps.former.checkForm(vlist('.a-field.valid'));
+            if(!params) return;
+            params.userid = userid;
         }
         Aps.gui.submitting('正在向服务器提交请求...');
-        MANAGER.post('manager/updateUser',call||MANAGER.reloadCall, {data:data,userId:userid},{update:1,needLogin:1});
+        MANAGER.post('manager/updateUser',call||MANAGER.reloadCall, {data:params,userId:userid},{update:1,needLogin:1});
 
     },
 
@@ -442,11 +427,11 @@ var MANAGER = Aps.fn({
 
     statusRequest:function(requestid,status,call) {
 
-        var status = status || 'rejected';
+        var _status = status || 'rejected';
         if(!requestid){ return; }
 
         Aps.gui.submitting('正在向服务器提交请求...');
-        MANAGER.post('statusRequest',call||MANAGER.reloadCall,{requestid:requestid,status:status},{update:1,needLogin:1})
+        MANAGER.post('statusRequest',call||MANAGER.reloadCall,{requestid:requestid,status:_status},{update:1,needLogin:1})
 
     },
 
@@ -489,7 +474,7 @@ var MANAGER = Aps.fn({
             var tablehead = {};
 
             for( var key in struct){
-                tablehead[key] = struct[key].label;
+                if (struct.hasOwnProperty(key)) tablehead[key] = struct[key].label;
             }
 
             Exports.push(tablehead);
@@ -500,13 +485,11 @@ var MANAGER = Aps.fn({
 
             // Exports = CONVERS.converFullCustomer(Exports);
 
-            if (typeof(Exports)=='array') {
-                console.log('array');
-            }else if(typeof(Exports)=='object'){
+            if(typeof(Exports)=='object'){
                 // console.log(Exports);
                 var EXCELDATA = [];
-                for (var i = 0; i < Exports.length; i++) {
-                    EXCELDATA.push(EXPORTS.objtoarray(Exports[i],struct));
+                for (var j = 0; j < Exports.length; j++) {
+                    EXCELDATA.push(EXPORTS.objtoarray(Exports[j],struct));
                 }
                 // console.log(EXCELDATA);
 
@@ -694,22 +677,22 @@ var MULTISELECTOR = Aps.fn({
 
     },
 
-    clear:function(fromid){
+    clear:function(fromId){
 
-        var fromid = fromid;
+        var _fromId = fromId;
         var selectors = vlist(this.selector + ' select');
-        var removeble = 0;
+        var removable = 0;
 
         for (var i = 0; i < selectors.list.length; i++) {
-            if(removeble){
+            if(removable){
                 selectors.list[i].remove();
             }else{
-                if(selectors.list[i].id()==fromid){
-                    removeble = 1;
+                if(selectors.list[i].id()===_fromId){
+                    removable = 1;
                 }
             }
         }
-        this.averangeWidth();
+        this.averageWidth();
 
     },
 
@@ -750,16 +733,16 @@ var MULTISELECTOR = Aps.fn({
 
         nextSelector.on('change',function(vd){self.selected(vd)});
 
-        this.averangeWidth();
+        this.averageWidth();
         // 平分每个选项的宽度
 
     },
 
-    averangeWidth:function(vlist){
+    averageWidth:function(vlist){
 
-        var vlist = vlist || VL(this.selector + ' select');
+        var _vlist = vlist || VL(this.selector + ' select');
 
-        vlist.vdf('styles',{width:( 100 / vlist.list.length )+"%",float:'left'});
+        _vlist.vdf('styles',{width:( 100 / _vlist.list.length )+"%",float:'left'});
 
     }
 
@@ -773,33 +756,33 @@ var EXPORTS = {
 
     STRUCT:{
         order:{
-            'orderid':{    name:'orderid'   ,     label:'订单ID',      },
-            'itemtype_':{  name:'itemtype_' ,     label:'订单类型', },
-            'title':{      name:'title'   ,       label:'名称',     },
-            'amount':{     name:'amount'   ,      label:'金额',      },
-            'userid':{     name:'userid'   ,      label:'用户ID',    },
-            'user.nickname':{ name:'nickname' , label:'昵称',      },
-            'details.mobile':{name:'mobile'   , label:'下单手机号', },
-            'details.name':{ name:'name'   ,    label:'姓名',      },
-            'createtime_':{name:'createtime_'  ,  label:'交易时间',  },
-            'status_':{    name:'status_'  ,      label:'状态',      },
-            'writeoff_':{  name:'writeoff_'  ,    label:'是否核销',   },
+            'orderid':{    name:'orderid'   ,     label:'订单ID'      },
+            'itemtype_':{  name:'itemtype_' ,     label:'订单类型' },
+            'title':{      name:'title'   ,       label:'名称'     },
+            'amount':{     name:'amount'   ,      label:'金额'     },
+            'userid':{     name:'userid'   ,      label:'用户ID'    },
+            'user.nickname':{ name:'nickname' , label:'昵称'      },
+            'details.mobile':{name:'mobile'   , label:'下单手机号' },
+            'details.name':{ name:'name'   ,    label:'姓名'      },
+            'createtime_':{name:'createtime_'  ,  label:'交易时间'  },
+            'status_':{    name:'status_'  ,      label:'状态'      },
+            'writeoff_':{  name:'writeoff_'  ,    label:'是否核销'   },
 
         },
         user:{
-            'userid':{   name:'userid'   ,      label:'用户ID',      },
-            'nickname':{ name:'nickname' ,      label:'昵称',      },
-            'mobile':{   name:'mobile'   , label:'手机号', },
-            'realname':{ name:'realname'   ,    label:'姓名',      },
-            'gender_': { name:'gender_'  ,  label:'性别',  },
-            'information.realname': { name:'realname'  ,  label:'实名',  },
-            'information.realstatus_': { name:'realstatus_'  ,  label:'性别',  },
-            'information.country': { name:'country'  ,  label:'国家',  },
-            'information.province': { name:'province'  ,  label:'省份',  },
-            'information.city': { name:'city'  ,  label:'城市',  },
-            'point':{  name:'point'  ,    label:'瓯圆',   },
-            'registtime_':{ name:'registtime_'  ,    label:'注册日期',   },
-            'status_':{  name:'status_'  ,      label:'状态',      },
+            'userid':{   name:'userid'   ,      label:'用户ID'      },
+            'nickname':{ name:'nickname' ,      label:'昵称'      },
+            'mobile':{   name:'mobile'   , label:'手机号' },
+            'realname':{ name:'realname'   ,    label:'姓名'      },
+            'gender_': { name:'gender_'  ,  label:'性别'  },
+            'information.realname': { name:'realname'  ,  label:'实名'  },
+            'information.realstatus_': { name:'realstatus_'  ,  label:'性别'  },
+            'information.country': { name:'country'  ,  label:'国家'  },
+            'information.province': { name:'province'  ,  label:'省份'  },
+            'information.city': { name:'city'  ,  label:'城市'  },
+            'point':{  name:'point'  ,    label:'瓯圆'  },
+            'registtime_':{ name:'registtime_'  ,    label:'注册日期'   },
+            'status_':{  name:'status_'  ,      label:'状态'    },
 
         },
 
@@ -900,16 +883,18 @@ var EXPORTS = {
 
         var arr = [];
         for( var key in mod ){
-            var v = "";
-            if (typeof(obj[key])!=='undefined') {
-                v = obj[key];
-            }else if(key.indexOf('.')>0){
+            if ( mod.hasOwnProperty(key) ){
+                var v = "";
+                if (typeof(obj[key])!=='undefined') {
+                    v = obj[key];
+                }else if(key.indexOf('.')>0){
 
-                var d = key.split(".");
-                v = obj[d[0]] ? (obj[d[0]][d[1]] || '') : '';
+                    var d = key.split(".");
+                    v = obj[d[0]] ? (obj[d[0]][d[1]] || '') : '';
 
+                }
+                arr.push(v);
             }
-            arr.push(v);
         }
         return arr;
     }
