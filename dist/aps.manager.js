@@ -28,54 +28,54 @@
 
 var MANAGER = Aps.fn({
 
-    testApi:function( previewerID ){
-
-        var preData = Aps.former.checkForm(vlist('.a-field.valid'));
-
-        if(!preData) return;
-
-        this.resetOptions();
-
-        var action = preData.action;
-        var url    = preData.url || CONFIGS.apihost;
-        var params = JSON.parse(preData.params);
-        var headers= preData.headers ? JSON.parse(preData.headers) : 0;
-
-        if( preData.userid ){
-            this.addHeaders( {userid:preData.userid} );
-        }
-        if( preData.token ){
-            this.addHeaders( {token:preData.token} );
-        }
-        if( preData.scope ){
-            this.addHeaders( {scope:preData.scope} );
-        }
-
-        if( headers ){
-            this.addHeaders( headers );
-        }
-        this.addParams( params );
-        this.setAction( action );
-        this.setUpdate(  );
-
-        this.setUrl(url);
-
-        this.setCallback(function(data,status) {
-            vdom("#"+previewerID).empty().html(JSON.stringify(data, null, 2));
-            hljs.initHighlightingOnLoad();
-        });
-
-        this.setErrorCall(function(status) {
-            alert(status||"No response");
-        })
-
-        if(previewerID){
-            vdom('#'+previewerID).html("requesting...");
-        }
-
-        Aps.cajax.request(this.options);
-
-    },
+    // testApi:function( previewerID ){
+    //
+    //     var preData = Aps.former.checkForm(vlist('.a-field.valid'));
+    //
+    //     if(!preData) return;
+    //
+    //     this.resetOptions();
+    //
+    //     var action = preData.action;
+    //     var url    = preData.url || CONFIGS.apiServer;
+    //     var params = JSON.parse(preData.params);
+    //     var headers= preData.headers ? JSON.parse(preData.headers) : 0;
+    //
+    //     if( preData.userid ){
+    //         this.addHeaders( {userid:preData.userid} );
+    //     }
+    //     if( preData.token ){
+    //         this.addHeaders( {token:preData.token} );
+    //     }
+    //     if( preData.scope ){
+    //         this.addHeaders( {scope:preData.scope} );
+    //     }
+    //
+    //     if( headers ){
+    //         this.addHeaders( headers );
+    //     }
+    //     this.addParams( params );
+    //     this.setAction( action );
+    //     this.setUpdate(  );
+    //
+    //     this.setUrl(url);
+    //
+    //     this.setCallback(function(data,status) {
+    //         vdom("#"+previewerID).empty().html(JSON.stringify(data, null, 2));
+    //         hljs.initHighlightingOnLoad();
+    //     });
+    //
+    //     this.setErrorCall(function(status) {
+    //         alert(status||"No response");
+    //     })
+    //
+    //     if(previewerID){
+    //         vdom('#'+previewerID).html("requesting...");
+    //     }
+    //
+    //     Aps.cajax.request(this.options);
+    //
+    // },
 
     filterSearch:function() {
 
@@ -131,16 +131,6 @@ var MANAGER = Aps.fn({
         Aps.gui.confirm('是否确认删除?','删除后不可恢复.',{okTxt:"删除",onOk:function(){
                 MANAGER.remove(id,type,call);
             }});
-
-    },
-
-    postFormToAction:function(action,data,call,noAuth){
-
-        var params = data || Aps.former.checkForm(vlist('.a-field.valid'));
-        if(!params) return;
-
-        Aps.gui.submitting('正在向服务器提交请求...');
-        MANAGER.post(action,call||MANAGER.backCallDelay,params,{update:1,needLogin:noAuth?0:1});
 
     },
 
@@ -317,61 +307,6 @@ var MANAGER = Aps.fn({
         MANAGER.post('unBindItem',MANAGER.reloadCall,data,{update:1,needLogin:1});
 
     },
-
-    call:function(data,method,t){
-
-        if (data.status!==0){
-
-            Aps.gui.submitted('提交失败',2500,'failed');
-            Aps.gui.alert( data.message );
-
-        }else{
-
-            Aps.gui.submitted(data.message,2500,'success');
-
-            setTimeout(function(){
-
-                switch(method){
-                    case 'back':
-                        Aps.router.back();
-                        break;
-                    case 'reload':
-                        Aps.router.reload();
-                        break;
-                    case 'confirmReload':
-                        Aps.gui.confirm('Success','Do you want reload?',function(){ Aps.router.reload(); });
-                        break;
-                    case 'choose':
-                        Aps.gui.confirm('成功','请选择返回或刷新',{
-                            onOk:function(){
-                                Aps.router.reload();
-                            },
-                            onCancel:function(){
-                                Aps.router.back(-1);
-                            },
-                            okText:'刷新',
-                            cancelText:'返回上一页'
-                        });
-                        break;
-                    case 'stay':
-                        break;
-                    default:
-                        break;
-                }
-            },t||500);
-        }
-
-    },
-
-    backCall:function(data){ MANAGER.call(data,'back'); },
-    stayCall:function(data){ MANAGER.call(data,'stay'); },
-    reloadCall:function(data){ MANAGER.call(data,'reload'); },
-    confirmReloadCall:function(data){ MANAGER.call(data,'confirmReload'); },
-    chooseCall:function(data){ MANAGER.call(data,'choose'); },
-
-    backCallDelay:function(data){  MANAGER.call(data,'back',2000); },
-    stayCallDelay:function(data){ MANAGER.call(data,'stay',2000); },
-    reloadCallDelay:function(data){ MANAGER.call(data,'reload',2000); },
 
 
     // addUser:function(data,type,call){
@@ -933,8 +868,6 @@ var BANNER = Aps.fn({
     itemSelect:function(){
 
         var type    = vdom('#bannerTypeSelect').value();
-
-        var ajaxurl = CONFIGS.serverhost+'manager_index.php';
 
         this.post('itemList',this.itemSelectCall,{itemclass:type},{update:1,needLogin:1});
 

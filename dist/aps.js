@@ -235,7 +235,7 @@ ApsMd.gui = { // ! 组件dom模版(核心功能)
 	popup:'\
 	<div class="a-popup modal fade show">\
 	  <div class="modal-backdrop show a-mask"></div>\
-	  <div class="modal-dialog a-main">\
+	  <div class="modal-dialog a-main {{size}}">\
 	    <div class="modal-content">\
 	      <div class="modal-header">\
 	        <h5 class="modal-title">{{title}}</h5>\
@@ -277,7 +277,7 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 			'before': 0,
 			'callback': 0,
 			'errorCall': 0,
-			'url': CONFIGS.apihost,
+			'url': CONFIGS.apiServer,
 			'bindList': [],
 			'requesttype': 'POST',
 			'loadingtype': 'Window',
@@ -292,7 +292,7 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 				'before': 0,
 				'callback': 0,
 				'errorCall': 0,
-				'url': CONFIGS.apihost,
+				'url': CONFIGS.apiServer,
 				'bindList': [],
 				'requesttype': 'POST',
 				'loadingtype': 'Window',
@@ -372,14 +372,73 @@ Aps.fn = function(obj) { // ! 内核组件  # core factory
 		},
 		/* 设置事件 */
 		setAction: function(action) {
-			if (CONFIGS.apimode === 'RESTFUL') {
-				this.setUrl(APILIST.getApiUrl(action));
-			}else if( CONFIGS.apimode === 'ASAPI'){
-				this.setUrl( CONFIGS.apihost + action );
-			}else {
-				this.options.parameters.action = action;
-			}
+			this.setUrl( CONFIGS.apiServer + action );
 		},
+
+		postFormToAction:function(action,data,call,noAuth){
+
+			var params = data || Aps.former.checkForm(vlist('.a-field.valid'));
+			if(!params) return;
+
+			Aps.gui.submitting('正在向服务器提交请求...');
+			this.post(action,call||this.backCallDelay, params,{update:1,needLogin:noAuth?0:1});
+
+		},
+
+		call:function(data,method,t){
+
+			if (data.status!==0){
+
+				Aps.gui.submitted('提交失败',2500,'failed');
+				Aps.gui.alert( data.message );
+
+			}else{
+
+				Aps.gui.submitted(data.message,2500,'success');
+
+				setTimeout(function(){
+
+					switch(method){
+						case 'back':
+							Aps.router.back();
+							break;
+						case 'reload':
+							Aps.router.reload();
+							break;
+						case 'confirmReload':
+							Aps.gui.confirm('Success','Do you want reload?',function(){ Aps.router.reload(); });
+							break;
+						case 'choose':
+							Aps.gui.confirm('成功','请选择返回或刷新',{
+								onOk:function(){
+									Aps.router.reload();
+								},
+								onCancel:function(){
+									Aps.router.back(-1);
+								},
+								okText:'刷新',
+								cancelText:'返回上一页'
+							});
+							break;
+						case 'stay':
+							break;
+						default:
+							break;
+					}
+				},t||500);
+			}
+
+		},
+
+		backCall:function(data){ MANAGER.call(data,'back'); },
+		stayCall:function(data){ MANAGER.call(data,'stay'); },
+		reloadCall:function(data){ MANAGER.call(data,'reload'); },
+		confirmReloadCall:function(data){ MANAGER.call(data,'confirmReload'); },
+		chooseCall:function(data){ MANAGER.call(data,'choose'); },
+
+		backCallDelay:function(data){  MANAGER.call(data,'back',2000); },
+		stayCallDelay:function(data){ MANAGER.call(data,'stay',2000); },
+		reloadCallDelay:function(data){ MANAGER.call(data,'reload',2000); },
 
 		post:function( api, call, params, option, transfer ){
 
@@ -1245,7 +1304,7 @@ Aps.local = { // ! 浏览器本地存储 扩展数据类型  # localstorage Adv 
 		}
 	},
 	UniqueKey:function(key){
-		return CONFIGS.appid ? CONFIGS.appid+'_'+key : key;
+		return CONFIGS.appID ? CONFIGS.appID+'_'+key : key;
 	}
 };
 
@@ -1437,6 +1496,7 @@ Aps.cajax = { // ! 缓存异步请求  # ajax request with auto cache data & for
 			'parameters': parameters,
 			'requesttype': requesttype
 		};
+
 		var gajax      = options.gajax        || 0;  /* 常规模式 */
 		var cacheid = Aps.dom.storagehash.hash(JSON.stringify(request)); /* 缓存ID  */
 
@@ -2018,12 +2078,13 @@ Aps.gui        = { // ! 界面交互  # basic gui
 		},options.delay);
 	},
 
-	popup:function(title,content,coverUrl){
+	popup:function(title,content,coverUrl,size){
 
 		var options = {
 			title:title,
 			content: typeof content === 'object' ? content.HTML() : content,
-			coverUrl:coverUrl
+			coverUrl:coverUrl,
+			size:size
 		};
 
 		// var mask  = VD(ApsMd.gui.mask).hide();
@@ -4795,7 +4856,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 
 	init:function(type,opts,callParams){
 
-		Aps.uploader.mode = options.mode || 'oss';
+		Aps.uploader.mode = opts.mode || 'oss';
 		var options = opts || {
 			type:'image',
 			selector:'brosweFile',
@@ -4809,7 +4870,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 			runtimes :            'html5,flash,silverlight,html4', // 上传环境
 			multi_selection :      !!options.multi, // 是否支持批量上传
 			unique_names :         true, // 是否自动生成唯一文件名
-			url :  Aps.uploader.mode === 'oss' ? CONFIGS.apihost : APILIST.getApiUrl('uploadServer'), // 上传地址
+			url :  CONFIGS.apiServer, 	 // 上传地址
 
 			filters: {
 			  mime_types : [ // 支持的文件类型
@@ -4910,7 +4971,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 		  runtimes :            'html5,flash,silverlight,html4',             // 上传环境
 		  multi_selection :      false,                                      // 是否支持批量上传
 		  unique_names :         true,                                       // 是否自动生成唯一文件名
-		  url :  Aps.uploader.mode === 'oss' ? CONFIGS.apihost : APILIST.getApiUrl('uploadServer'), // 上传地址
+		  url :  Aps.uploader.mode === 'oss' ? CONFIGS.apiServer : APILIST.getApiUrl('uploadServer'), // 上传地址
 
 		  filters: {
 			  mime_types : [ // 支持的文件类型
@@ -5040,7 +5101,7 @@ Aps.uploader   = Aps.fn({ // ! 上传器 # aliOss # core
 				container :            document.getElementById('summerNote'),   // 上传容器
 				multi_selection :      true,                                    // 是否支持批量上传
 				unique_names :         true,                                    // 是否自动生成唯一文件名
-				url :  Aps.uploader.mode === 'oss' ? CONFIGS.apihost : APILIST.getApiUrl('uploadServer'), // 上传地址
+				url :  CONFIGS.apiServer, 										// 上传地址
 
 				filters: {
 				  mime_types : [ options.mime ],
